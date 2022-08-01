@@ -20,6 +20,7 @@ public class SceneDetail : MonoBehaviour
     }
     void Start()
     {
+        //Start things here
         LoadSoundClip();
        
         SetupSprites();

@@ -24,10 +24,20 @@ public class SoSanhDaiNgan : MonoBehaviour
     public static Sprite[] listTallSprite;
     public static Sprite[] listNotTallSprite;
     public static float localScale = 0.6f;
+    public int compareType = 0;//0: big-small, 1: long-short, 2: tall-nottall
     //This variable is to determine if the big image should store the small image and vice versa
     //if randBigShuffle is 0 then the bigImage still displays the big image
     //if randBigShuffle is 1 then the bigImage displays the small image
     public static int isFindBig = 0;
+    void SetupSprites()
+    {
+        listBigSprite = Resources.LoadAll("Items/Compare/Big_Small/Big", typeof(Sprite)).Cast<Sprite>().ToArray();
+        listSmallSprite = Resources.LoadAll("Items/Compare/Big_Small/Small", typeof(Sprite)).Cast<Sprite>().ToArray();
+        listLongSprite = Resources.LoadAll("Items/Compare/Long_Short/Long",typeof(Sprite)).Cast<Sprite>().ToArray();
+        listShortSprite = Resources.LoadAll("Items/Compare/Long_Short/Short", typeof(Sprite)).Cast<Sprite>().ToArray();
+        listTallSprite = Resources.LoadAll("Items/Compare/Tall_NNot/Tall", typeof(Sprite)).Cast<Sprite>().ToArray();
+        listNotTallSprite = Resources.LoadAll("Items/Compare/Tall_NNot/NotTall", typeof(Sprite)).Cast<Sprite>().ToArray();
+    }
     void LoadSoundClip()
     {
         wrongAlertClipList = Resources.LoadAll("Sound/AlertRightWrong/Wrong", typeof(AudioClip)).Cast<AudioClip>().ToArray();
@@ -53,14 +63,16 @@ public class SoSanhDaiNgan : MonoBehaviour
         LoadRandImage();
        
     }
-    void LoadRandImage()
+    public void LoadRandImage()
     {
+        
         int randomIndex = 0;
         System.Random myObject = new System.Random();
         randomIndex = myObject.Next(0, 9);
+        compareType = myObject.Next(0, 3);
         System.Random randBigShuffleSeed = new System.Random();
         isFindBig = randBigShuffleSeed.Next(0, 2);
-        Debug.Log("Rand big shuffle is:" + isFindBig);
+        Debug.Log("Rand big shuffle is:" + isFindBig + " and compare type is:" + compareType);
         if(isFindBig == 1)
         {
             audioSource.PlayOneShot(alertFindBigList[0]);
@@ -72,8 +84,20 @@ public class SoSanhDaiNgan : MonoBehaviour
         GameObject smallImage = transform.GetChild(4).gameObject;
         imageBig = bigImage;
         imageSmall = smallImage;
-        bigImage.transform.GetComponent<Image>().sprite = listBigSprite[randomIndex];
-        smallImage.transform.GetComponent<Image>().sprite = listSmallSprite[randomIndex];
+        if(compareType == 0) //big-small
+        {
+            bigImage.transform.GetComponent<Image>().sprite = listBigSprite[randomIndex];
+            smallImage.transform.GetComponent<Image>().sprite = listSmallSprite[randomIndex];
+        } else if(compareType == 1)
+        {
+            bigImage.transform.GetComponent<Image>().sprite = listLongSprite[randomIndex];
+            smallImage.transform.GetComponent<Image>().sprite = listShortSprite[randomIndex];
+        } else
+        {
+            bigImage.transform.GetComponent<Image>().sprite = listTallSprite[randomIndex];
+            smallImage.transform.GetComponent<Image>().sprite = listNotTallSprite[randomIndex];
+        }
+        
         Vector3 smallPosition = smallImage.transform.position;
         Vector3 bigPosition = bigImage.transform.position;
         int shuffleBigSmallPos = randBigShuffleSeed.Next(9, 11);
@@ -89,11 +113,7 @@ public class SoSanhDaiNgan : MonoBehaviour
         bigImage.AddComponent<ClickAction>();
         smallImage.AddComponent<ClickAction>();
     }
-    void SetupSprites()
-    {
-        listBigSprite = Resources.LoadAll("Items/Compare/Big_Small/Big", typeof(Sprite)).Cast<Sprite>().ToArray();
-        listSmallSprite = Resources.LoadAll("Items/Compare/Big_Small/Small", typeof(Sprite)).Cast<Sprite>().ToArray();
-    }
+    
     void ToHome()
     {
         Debug.Log("You click on home button");
@@ -107,6 +127,7 @@ public class SoSanhDaiNgan : MonoBehaviour
         {
             randAlertIndex = rand.Next(0, rightAlertClipList.Length);
             audioSource.PlayOneShot(rightAlertClipList[randAlertIndex]);
+            StartCoroutine(ReloadGame());
         } else
         {
             randAlertIndex = rand.Next(0, wrongAlertClipList.Length);
@@ -138,7 +159,12 @@ public class SoSanhDaiNgan : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
     }*/
-    public static IEnumerator MyCoroutine(GameObject forGameObject)
+    public IEnumerator ReloadGame()
+    {
+        yield return new WaitForSeconds(2.5f);
+        LoadRandImage();
+    }
+    public static IEnumerator ScaleUpNDown(GameObject forGameObject)
     {
         float speed = 0.2f;
         scale(forGameObject);
@@ -164,7 +190,7 @@ public class ClickAction : MonoBehaviour, IPointerClickHandler
         Debug.Log(name  + " Image clicked");
         if(name.Contains("Big"))
         {
-            StartCoroutine(SoSanhDaiNgan.MyCoroutine(SoSanhDaiNgan.imageBig));
+            StartCoroutine(SoSanhDaiNgan.ScaleUpNDown(SoSanhDaiNgan.imageBig));
             Debug.Log("You click on big image");
             if (SoSanhDaiNgan.isFindBig == 1)
             {
@@ -175,7 +201,7 @@ public class ClickAction : MonoBehaviour, IPointerClickHandler
             }
         } else
         {
-            StartCoroutine(SoSanhDaiNgan.MyCoroutine(SoSanhDaiNgan.imageSmall));
+            StartCoroutine(SoSanhDaiNgan.ScaleUpNDown(SoSanhDaiNgan.imageSmall));
             if (SoSanhDaiNgan.isFindBig == 1)
             {
                 SoSanhDaiNgan.userChoice = 0;

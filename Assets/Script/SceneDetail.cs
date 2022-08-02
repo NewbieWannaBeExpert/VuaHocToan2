@@ -9,13 +9,13 @@ using UnityEngine.SceneManagement;
 public class SceneDetail : MonoBehaviour
 {
     public AudioSource audioSource;
-    public AudioClip[] clips;
+    //public AudioClip[] clips;
    // public AudioClip number0Clip;
     public static Sprite[] listAnimalSprite;
     void LoadSoundClip()
     {
        // number0Clip = Resources.Load("Sound/SoundNumbers/sound1") as AudioClip;
-        clips = Resources.LoadAll("Sound/Number2", typeof(AudioClip)).Cast<AudioClip>().ToArray();
+       // clips = Resources.LoadAll("Sound/Number2", typeof(AudioClip)).Cast<AudioClip>().ToArray();
        // Debug.Log("Total sound is:" + clips.Length + " sound 0 is:" + clips[0].ToString());
     }
     void Start()
@@ -29,7 +29,7 @@ public class SceneDetail : MonoBehaviour
         //GameObject g;
         //g = Instantiate(buttonTemplate, transform);
         audioSource = buttonTemplate.AddComponent<AudioSource>();
-        audioSource.PlayOneShot(clips[ListNumber.clickedItem], 1f);
+        audioSource.PlayOneShot(SharedData.numberSound[ListNumber.clickedItem], 1f);
         buttonTemplate.transform.GetChild(0).GetComponent<Image>().sprite = ListNumber.sprites[ListNumber.clickedItem];
         GameObject homeTemplate = transform.GetChild(2).gameObject;
        // GameObject gHome = Instantiate(homeTemplate,transform);

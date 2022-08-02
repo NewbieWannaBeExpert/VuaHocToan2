@@ -22,6 +22,11 @@ public class HomeLamToan : MonoBehaviour
         {
             ToHome();
         });
+        GameObject btnToCongTru = transform.GetChild(2).gameObject;
+        btnToCongTru.GetComponent<Button>().onClick.AddListener(delegate ()
+        {
+            ToCongTru();
+        });
     }
 
     void ToSoSanh()
@@ -37,5 +42,11 @@ public class HomeLamToan : MonoBehaviour
         StartCoroutine(SharedData.MyCoroutine(transform.GetChild(1).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
        // SceneManager.LoadScene("Scenes/HomeScene");
+    }
+    void ToCongTru()
+    {
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(1).gameObject));
+       // StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
     }
 }

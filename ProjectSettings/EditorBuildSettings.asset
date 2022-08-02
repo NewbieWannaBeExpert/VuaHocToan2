@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LamToanHomeScene.unity
     guid: 642d31010311df34cb3373f668920781
+  - enabled: 1
+    path: Assets/Scenes/DoVuiSo1.unity
+    guid: 7decb70c35acee7488dce6616921a87e
   m_configObjects: {}

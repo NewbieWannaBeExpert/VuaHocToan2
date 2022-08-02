@@ -26,8 +26,13 @@ public class HomeSoScript : MonoBehaviour
         {
             ToHome();
         });
+        GameObject btnToDoVui = transform.GetChild(3).gameObject;
+        btnToDoVui.GetComponent<Button>().onClick.AddListener(delegate ()
+        {
+            ToDoVui();
+        });
 
-       
+
     }
     public static IEnumerator MyCoroutine(GameObject forGameObject)
     {
@@ -49,28 +54,19 @@ public class HomeSoScript : MonoBehaviour
     void ToHocSo()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(HomeSoScript.MyCoroutine(transform.GetChild(2).gameObject));
-        StartCoroutine(ToHocSoAfterSomeTime(0.9f));
+        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(1).gameObject));
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/ListScene"));
+    }
+    void ToDoVui()
+    {
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(2).gameObject));
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/DoVuiSo1"));
     }
     void ToHome()
     {
-        Debug.Log("To home click in hoc so home");
-        StartCoroutine(HomeSoScript.MyCoroutine(transform.GetChild(1).gameObject));
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(ToHomeAfterSomeTime(0.9f));
-        //SceneManager.LoadScene("Scenes/HomeScene");
+        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(1).gameObject));
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene")); 
     }
-    IEnumerator ToHomeAfterSomeTime(float time)
-    {
-        yield return new WaitForSeconds(time);
-        SceneManager.LoadScene("Scenes/HomeScene");
-        // Code to execute after the delay
-    }
-    IEnumerator ToHocSoAfterSomeTime(float time)
-    {
-        yield return new WaitForSeconds(time);
-        SceneManager.LoadScene("Scenes/ListScene");
-       
-    }
-
 }

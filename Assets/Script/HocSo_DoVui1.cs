@@ -8,8 +8,10 @@ public class HocSo_DoVui1 : MonoBehaviour
 {
     public AudioSource audioSource;
     public static Sprite[] listAnimalSprite;
+    public GameObject[] listButton;
     void Start()
     {
+        listButton = new GameObject[3];
         GameObject btnHome = transform.GetChild(1).gameObject;
         audioSource = btnHome.AddComponent<AudioSource>();
         btnHome.GetComponent<Button>().onClick.AddListener(delegate ()
@@ -26,6 +28,7 @@ public class HocSo_DoVui1 : MonoBehaviour
     }
     void LoadNumberList()
     {
+       
         int totalItem = 3;
         int numRows = 3;
         int numCols = 1;
@@ -85,6 +88,7 @@ public class HocSo_DoVui1 : MonoBehaviour
                 {
                     btnNumberClone.transform.GetChild(1).GetComponent<Image>().sprite = SharedData.listNumberDoVui[num3];
                 }
+                listButton[counter] = btnNumberClone;
                 counter++;
                 btnNumberClone.transform.position = new Vector3(initX + (float)j * paddingX + mul * (float)variant * variantMaxX, initY + mul * (float) variant * variantMaxY - (float)i * paddingY);
                 btnNumberClone.transform.localScale = new Vector3(scale, scale, 1);
@@ -101,9 +105,21 @@ public class HocSo_DoVui1 : MonoBehaviour
     }
     void Replay()
     {
+        
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.MyCoroutine(transform.GetChild(2).gameObject));
+        if (listButton != null)
+        {
+            if (listButton.Length == 3)
+            {
+                foreach (GameObject go in listButton)
+                {
+                    Destroy(go);
+                }
+            }
+        }
         StartCoroutine(ReloadNumber());
+        
     }
     IEnumerator ReloadNumber()
     {

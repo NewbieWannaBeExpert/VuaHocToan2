@@ -7,47 +7,57 @@ using UnityEngine.UI;
 public class HocSo_DoVui1 : MonoBehaviour
 {
     public AudioSource audioSource;
-    //public AudioClip[] clips;
-    // public AudioClip number0Clip;
     public static Sprite[] listAnimalSprite;
-   
     void Start()
     {
-        GameObject buttonTemplate = transform.GetChild(1).gameObject;
-        audioSource = buttonTemplate.AddComponent<AudioSource>();
-        //buttonTemplate.transform.GetChild(0).GetComponent<Image>().sprite = ListNumber.sprites[2];
-        GameObject homeTemplate = transform.GetChild(1).gameObject;
-        homeTemplate.GetComponent<Button>().onClick.AddListener(delegate ()
+        GameObject btnHome = transform.GetChild(1).gameObject;
+        audioSource = btnHome.AddComponent<AudioSource>();
+        btnHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             ToHome();
         });
+        GameObject btnReplay = transform.GetChild(2).gameObject;
+        btnReplay.GetComponent<Button>().onClick.AddListener(delegate ()
+        {
+            Replay();
+        });
         LoadNumberList();
+
     }
     void LoadNumberList()
     {
-
         int totalItem = 3;
-        int numRows = 1;
-        int numCols = 3;
-        float initX = -2.0f;
-        float initY = -2.0f;
+        int numRows = 3;
+        int numCols = 1;
+        float initX = 0f;
+        float initY = 2.5f;
         float paddingX = 2.0f;
-        float paddingY = 1.75f;
+        float paddingY = 2.3f;
+        float variantMaxY = 0.03f;
+        float variantMaxX = 0.1f;
         float scale = 1.0f;
         if (Screen.height > 1.5f * Screen.width)
         {
-            numCols = 3;
-            numRows = 1;
+            numCols = 1;
+            numRows = 3;
             Debug.Log("Screen to long");
         }
-        
-        // int totalItem = 9;
-        int numberIndex = 2;
+        int num1,num2,num3 = 2;
         System.Random myObject = new System.Random();
-        numberIndex = myObject.Next(0, 9);
-        //Debug.Log("Screen ratio is: " + Screen.height / Screen.width);
-        GameObject imageTemplate = transform.GetChild(3).gameObject;
-        GameObject g;
+        num1 = myObject.Next(0, 9);
+        num2 = myObject.Next(0, 9);
+        while(num2 == num1)
+        {
+            num2 = myObject.Next(0, 9);
+        }
+        num3 = myObject.Next(0, 9); 
+        while(num3 == num2 || num3 == num1)
+        {
+            num3 = myObject.Next(0, 9);
+        }
+        GameObject btnNumberPattern = transform.GetChild(3).gameObject;
+        GameObject btnNumberClone;
+        int counter = 0;
         for (int i = 0; i < numRows; i++)
         {
             for (int j = 0; j < numCols; j++)
@@ -57,26 +67,47 @@ public class HocSo_DoVui1 : MonoBehaviour
                 {
                     break;
                 }
-                g = Instantiate(imageTemplate, transform);
-                g.transform.GetComponent<Image>().sprite = SharedData.listNumberDoVui[numberIndex];
-                if (numCols == 2)
+                int variant = myObject.Next(0, 9);
+                float mul = 1.0f;
+                if(variant % 2 == 0)
                 {
-                    g.transform.position = new Vector3(initX + (float)j * paddingX, initY - (float)i * paddingY);
+                    mul = -1.0f;
                 }
-                else
+                btnNumberClone = Instantiate(btnNumberPattern, transform);
+                btnNumberClone.transform.GetChild(0).GetComponent<Image>().sprite = SharedData.listNumberBg[0];
+                if(counter == 0)
                 {
-                    g.transform.position = new Vector3(initX + (float)j * paddingX, initY - (float)i * paddingY);
+                    btnNumberClone.transform.GetChild(1).GetComponent<Image>().sprite = SharedData.listNumberDoVui[num1];
+                } else if(counter == 1)
+                {
+                    btnNumberClone.transform.GetChild(1).GetComponent<Image>().sprite = SharedData.listNumberDoVui[num2];
+                } else if(counter == 2)
+                {
+                    btnNumberClone.transform.GetChild(1).GetComponent<Image>().sprite = SharedData.listNumberDoVui[num3];
                 }
-                g.transform.localScale = new Vector3(scale, scale, 1);
+                counter++;
+                btnNumberClone.transform.position = new Vector3(initX + (float)j * paddingX + mul * (float)variant * variantMaxX, initY + mul * (float) variant * variantMaxY - (float)i * paddingY);
+                btnNumberClone.transform.localScale = new Vector3(scale, scale, 1);
             }
         }
-        Destroy(imageTemplate);
+        Destroy(btnNumberPattern);
     }
     
     void ToHome()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(2).gameObject));
+        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(1).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HocSoHomeScene"));
+    }
+    void Replay()
+    {
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(2).gameObject));
+        StartCoroutine(ReloadNumber());
+    }
+    IEnumerator ReloadNumber()
+    {
+        yield return new WaitForSeconds(0.5f);
+        LoadNumberList();
     }
 }

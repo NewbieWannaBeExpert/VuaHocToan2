@@ -9,6 +9,7 @@ public class SharedData : MonoBehaviour
     public static AudioClip[] buttonClickSound;
     public static AudioClip[] numberSound;
     public static Sprite[] listNumberDoVui;
+    public static Sprite[] listNumberBg;
     //public static AudioSource audioSource;
     public static void initSound()
     {
@@ -19,6 +20,7 @@ public class SharedData : MonoBehaviour
             buttonClickSound = Resources.LoadAll("Sound/ButtonClicked", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             numberSound = Resources.LoadAll("Sound/Number2", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             listNumberDoVui = Resources.LoadAll("Numbers2", typeof(Sprite)).Cast<Sprite>().ToArray();
+            listNumberBg = Resources.LoadAll("Numbers2/NumberBg", typeof(Sprite)).Cast<Sprite>().ToArray();
         }
     }
     public static IEnumerator ToSceneAfterSomeTime(float time, string sceneName)

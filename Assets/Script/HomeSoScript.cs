@@ -8,11 +8,11 @@ using System.Linq;
 public class HomeSoScript : MonoBehaviour
 {
     public static AudioSource audioSource;
-    public static AudioClip buttonClickSound;
+    //public static AudioClip buttonClickSound;
     // Start is called before the first frame update
     void Start()
     {
-        buttonClickSound = Resources.Load("Sound/aButtonClicked111.mp3") as AudioClip;
+       // buttonClickSound = Resources.Load("Sound/aButtonClicked111.mp3") as AudioClip;
         GameObject btnToHocSo = transform.GetChild(2).gameObject;
         btnToHocSo.GetComponent<Button>().onClick.AddListener(delegate ()
         {
@@ -21,7 +21,7 @@ public class HomeSoScript : MonoBehaviour
 
         GameObject btnToHome = transform.GetChild(1).gameObject;
         audioSource = btnToHome.AddComponent<AudioSource>();
-        audioSource.PlayOneShot(buttonClickSound, 100f);
+        //audioSource.PlayOneShot(buttonClickSound, 100f);
         btnToHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             ToHome();
@@ -48,7 +48,7 @@ public class HomeSoScript : MonoBehaviour
     }
     void ToHocSo()
     {
-        audioSource.PlayOneShot(HomeSceneScript.buttonClickSound[0], 1f);
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(HomeSoScript.MyCoroutine(transform.GetChild(2).gameObject));
         StartCoroutine(ToHocSoAfterSomeTime(0.9f));
     }
@@ -56,7 +56,7 @@ public class HomeSoScript : MonoBehaviour
     {
         Debug.Log("To home click in hoc so home");
         StartCoroutine(HomeSoScript.MyCoroutine(transform.GetChild(1).gameObject));
-        audioSource.PlayOneShot(HomeSceneScript.buttonClickSound[0], 1f);
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(ToHomeAfterSomeTime(0.9f));
         //SceneManager.LoadScene("Scenes/HomeScene");
     }

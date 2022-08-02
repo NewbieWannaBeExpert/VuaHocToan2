@@ -8,19 +8,18 @@ using System.Linq;
 public class HomeSceneScript : MonoBehaviour
 {
     public static AudioSource audioSource;
-    public static AudioClip[] buttonClickSound;
+    //public static AudioClip[] buttonClickSound;
     void Start()
     {
-        buttonClickSound = Resources.LoadAll("Sound/ButtonClicked", typeof(AudioClip)).Cast<AudioClip>().ToArray();
+        SharedData.initSound();
         GameObject btnToHocSo = transform.GetChild(1).gameObject;
-        GameObject gToHocSo = Instantiate(btnToHocSo, transform);
+       // GameObject gToHocSo = Instantiate(btnToHocSo, transform);
         //Debug.Log("button click sound:" + buttonClickSound.GetInstanceID());
-        audioSource = gToHocSo.AddComponent<AudioSource>();
-        gToHocSo.GetComponent<Button>().onClick.AddListener(delegate ()
+        audioSource = btnToHocSo.AddComponent<AudioSource>();
+        btnToHocSo.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             ToHocSo();
         });
-        Destroy(btnToHocSo);
         GameObject btnLamToan = transform.GetChild(2).gameObject;
         btnLamToan.GetComponent<Button>().onClick.AddListener(delegate ()
         {
@@ -30,13 +29,18 @@ public class HomeSceneScript : MonoBehaviour
 
     void ToHocSo()
     {
-        audioSource.PlayOneShot(buttonClickSound[0], 1f);
-        SceneManager.LoadScene("Scenes/HocSoHomeScene");
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        //SceneManager.LoadScene("Scenes/HocSoHomeScene");
+        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(1).gameObject));
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HocSoHomeScene"));
     }
     void ToLamToan()
     {
-        audioSource.PlayOneShot(buttonClickSound[0], 1f);
-        SceneManager.LoadScene("Scenes/LamToanHomeScene");
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(2).gameObject));
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/LamToanHomeScene"));
+       // SceneManager.LoadScene("Scenes/LamToanHomeScene");
     }
+   
 
 }

@@ -26,14 +26,14 @@ public class SceneDetail : MonoBehaviour
         SetupSprites();
         Debug.Log("You click on item index: " + ListNumber.clickedItem);
         GameObject buttonTemplate = transform.GetChild(1).gameObject;
-        GameObject g;
-        g = Instantiate(buttonTemplate, transform);
-        audioSource = g.AddComponent<AudioSource>();
+        //GameObject g;
+        //g = Instantiate(buttonTemplate, transform);
+        audioSource = buttonTemplate.AddComponent<AudioSource>();
         audioSource.PlayOneShot(clips[ListNumber.clickedItem], 1f);
-        g.transform.GetChild(0).GetComponent<Image>().sprite = ListNumber.sprites[ListNumber.clickedItem];
+        buttonTemplate.transform.GetChild(0).GetComponent<Image>().sprite = ListNumber.sprites[ListNumber.clickedItem];
         GameObject homeTemplate = transform.GetChild(2).gameObject;
-        GameObject gHome = Instantiate(homeTemplate,transform);
-        gHome.GetComponent<Button>().onClick.AddListener(delegate()
+       // GameObject gHome = Instantiate(homeTemplate,transform);
+        homeTemplate.GetComponent<Button>().onClick.AddListener(delegate()
         {
             ToHome();
         });
@@ -47,8 +47,8 @@ public class SceneDetail : MonoBehaviour
             GameObject listImageBg = transform.GetChild(3).gameObject;
             listImageBg.transform.localScale = new Vector3(1.35f, 1.0f, 1.0f);
         }
-        Destroy(buttonTemplate);
-        Destroy(homeTemplate);
+       // Destroy(buttonTemplate);
+       // Destroy(homeTemplate);
         LoadListAnimal();
     }
     void LoadListAnimal()
@@ -132,9 +132,10 @@ public class SceneDetail : MonoBehaviour
     }
     void ToHome()
     {
-        // audioSource.PlayOneShot(clips[ListNumber.clickedItem]);
-        //audioSource.PlayOneShot(number0Clip);
-        
-       SceneManager.LoadScene("Scenes/ListScene");
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(2).gameObject));
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/ListScene"));
+
+      //  SceneManager.LoadScene("Scenes/ListScene");
     }
 }

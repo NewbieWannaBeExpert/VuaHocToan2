@@ -18,6 +18,7 @@ public static class ButtonExtension
 }
 public class ListNumber : MonoBehaviour
 {
+    public static AudioSource audioSource;
     public static int clickedItem = -1;
     [Serializable] 
     public struct NumberImage
@@ -43,6 +44,7 @@ public class ListNumber : MonoBehaviour
         Debug.Log("Screen width is: " + Screen.width + " Height is: " + Screen.height);
         SetupSprites();
         GameObject btnToHome = transform.GetChild(1).gameObject;
+        audioSource = btnToHome.AddComponent<AudioSource>();
         btnToHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             ToHome();
@@ -84,8 +86,11 @@ public class ListNumber : MonoBehaviour
     }
     void ItemClicked(int itemIndex)
     {
-        Debug.Log("Item " + itemIndex + " clicked");
-       SceneManager.LoadScene("Scenes/DetailScene");
+        //Debug.Log("Item " + itemIndex + " clicked");
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(2 + itemIndex).gameObject));
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/DetailScene"));
+        //SceneManager.LoadScene("Scenes/DetailScene");
         clickedItem = itemIndex;
     }
     void SetupSprites()
@@ -94,7 +99,10 @@ public class ListNumber : MonoBehaviour
     }
     void ToHome()
     {
-        Debug.Log("You click on home button");
-        SceneManager.LoadScene("Scenes/HocSoHomeScene");
+        // Debug.Log("You click on home button");
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(1).gameObject));
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HocSoHomeScene"));
+        //SceneManager.LoadScene("Scenes/HocSoHomeScene");
     }
 }

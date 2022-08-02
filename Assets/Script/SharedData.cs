@@ -7,11 +7,13 @@ using System.Linq;
 public class SharedData : MonoBehaviour
 {
     public static AudioClip[] buttonClickSound;
+    //public static AudioSource audioSource;
     public static void initSound()
     {
         if (buttonClickSound != null) { }
         else
         {
+       //     audioSource = forGameObject.AddComponent<AudioSource>();
             buttonClickSound = Resources.LoadAll("Sound/ButtonClicked", typeof(AudioClip)).Cast<AudioClip>().ToArray();
         }
     }

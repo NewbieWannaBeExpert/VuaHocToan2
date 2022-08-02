@@ -38,6 +38,15 @@ public class SceneDetail : MonoBehaviour
             ToHome();
         });
 
+        if (Screen.height > 1.5f * Screen.width)
+        {
+           
+            Debug.Log("Screen to long");
+        } else
+        {
+            GameObject listImageBg = transform.GetChild(3).gameObject;
+            listImageBg.transform.localScale = new Vector3(1.35f, 1.0f, 1.0f);
+        }
         Destroy(buttonTemplate);
         Destroy(homeTemplate);
         LoadListAnimal();

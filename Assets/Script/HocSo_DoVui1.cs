@@ -52,15 +52,18 @@ public class HocSo_DoVui1 : MonoBehaviour
     void BtnNumberClicked(int itemIndex)
     {
         Debug.Log("You click on index:" + itemIndex);
-        if(itemIndex == correctIndex)
+        GameObject currentClickedNumber = transform.GetChild(5 + itemIndex).gameObject;
+        if (itemIndex == correctIndex)
         {
-           // Debug.Log("CORRECT!");
+            // Debug.Log("CORRECT!");
+            currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBg[1];          
             SharedData.alertSoundCorrect(true, audioSource);
             StartCoroutine(ReplayAfterDelay(2.5f));
         } else
         {
             //Debug.Log("IN_CORRECT");
             SharedData.alertSoundCorrect(false, audioSource);
+            currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBg[2];
         }
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.MyCoroutine(transform.GetChild(5 + itemIndex).gameObject));
@@ -135,16 +138,18 @@ public class HocSo_DoVui1 : MonoBehaviour
                     mul = -1.0f;
                 }
                 btnNumberClone = Instantiate(btnNumberPattern, transform);
-                btnNumberClone.transform.GetChild(0).GetComponent<Image>().sprite = SharedData.listNumberBg[0];
-                if(counter == 0)
+                btnNumberClone.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBg[0];//bg normal
+                btnNumberClone.transform.GetChild(0).GetComponent<Image>().sprite = SharedData.listNumberBg[1];//bg right
+                btnNumberClone.transform.GetChild(1).GetComponent<Image>().sprite = SharedData.listNumberBg[2];//bg wrong
+                if (counter == 0)
                 {
-                    btnNumberClone.transform.GetChild(1).GetComponent<Image>().sprite = SharedData.listNumberDoVui[num1];
+                    btnNumberClone.transform.GetChild(3).GetComponent<Image>().sprite = SharedData.listNumberDoVui[num1];
                 } else if(counter == 1)
                 {
-                    btnNumberClone.transform.GetChild(1).GetComponent<Image>().sprite = SharedData.listNumberDoVui[num2];
+                    btnNumberClone.transform.GetChild(3).GetComponent<Image>().sprite = SharedData.listNumberDoVui[num2];
                 } else if(counter == 2)
                 {
-                    btnNumberClone.transform.GetChild(1).GetComponent<Image>().sprite = SharedData.listNumberDoVui[num3];
+                    btnNumberClone.transform.GetChild(3).GetComponent<Image>().sprite = SharedData.listNumberDoVui[num3];
                 }
                 listNumberButton.Add(btnNumberClone);
                // listButton[counter] = btnNumberClone;

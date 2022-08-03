@@ -179,13 +179,7 @@ public class HocSo_DoVui2 : MonoBehaviour
                 }
                 
                 listNumberButton.Add(btnNumberClone);
-               // listButton[counter] = btnNumberClone;
-               
                 btnNumberClone.transform.position = new Vector3(initX + (float)j * paddingX , initY  - (float)i * paddingY);
-                //btnNumberClone.transform.localScale = new Vector3(scale, scale, 1);
-                //var spriteSize = btnNumberClone.GetComponent<Button>().GetComponent<SpriteRenderer>().bounds.size;
-                //var scaleFactorX = Screen.width / spriteSize.x;
-                //Debug.Log("LOcal scale x: " + scaleFactorX);
                 btnNumberClone.transform.GetChild(2).GetComponent<Image>().transform.localScale = new Vector3(scaleWidth, scaleHeigth, 1);
                 btnNumberClone.GetComponent<Button>().AddEventListener(counter, BtnNumberClicked);
                 counter++;

@@ -12,8 +12,6 @@ public class SoSanhDaiNgan : MonoBehaviour
     public AudioSource audioSource;
     public static GameObject imageBig;
     public static GameObject imageSmall;
-    public static AudioClip[] wrongAlertClipList;
-    public static AudioClip[] rightAlertClipList;
     public AudioClip[] alertFindBigList;
     public AudioClip[] alertFindSmallList;
     public static int userChoice = -1;//-1 no anser, 0 wrong, 1 correct
@@ -40,8 +38,6 @@ public class SoSanhDaiNgan : MonoBehaviour
     }
     void LoadSoundClip()
     {
-        wrongAlertClipList = Resources.LoadAll("Sound/AlertRightWrong/Wrong", typeof(AudioClip)).Cast<AudioClip>().ToArray();
-        rightAlertClipList = Resources.LoadAll("Sound/AlertRightWrong/Right",typeof(AudioClip)).Cast<AudioClip>().ToArray();
         alertFindBigList = Resources.LoadAll("Sound/FindBigSmall/Big",typeof(AudioClip)).Cast<AudioClip>().ToArray();
         alertFindSmallList = Resources.LoadAll("Sound/FindBigSmall/Small", typeof(AudioClip)).Cast<AudioClip>().ToArray();
     }
@@ -125,13 +121,13 @@ public class SoSanhDaiNgan : MonoBehaviour
         System.Random rand = new System.Random();
         if (isCorrect)
         {
-            randAlertIndex = rand.Next(0, rightAlertClipList.Length);
-            audioSource.PlayOneShot(rightAlertClipList[randAlertIndex]);
+            randAlertIndex = rand.Next(0, SharedData.rightAlertClipList.Length);
+            audioSource.PlayOneShot(SharedData.rightAlertClipList[randAlertIndex]);
             StartCoroutine(ReloadGame());
         } else
         {
-            randAlertIndex = rand.Next(0, wrongAlertClipList.Length);
-            audioSource.PlayOneShot(wrongAlertClipList[randAlertIndex]); 
+            randAlertIndex = rand.Next(0, SharedData.wrongAlertClipList.Length);
+            audioSource.PlayOneShot(SharedData.wrongAlertClipList[randAlertIndex]); 
         }
     }
     public void Update()

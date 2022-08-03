@@ -22,6 +22,7 @@ public class HocSo_DoVui2 : MonoBehaviour
     public static Sprite[] listBtnBg;
     private int correctIndex = 0;
     private int correctNumberIndexReal = 0;
+    private float maxRatios = 228 / 108;
     void SetupGraphics()
     {
         listBtnBg = Resources.LoadAll("HocSo_DoVui2/BtnBg", typeof(Sprite)).Cast<Sprite>().ToArray();
@@ -38,7 +39,7 @@ public class HocSo_DoVui2 : MonoBehaviour
     void Start()
     {
         SetupGraphics();
-        RescaleBgImage();
+        //RescaleBgImage();
         listNumberButton = new List<GameObject>();
         GameObject btnHome = transform.GetChild(2).gameObject;
         audioSource = btnHome.AddComponent<AudioSource>();
@@ -98,13 +99,27 @@ public class HocSo_DoVui2 : MonoBehaviour
         float initY = 1.5f;
         float paddingX = 2.0f;
         float paddingY = 3.5f;
-        
-        float scale = 2.0f;
+        GameObject btnNumberPattern = transform.GetChild(5).gameObject;
+        btnNumberPattern.SetActive(true);
+        float scaleWidth=1.0f, scaleHeigth=1.0f;
+        float buttonWidth = btnNumberPattern.GetComponent<RectTransform>().rect.width;
+        float buttonHeight = btnNumberPattern.GetComponent<RectTransform>().rect.height;
+       // scaleWidth = (Screen.width / buttonWidth) * (100 / Screen.dpi)  * (800/Screen.width);
+        //scaleHeigth = Screen.height / buttonHeight * 0.063f;
+       // Debug.Log("buttonWidth is: " + buttonWidth + "Scale width is: " + scaleWidth);
+        Debug.Log("Screen dpi:" + Screen.dpi + ", width:" + Screen.width + ", height:" + Screen.currentResolution.height);
+        Debug.Log("Screen width is: " + Screen.width + " buttonWith is:" + buttonWidth + " Screen height:" + Screen.height);
         if (Screen.height > 1.5f * Screen.width)
         {
             numCols = 1;
             numRows = 3;
             Debug.Log("Screen to long");
+        } else
+        {
+            initY = 1.3f;
+            paddingY = 4.0f;
+            scaleWidth = 1.5f;
+            scaleHeigth = 1.2f;
         }
         int num1,num2,num3;
         System.Random myObject = new System.Random();
@@ -134,9 +149,7 @@ public class HocSo_DoVui2 : MonoBehaviour
             SoundForCorrectNumber(num3);
         }
         Debug.Log("Correct index is: " + correctIndex);
-        GameObject btnNumberPattern = transform.GetChild(5).gameObject;
-        //btnNumberPattern.transform.localScale = new Vector3(2.0f, 2.0f, 1.0f);
-        btnNumberPattern.SetActive(true);
+       
         GameObject btnNumberClone;
         int counter = 0;
         for (int i = 0; i < numRows; i++)
@@ -169,7 +182,11 @@ public class HocSo_DoVui2 : MonoBehaviour
                // listButton[counter] = btnNumberClone;
                
                 btnNumberClone.transform.position = new Vector3(initX + (float)j * paddingX , initY  - (float)i * paddingY);
-                btnNumberClone.transform.localScale = new Vector3(scale, scale, 1);
+                //btnNumberClone.transform.localScale = new Vector3(scale, scale, 1);
+                //var spriteSize = btnNumberClone.GetComponent<Button>().GetComponent<SpriteRenderer>().bounds.size;
+                //var scaleFactorX = Screen.width / spriteSize.x;
+                //Debug.Log("LOcal scale x: " + scaleFactorX);
+                btnNumberClone.transform.GetChild(2).GetComponent<Image>().transform.localScale = new Vector3(scaleWidth, scaleHeigth, 1);
                 btnNumberClone.GetComponent<Button>().AddEventListener(counter, BtnNumberClicked);
                 counter++;
             }

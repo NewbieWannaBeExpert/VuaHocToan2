@@ -35,15 +35,7 @@ public class HocSo_DoVui2 : MonoBehaviour
     {
         listBtnBg = Resources.LoadAll("HocSo_DoVui2/BtnBg", typeof(Sprite)).Cast<Sprite>().ToArray();
     }
-    void RescaleBgImage()
-    {
-        GameObject bgFrame = transform.GetChild(1).gameObject;
-        Debug.Log("Frame width:" + bgFrame.GetComponent<RectTransform>().rect.width + " height:" + bgFrame.GetComponent<RectTransform>().rect.height);
-        Debug.Log("Screen with: " + Screen.width + " Screen height:" + Screen.height);
-        float scaleX =  Screen.width/ bgFrame.GetComponent<RectTransform>().rect.width * 0.27f;
-        float scaleY = Screen.height / bgFrame.GetComponent<RectTransform>().rect.height * 0.3f;
-        //bgFrame.transform.localScale = new Vector3(scaleX, scaleY, 1);
-    }
+    
     void Start()
     {
         SetupGraphics();
@@ -154,6 +146,25 @@ public class HocSo_DoVui2 : MonoBehaviour
         {
             num2 = myObject.Next(1, 9);
         }
+        if(isFindBig == 1)
+        {
+            if(num1>num2)
+            {
+                correctIndex = 0;
+            } else
+            {
+                correctIndex = 1;
+            }
+        } else
+        {
+            if(num1> num2)
+            {
+                correctIndex = 1;
+            } else
+            {
+                correctIndex = 0;
+            }
+        }
         GameObject btnNumberClone;
         int randAnimalIndex = myObject.Next(0, SharedData.listAnimalSprite.Length);
         for (int counter = 0; counter < 2; counter++)
@@ -229,7 +240,7 @@ public class HocSo_DoVui2 : MonoBehaviour
                     imageClone.transform.localScale = new Vector3(imageScale, imageScale, 1);
                 }
             }
-            
+            //Destroy(spritePatter);
             listNumberButton.Add(btnNumberClone);
             btnNumberClone.transform.position = new Vector3(initX , initY  - counter * paddingY);
             btnNumberClone.transform.GetChild(2).GetComponent<Image>().transform.localScale = new Vector3(scaleWidth, scaleHeigth, 1);
@@ -250,7 +261,15 @@ public class HocSo_DoVui2 : MonoBehaviour
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.MyCoroutine(transform.GetChild(4).gameObject));
-        SoundForCorrectNumber(correctNumberIndexReal);
+        //SoundForCorrectNumber(correctNumberIndexReal);
+        if (isFindBig == 1)
+        {
+            audioSource.PlayOneShot(alertFindBigList[0]);
+        }
+        else
+        {
+            audioSource.PlayOneShot(alertFindSmallList[0]);
+        }
     }
     void Replay(float afterSecond)
     {

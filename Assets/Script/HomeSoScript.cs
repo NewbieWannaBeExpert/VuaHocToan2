@@ -62,7 +62,7 @@ public class HomeSoScript : MonoBehaviour
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.MyCoroutine(transform.GetChild(3).gameObject));
  //       StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/DoVuiSo1"));
-        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/DoVuiSo2"));
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/DoVuiSo3"));
     }
     void ToHome()
     {

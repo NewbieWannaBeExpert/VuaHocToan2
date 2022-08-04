@@ -24,7 +24,7 @@ public class HocSo_DoVui2 : MonoBehaviour
     }
     void SetupGraphics()
     {
-        listBtnBg = Resources.LoadAll("HocSo_DoVui2/BtnBg", typeof(Sprite)).Cast<Sprite>().ToArray();
+        listBtnBg = Resources.LoadAll("DoVui2_HocSo/BtnBg", typeof(Sprite)).Cast<Sprite>().ToArray();
     }
     
     void Start()

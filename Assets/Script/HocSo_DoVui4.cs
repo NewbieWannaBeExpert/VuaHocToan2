@@ -164,8 +164,8 @@ public class HocSo_DoVui4 : MonoBehaviour
             SoundForCorrectNumber(num4);
             correctValue = num4;
         }
-        equotion = GenerateMathEquotion(correctValue);
-        transform.GetChild(startButtonIndex-1).GetComponent<Text>().text = equotion;
+        //equotion = GenerateMathEquotion(correctValue);
+       // transform.GetChild(startButtonIndex-1).GetComponent<Text>().text = equotion;
         Debug.Log("Correct index is: " + correctIndex);
         GameObject btnNumberPattern = transform.GetChild(startButtonIndex + 3).gameObject;
         btnNumberPattern.SetActive(true);

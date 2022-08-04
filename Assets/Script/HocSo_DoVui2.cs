@@ -4,16 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using UnityEngine.UI;
-/*public static class ButtonExtension
-{
-    public static void AddEventListener<T>(this Button button, T param, Action<T> OnNumberClick)
-    {
-        button.onClick.AddListener(delegate ()
-        {
-            OnNumberClick(param);
-        });
-    }
-}*/
+
 public class HocSo_DoVui2 : MonoBehaviour
 {
     public AudioSource audioSource;
@@ -74,7 +65,8 @@ public class HocSo_DoVui2 : MonoBehaviour
         if (itemIndex == correctIndex)
         {
             // Debug.Log("CORRECT!");
-            currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = listBtnBg[1];          
+            currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = listBtnBg[1];
+            currentClickedNumber.transform.GetChild(3).GetComponent<Image>().sprite = listBtnBg[1];
             SharedData.alertSoundCorrect(true, audioSource);
             StartCoroutine(ReplayAfterDelay(2.5f));
         } else
@@ -121,11 +113,6 @@ public class HocSo_DoVui2 : MonoBehaviour
         float scaleWidth=1.0f, scaleHeigth=1.0f;
         float buttonWidth = btnNumberPattern.GetComponent<RectTransform>().rect.width;
         float buttonHeight = btnNumberPattern.GetComponent<RectTransform>().rect.height;
-       // scaleWidth = (Screen.width / buttonWidth) * (100 / Screen.dpi)  * (800/Screen.width);
-        //scaleHeigth = Screen.height / buttonHeight * 0.063f;
-       // Debug.Log("buttonWidth is: " + buttonWidth + "Scale width is: " + scaleWidth);
-        Debug.Log("Screen dpi:" + Screen.dpi + ", width:" + Screen.width + ", height:" + Screen.currentResolution.height);
-        Debug.Log("Screen width is: " + Screen.width + " buttonWith is:" + buttonWidth + " Screen height:" + Screen.height);
         if (Screen.height > 1.5f * Screen.width)
         {
             numCols = 1;
@@ -184,8 +171,8 @@ public class HocSo_DoVui2 : MonoBehaviour
             {
                 realIndex = num2;
             }
-           // btnNumberClone.transform.GetChild(3).GetComponent<Image>().sprite = SharedData.listNumberDoVui[realIndex];
             GameObject spritePatter = btnNumberPattern.transform.GetChild(3).gameObject;
+            spritePatter.SetActive(true);
             if (realIndex > 6)
             {
                 numImageRows = 3;
@@ -240,14 +227,13 @@ public class HocSo_DoVui2 : MonoBehaviour
                     imageClone.transform.localScale = new Vector3(imageScale, imageScale, 1);
                 }
             }
+            spritePatter.SetActive(false);
             //Destroy(spritePatter);
             listNumberButton.Add(btnNumberClone);
             btnNumberClone.transform.position = new Vector3(initX , initY  - counter * paddingY);
             btnNumberClone.transform.GetChild(2).GetComponent<Image>().transform.localScale = new Vector3(scaleWidth, scaleHeigth, 1);
             btnNumberClone.GetComponent<Button>().AddEventListener(counter, BtnNumberClicked);
-            
         }
-        
         btnNumberPattern.SetActive(false);
     }
     

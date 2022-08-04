@@ -74,6 +74,33 @@ public class HocSo_DoVui3 : MonoBehaviour
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4 + itemIndex + startButtonIndex).gameObject));
     }
+    public string GenerateMathEquotion(int forResult)
+    {
+        string result = "";
+        System.Random rand = new System.Random();   
+        if(forResult < 4)
+        {
+            int num1 = rand.Next(9);
+            int num2 = num1 + forResult;
+            while(num2 > 9 || num1 == 0)
+            {
+                num1 = rand.Next(9);
+                num2 = num1 + forResult;
+            }
+            result = num2 + " - " + num1 + " = ?";
+        } else
+        {
+            int num1 = rand.Next(9);
+            int num2 =  forResult - num1;
+            while (num2 < 0 || num1 == 0)
+            {
+                num1 = rand.Next(9);
+                num2 = forResult - num1;
+            }
+            result = num1 + " + " + num2 + " = ?";
+        }
+        return result;
+    }
     public void SoundForCorrectNumber(int numberIndex)
     {
         audioSource.PlayOneShot(SharedData.numberSound[numberIndex]);
@@ -101,7 +128,7 @@ public class HocSo_DoVui3 : MonoBehaviour
         {
             num2 = myObject.Next(1, 9);
         }
-        num3 = myObject.Next(0, 9); 
+        num3 = myObject.Next(0, 9);
         while(num3 == num2 || num3 == num1)
         {
             num3 = myObject.Next(0, 9);
@@ -112,24 +139,33 @@ public class HocSo_DoVui3 : MonoBehaviour
             num4 = myObject.Next(0, 9);
         }
         correctIndex = myObject.Next(0, 4);
+        string equotion = "";
+        int correctValue = 0;
         if(correctIndex == 0)
         {
             SoundForCorrectNumber(num1);
             correctNumberIndexReal = num1;
+            correctValue = num1;
         } else if(correctIndex == 1)
         {
             SoundForCorrectNumber(num2);
             correctNumberIndexReal = num2;
-        } else if(correctIndex == 2)
+            correctValue = num2;
+        }
+        else if(correctIndex == 2)
         {
             correctNumberIndexReal = num3;
             SoundForCorrectNumber(num3);
+            correctValue = num3;
         }
         else if (correctIndex == 3)
         {
-            correctNumberIndexReal = num3;
-            SoundForCorrectNumber(num3);
+            correctNumberIndexReal = num4;
+            SoundForCorrectNumber(num4);
+            correctValue = num4;
         }
+        equotion = GenerateMathEquotion(correctValue);
+        transform.GetChild(startButtonIndex-1).GetComponent<Text>().text = equotion;
         Debug.Log("Correct index is: " + correctIndex);
         GameObject btnNumberPattern = transform.GetChild(startButtonIndex + 3).gameObject;
         btnNumberPattern.SetActive(true);

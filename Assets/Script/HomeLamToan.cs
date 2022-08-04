@@ -32,21 +32,21 @@ public class HomeLamToan : MonoBehaviour
     void ToSoSanh()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(2).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/SoSanhDaiNgan"));
         //SceneManager.LoadScene("Scenes/SoSanhDaiNgan");
     }
     void ToHome()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(1).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
        // SceneManager.LoadScene("Scenes/HomeScene");
     }
     void ToCongTru()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(1).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));
        // StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
     }
 }

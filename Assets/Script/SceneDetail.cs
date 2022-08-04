@@ -133,7 +133,7 @@ public class SceneDetail : MonoBehaviour
     void ToHome()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(2).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/ListScene"));
 
       //  SceneManager.LoadScene("Scenes/ListScene");

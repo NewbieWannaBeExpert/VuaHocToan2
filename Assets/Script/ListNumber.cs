@@ -88,7 +88,7 @@ public class ListNumber : MonoBehaviour
     {
         //Debug.Log("Item " + itemIndex + " clicked");
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(2 + itemIndex).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2 + itemIndex).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/DetailScene"));
         //SceneManager.LoadScene("Scenes/DetailScene");
         clickedItem = itemIndex;
@@ -101,7 +101,7 @@ public class ListNumber : MonoBehaviour
     {
         // Debug.Log("You click on home button");
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(1).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HocSoHomeScene"));
         //SceneManager.LoadScene("Scenes/HocSoHomeScene");
     }

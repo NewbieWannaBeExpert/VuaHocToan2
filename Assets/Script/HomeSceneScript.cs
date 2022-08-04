@@ -31,13 +31,13 @@ public class HomeSceneScript : MonoBehaviour
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         //SceneManager.LoadScene("Scenes/HocSoHomeScene");
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(1).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HocSoHomeScene"));
     }
     void ToLamToan()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(2).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/LamToanHomeScene"));
        // SceneManager.LoadScene("Scenes/LamToanHomeScene");
     }

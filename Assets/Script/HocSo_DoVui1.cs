@@ -34,7 +34,7 @@ public class HocSo_DoVui1 : MonoBehaviour
         btnReplay.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             Replay(0.5f);
-            StartCoroutine(SharedData.MyCoroutine(transform.GetChild(2).gameObject));
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
         });
         GameObject btnSound = transform.GetChild(3).gameObject;
         btnSound.GetComponent<Button>().onClick.AddListener(delegate ()
@@ -66,7 +66,7 @@ public class HocSo_DoVui1 : MonoBehaviour
             currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBg[2];
         }
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(5 + itemIndex).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(5 + itemIndex).gameObject));
     }
     public void SoundForCorrectNumber(int numberIndex)
     {
@@ -166,13 +166,13 @@ public class HocSo_DoVui1 : MonoBehaviour
     void ToHome()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(1).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HocSoHomeScene"));
     }
     void ReplaySound()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(3).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(3).gameObject));
         SoundForCorrectNumber(correctNumberIndexReal);
     }
     void Replay(float afterSecond)

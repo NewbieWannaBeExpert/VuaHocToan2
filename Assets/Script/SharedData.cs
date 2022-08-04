@@ -9,7 +9,9 @@ public class SharedData : MonoBehaviour
     public static AudioClip[] buttonClickSound;
     public static AudioClip[] numberSound;
     public static Sprite[] listNumberDoVui;
+    public static Sprite[] listNumberDoVui3;
     public static Sprite[] listNumberBg;
+    public static Sprite[] listNumberBgDoVui3;
     public static AudioClip[] wrongAlertClipList;
     public static AudioClip[] rightAlertClipList;
     public static Sprite[] listAnimalSprite;
@@ -27,6 +29,9 @@ public class SharedData : MonoBehaviour
             wrongAlertClipList = Resources.LoadAll("Sound/AlertRightWrong/Wrong", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             rightAlertClipList = Resources.LoadAll("Sound/AlertRightWrong/Right", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             listAnimalSprite = Resources.LoadAll("Animals", typeof(Sprite)).Cast<Sprite>().ToArray();
+            listNumberBgDoVui3 = Resources.LoadAll("DoVui3_HocSo/BtnBg", typeof(Sprite)).Cast<Sprite>().ToArray();
+            listNumberDoVui3 = Resources.LoadAll("DoVui3_HocSo/Numbers", typeof(Sprite)).Cast<Sprite>().ToArray();
+
         }
     }
     public static void alertSoundCorrect(bool isCorrect, AudioSource audioSource)
@@ -49,7 +54,7 @@ public class SharedData : MonoBehaviour
         yield return new WaitForSeconds(time);
         SceneManager.LoadScene(sceneName);
     }
-    public static IEnumerator MyCoroutine(GameObject forGameObject)
+    public static IEnumerator ZoomInAndOutButton(GameObject forGameObject)
     {
         float speed = 0.2f;
         scale(forGameObject);

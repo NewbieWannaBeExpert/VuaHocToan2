@@ -21,24 +21,30 @@ public class HocSo_DoVui3 : MonoBehaviour
     public List<GameObject> listNumberButton;
     private int correctIndex = 0;
     private int correctNumberIndexReal = 0;
+    private int startButtonIndex = 3;
     void Start()
     {
         listNumberButton = new List<GameObject>();
-        GameObject btnHome = transform.GetChild(2).gameObject;
+        GameObject btnHome = transform.GetChild(startButtonIndex).gameObject;
         audioSource = btnHome.AddComponent<AudioSource>();
         btnHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
+            Debug.Log("Home clicked");
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(startButtonIndex).gameObject));
             ToHome();
         });
-        GameObject btnReplay = transform.GetChild(3).gameObject;
+        GameObject btnReplay = transform.GetChild(startButtonIndex + 1).gameObject;
         btnReplay.GetComponent<Button>().onClick.AddListener(delegate ()
         {
+            Debug.Log("Replay clicked");
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(startButtonIndex + 1).gameObject));
             Replay(0.5f);
-            StartCoroutine(SharedData.MyCoroutine(transform.GetChild(3).gameObject));
         });
-        GameObject btnSound = transform.GetChild(4).gameObject;
+        GameObject btnSound = transform.GetChild(startButtonIndex + 2).gameObject;
         btnSound.GetComponent<Button>().onClick.AddListener(delegate ()
         {
+            Debug.Log("Sound clicked");
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(startButtonIndex + 2).gameObject));
             ReplaySound();
         });
         LoadNumberList();
@@ -52,21 +58,21 @@ public class HocSo_DoVui3 : MonoBehaviour
     void BtnNumberClicked(int itemIndex)
     {
         Debug.Log("You click on index:" + itemIndex);
-        GameObject currentClickedNumber = transform.GetChild(5 + itemIndex).gameObject;
+        GameObject currentClickedNumber = transform.GetChild(4 + itemIndex + startButtonIndex).gameObject;
         if (itemIndex == correctIndex)
         {
             // Debug.Log("CORRECT!");
-            currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBg[1];          
+            currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBgDoVui3[1];          
             SharedData.alertSoundCorrect(true, audioSource);
             StartCoroutine(ReplayAfterDelay(2.5f));
         } else
         {
             //Debug.Log("IN_CORRECT");
             SharedData.alertSoundCorrect(false, audioSource);
-            currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBg[2];
+            currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBgDoVui3[2];
         }
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(5 + itemIndex).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4 + itemIndex + startButtonIndex).gameObject));
     }
     public void SoundForCorrectNumber(int numberIndex)
     {
@@ -74,23 +80,20 @@ public class HocSo_DoVui3 : MonoBehaviour
     }
     void LoadNumberList()
     {
-        int totalItem = 3;
-        int numRows = 3;
-        int numCols = 1;
-        float initX = 0f;
-        float initY = 1.5f;
-        float paddingX = 2.0f;
+        int totalItem = 4;
+        int numRows = 2;
+        int numCols = 2;
+        float initX = -1.2f;
+        float initY = -0.3f;
+        float paddingX = 2.3f;
         float paddingY = 2.3f;
-        float variantMaxY = 0.03f;
-        float variantMaxX = 0.1f;
         float scale = 1.0f;
         if (Screen.height > 1.5f * Screen.width)
         {
-            numCols = 1;
-            numRows = 3;
-            Debug.Log("Screen to long");
+            numCols = 2;
+            numRows = 2;
         }
-        int num1,num2,num3;
+        int num1,num2,num3,num4;
         System.Random myObject = new System.Random();
         num1 = myObject.Next(1, 9);
         num2 = myObject.Next(1, 9);
@@ -103,7 +106,12 @@ public class HocSo_DoVui3 : MonoBehaviour
         {
             num3 = myObject.Next(0, 9);
         }
-        correctIndex = myObject.Next(0, 3);
+        num4 = myObject.Next(0, 9); 
+        while( num4 == num1 || num4 == num2 || num4 == num3)
+        {
+            num4 = myObject.Next(0, 9);
+        }
+        correctIndex = myObject.Next(0, 4);
         if(correctIndex == 0)
         {
             SoundForCorrectNumber(num1);
@@ -117,8 +125,13 @@ public class HocSo_DoVui3 : MonoBehaviour
             correctNumberIndexReal = num3;
             SoundForCorrectNumber(num3);
         }
+        else if (correctIndex == 3)
+        {
+            correctNumberIndexReal = num3;
+            SoundForCorrectNumber(num3);
+        }
         Debug.Log("Correct index is: " + correctIndex);
-        GameObject btnNumberPattern = transform.GetChild(4).gameObject;
+        GameObject btnNumberPattern = transform.GetChild(startButtonIndex + 3).gameObject;
         btnNumberPattern.SetActive(true);
         GameObject btnNumberClone;
         int counter = 0;
@@ -126,35 +139,31 @@ public class HocSo_DoVui3 : MonoBehaviour
         {
             for (int j = 0; j < numCols; j++)
             {
-                Debug.Log("Generate number for colum: " + i + " and row: " + j + " for index:" + (i * numCols + j));
-                if (i * numCols + j >= totalItem)
+                if (i * numCols + j * numRows >= totalItem)
                 {
-                    break;
+                    //break;
                 }
-                int variant = myObject.Next(0, 9);
-                float mul = 1.0f;
-                if(variant % 2 == 0)
-                {
-                    mul = -1.0f;
-                }
+                
                 btnNumberClone = Instantiate(btnNumberPattern, transform);
-                btnNumberClone.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBg[0];//bg normal
-                btnNumberClone.transform.GetChild(0).GetComponent<Image>().sprite = SharedData.listNumberBg[1];//bg right
-                btnNumberClone.transform.GetChild(1).GetComponent<Image>().sprite = SharedData.listNumberBg[2];//bg wrong
+                btnNumberClone.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBgDoVui3[0];//bg normal
+                btnNumberClone.transform.GetChild(0).GetComponent<Image>().sprite = SharedData.listNumberBgDoVui3[1];//bg right
+                btnNumberClone.transform.GetChild(1).GetComponent<Image>().sprite = SharedData.listNumberBgDoVui3[2];//bg wrong
                 if (counter == 0)
                 {
-                    btnNumberClone.transform.GetChild(3).GetComponent<Image>().sprite = SharedData.listNumberDoVui[num1];
+                    btnNumberClone.transform.GetChild(3).GetComponent<Image>().sprite = SharedData.listNumberDoVui3[num1];
                 } else if(counter == 1)
                 {
-                    btnNumberClone.transform.GetChild(3).GetComponent<Image>().sprite = SharedData.listNumberDoVui[num2];
+                    btnNumberClone.transform.GetChild(3).GetComponent<Image>().sprite = SharedData.listNumberDoVui3[num2];
                 } else if(counter == 2)
                 {
-                    btnNumberClone.transform.GetChild(3).GetComponent<Image>().sprite = SharedData.listNumberDoVui[num3];
+                    btnNumberClone.transform.GetChild(3).GetComponent<Image>().sprite = SharedData.listNumberDoVui3[num3];
+                }
+                else if (counter == 3)
+                {
+                    btnNumberClone.transform.GetChild(3).GetComponent<Image>().sprite = SharedData.listNumberDoVui3[num4];
                 }
                 listNumberButton.Add(btnNumberClone);
-               // listButton[counter] = btnNumberClone;
-               
-                btnNumberClone.transform.position = new Vector3(initX + (float)j * paddingX + mul * (float)variant * variantMaxX, initY + mul * (float) variant * variantMaxY - (float)i * paddingY);
+                btnNumberClone.transform.position = new Vector3(initX + (float)j * paddingX , initY - (float)i * paddingY);
                 btnNumberClone.transform.localScale = new Vector3(scale, scale, 1);
                 btnNumberClone.GetComponent<Button>().AddEventListener(counter, BtnNumberClicked);
                 counter++;
@@ -166,34 +175,29 @@ public class HocSo_DoVui3 : MonoBehaviour
     void ToHome()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(2).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HocSoHomeScene"));
     }
     void ReplaySound()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.MyCoroutine(transform.GetChild(4).gameObject));
         SoundForCorrectNumber(correctNumberIndexReal);
     }
     void Replay(float afterSecond)
     {
         if (listNumberButton != null)
         {
-            
-            if (listNumberButton.Count == 3)
+            foreach (GameObject go in listNumberButton)
             {
-                foreach (GameObject go in listNumberButton)
-                {
-                    Destroy(go);
-                }
+                Destroy(go);
             }
-            listNumberButton.RemoveAt(0);
-            listNumberButton.RemoveAt(0);
-            listNumberButton.RemoveAt(0);
+            for(int i = 0; i < listNumberButton.Count; i++)
+            {
+                Debug.Log("Remove button number " + i);
+                listNumberButton.RemoveAt(0);
+            }
         }
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(ReloadNumber(afterSecond));
-        
     }
     IEnumerator ReloadNumber(float waitSeconds)
     {

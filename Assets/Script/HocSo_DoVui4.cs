@@ -23,6 +23,7 @@ public class HocSo_DoVui4 : MonoBehaviour
     private int correctIndex = 0;
     private int correctNumberIndexReal = 0;
     private int startButtonIndex = 3;
+   // int correctValue = 0;
     void Start()
     {
         listNumberButton = new List<GameObject>();
@@ -61,7 +62,7 @@ public class HocSo_DoVui4 : MonoBehaviour
     {
         Debug.Log("You click on index:" + itemIndex);
         GameObject currentClickedNumber = transform.GetChild(4 + itemIndex + startButtonIndex).gameObject;
-        if (itemIndex == correctIndex)
+        if (itemIndex - correctNumberIndexReal == correctIndex)
         {
             // Debug.Log("CORRECT!");
             currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBgDoVui3[1];          
@@ -142,33 +143,33 @@ public class HocSo_DoVui4 : MonoBehaviour
         }
         correctIndex = myObject.Next(0, 4);
         
-        int correctValue = 0;
+        
         if(correctIndex == 0)
         {
             SoundForCorrectNumber(num1);
             correctNumberIndexReal = num1;
-            correctValue = num1;
+           
         } else if(correctIndex == 1)
         {
             SoundForCorrectNumber(num2);
             correctNumberIndexReal = num2;
-            correctValue = num2;
+           
         }
         else if(correctIndex == 2)
         {
             correctNumberIndexReal = num3;
             SoundForCorrectNumber(num3);
-            correctValue = num3;
+        
         }
         else if (correctIndex == 3)
         {
             correctNumberIndexReal = num4;
             SoundForCorrectNumber(num4);
-            correctValue = num4;
+           
         }
-        LoadListAnimal(correctValue);
+        LoadListAnimal(correctNumberIndexReal);
        
-        Debug.Log("Correct index is: " + correctIndex);
+        Debug.Log("Correct index is: " + correctNumberIndexReal);
         GameObject btnNumberPattern = transform.GetChild(startButtonIndex + 3).gameObject;
         btnNumberPattern.SetActive(true);
         GameObject btnNumberClone;
@@ -203,7 +204,7 @@ public class HocSo_DoVui4 : MonoBehaviour
                 listNumberButton.Add(btnNumberClone);
                 btnNumberClone.transform.position = new Vector3(initX + (float)j * paddingX , initY - (float)i * paddingY);
                 btnNumberClone.transform.localScale = new Vector3(scale, scale, 1);
-                btnNumberClone.GetComponent<Button>().AddEventListener(counter, BtnNumberClicked);
+                btnNumberClone.GetComponent<Button>().AddEventListener(counter + correctNumberIndexReal, BtnNumberClicked);
                 counter++;
             }
         }
@@ -229,13 +230,19 @@ public class HocSo_DoVui4 : MonoBehaviour
         }
         if (totalItem > 6)
         {
-            paddingY = 1.3f;
             initY = 2.4f;
+            paddingY = 1.0f;
+            paddingX = 1.86f;
+            initX = -1.75f;
+            scale = 0.86f;
         }
         else if (totalItem > 3)
         {
             numRows = 2;
             numCols = 3;
+            initY = 2.5f;
+            initX = -1.56f;
+            paddingX = 1.63f;
         }
         else if (totalItem == 3)
         {
@@ -243,20 +250,21 @@ public class HocSo_DoVui4 : MonoBehaviour
             numCols = 2;
             scale = 1.5f;
             initX = -1.0f;
+            initY = 2.5f;
             paddingX = 2.5f;
         }
         else if (totalItem == 2)
         {
-            scale = 2.0f;
+            scale = 1.86f;
             initX = -1.0f;
-            initY = 2.0f;
-            paddingX = 2.5f;
+            initY = 1.86f;
+            paddingX = 2.4f;
         }
         else if (totalItem == 1)
         {
             scale = 3.0f;
             initX = 0f;
-            initY = 2.0f;
+            initY = 1.5f;
         }
         // int totalItem = 9;
         int animalIndex = 0;

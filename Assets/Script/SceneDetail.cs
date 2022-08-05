@@ -9,51 +9,51 @@ using UnityEngine.SceneManagement;
 public class SceneDetail : MonoBehaviour
 {
     public AudioSource audioSource;
-    //public AudioClip[] clips;
-   // public AudioClip number0Clip;
     public static Sprite[] listAnimalSprite;
-    void LoadSoundClip()
-    {
-       // number0Clip = Resources.Load("Sound/SoundNumbers/sound1") as AudioClip;
-       // clips = Resources.LoadAll("Sound/Number2", typeof(AudioClip)).Cast<AudioClip>().ToArray();
-       // Debug.Log("Total sound is:" + clips.Length + " sound 0 is:" + clips[0].ToString());
-    }
+    int startButtonIndex = 3;
+    private List<GameObject> listDisplayedAnimalSprites = new List<GameObject>();
     void Start()
     {
-        //Start things here
-        LoadSoundClip();
-       
+        listDisplayedAnimalSprites = new List<GameObject> ();
         SetupSprites();
         Debug.Log("You click on item index: " + ListNumber.clickedItem);
-        GameObject buttonTemplate = transform.GetChild(1).gameObject;
+        GameObject buttonTemplate = transform.GetChild(startButtonIndex+1).gameObject;
         //GameObject g;
         //g = Instantiate(buttonTemplate, transform);
         audioSource = buttonTemplate.AddComponent<AudioSource>();
-        audioSource.PlayOneShot(SharedData.numberSound[ListNumber.clickedItem], 1f);
         buttonTemplate.transform.GetChild(0).GetComponent<Image>().sprite = ListNumber.sprites[ListNumber.clickedItem];
-        GameObject homeTemplate = transform.GetChild(2).gameObject;
+        GameObject btnHome = transform.GetChild(startButtonIndex).gameObject;
        // GameObject gHome = Instantiate(homeTemplate,transform);
-        homeTemplate.GetComponent<Button>().onClick.AddListener(delegate()
+        btnHome.GetComponent<Button>().onClick.AddListener(delegate()
         {
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(startButtonIndex).gameObject));
             ToHome();
         });
-
+        GameObject btnReplay = transform.GetChild(startButtonIndex-2).gameObject;
+        btnReplay.GetComponent<Button>().onClick.AddListener(delegate () {
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(startButtonIndex-2).gameObject));
+            ReloadAnimalList();
+        });
         if (Screen.height > 1.5f * Screen.width)
         {
-           
-            Debug.Log("Screen to long");
         } else
         {
-            GameObject listImageBg = transform.GetChild(3).gameObject;
+            GameObject listImageBg = transform.GetChild(startButtonIndex + 1).gameObject;
             listImageBg.transform.localScale = new Vector3(1.35f, 1.0f, 1.0f);
         }
-       // Destroy(buttonTemplate);
-       // Destroy(homeTemplate);
+       
         LoadListAnimal();
     }
     void LoadListAnimal()
     {
-        Debug.Log("You click on item index: " + ListNumber.clickedItem);
+        audioSource.PlayOneShot(SharedData.numberSound[ListNumber.clickedItem], 1f);
+        if (ListNumber.clickedItem == 0)
+        {
+            transform.GetChild(startButtonIndex - 1).gameObject.SetActive(false);
+        } else
+        {
+            transform.GetChild(startButtonIndex - 1).gameObject.SetActive(true);
+        }
         int totalItem = ListNumber.clickedItem;
         int numRows = 3;
         int numCols = 3;
@@ -72,10 +72,14 @@ public class SceneDetail : MonoBehaviour
         {
             paddingY = 1.3f;
             initY = -1.4f;
+            initX = -1.55f;
+            paddingX = 1.62f;
         } else if(totalItem > 3)
         {
             numRows = 2;
             numCols = 3;
+            initX = -1.55f;
+            paddingX = 1.62f;
         } else if(totalItem == 3)
         {
             numRows = 2;
@@ -100,7 +104,8 @@ public class SceneDetail : MonoBehaviour
         System.Random myObject = new System.Random();
         animalIndex = myObject.Next(0, 5);
         //Debug.Log("Screen ratio is: " + Screen.height / Screen.width);
-        GameObject imageTemplate = transform.GetChild(4).gameObject;
+        GameObject imageTemplate = transform.GetChild(startButtonIndex + 2).gameObject;
+        imageTemplate.SetActive(true);
         GameObject g;
         for (int i = 0; i < numRows; i++)
         {
@@ -122,9 +127,11 @@ public class SceneDetail : MonoBehaviour
                     g.transform.position = new Vector3(initX + (float)j * paddingX, initY -  (float)i * paddingY);
                 }
                 g.transform.localScale = new Vector3(scale, scale, 1);
+                listDisplayedAnimalSprites.Add(g);
             }
         }
-        Destroy(imageTemplate);
+        imageTemplate.SetActive(false);
+        //Destroy(imageTemplate);
     }
     void SetupSprites()
     {
@@ -133,9 +140,25 @@ public class SceneDetail : MonoBehaviour
     void ToHome()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/ListScene"));
 
       //  SceneManager.LoadScene("Scenes/ListScene");
     }
+    void ReloadAnimalList()
+    {
+        if(listDisplayedAnimalSprites !=null)
+        {
+            foreach(GameObject go in listDisplayedAnimalSprites)
+            {
+                Destroy(go);
+            }
+            int totalImage = listDisplayedAnimalSprites.Count();
+            for(int i = 0; i < totalImage; i++)
+            {
+                listDisplayedAnimalSprites.RemoveAt(0);
+            }
+        }
+        LoadListAnimal();
+    }
+
 }

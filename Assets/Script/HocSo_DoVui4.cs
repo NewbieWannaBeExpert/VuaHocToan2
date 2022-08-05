@@ -19,12 +19,14 @@ public class HocSo_DoVui4 : MonoBehaviour
     public AudioSource audioSource;
     public static Sprite[] listAnimalSprite;
     public List<GameObject> listNumberButton;
+    public List<GameObject> listDisplayedAnimalImage;
     private int correctIndex = 0;
     private int correctNumberIndexReal = 0;
     private int startButtonIndex = 3;
     void Start()
     {
         listNumberButton = new List<GameObject>();
+        listDisplayedAnimalImage = new List<GameObject>();
         GameObject btnHome = transform.GetChild(startButtonIndex).gameObject;
         audioSource = btnHome.AddComponent<AudioSource>();
         btnHome.GetComponent<Button>().onClick.AddListener(delegate ()
@@ -111,7 +113,7 @@ public class HocSo_DoVui4 : MonoBehaviour
         int numRows = 2;
         int numCols = 2;
         float initX = -1.2f;
-        float initY = -0.3f;
+        float initY = -1.6f;
         float paddingX = 2.3f;
         float paddingY = 2.3f;
         float scale = 1.0f;
@@ -139,7 +141,7 @@ public class HocSo_DoVui4 : MonoBehaviour
             num4 = myObject.Next(0, 9);
         }
         correctIndex = myObject.Next(0, 4);
-        string equotion = "";
+        
         int correctValue = 0;
         if(correctIndex == 0)
         {
@@ -164,8 +166,8 @@ public class HocSo_DoVui4 : MonoBehaviour
             SoundForCorrectNumber(num4);
             correctValue = num4;
         }
-        //equotion = GenerateMathEquotion(correctValue);
-       // transform.GetChild(startButtonIndex-1).GetComponent<Text>().text = equotion;
+        LoadListAnimal(correctValue);
+       
         Debug.Log("Correct index is: " + correctIndex);
         GameObject btnNumberPattern = transform.GetChild(startButtonIndex + 3).gameObject;
         btnNumberPattern.SetActive(true);
@@ -207,7 +209,89 @@ public class HocSo_DoVui4 : MonoBehaviour
         }
         btnNumberPattern.SetActive(false);
     }
-    
+
+
+    void LoadListAnimal(int totalItem)
+    {
+        Debug.Log("Have to show the number of animal: " + totalItem);
+        int numRows = 3;
+        int numCols = 3;
+        float initX = -2.0f;
+        float initY = 2.0f;
+        float paddingX = 2.0f;
+        float paddingY = 1.75f;
+        float scale = 1.0f;
+        if (Screen.height > 1.5f * Screen.width)
+        {
+            numCols = 3;
+            numRows = 3;
+            Debug.Log("Screen to long");
+        }
+        if (totalItem > 6)
+        {
+            paddingY = 1.3f;
+            initY = 2.4f;
+        }
+        else if (totalItem > 3)
+        {
+            numRows = 2;
+            numCols = 3;
+        }
+        else if (totalItem == 3)
+        {
+            numRows = 2;
+            numCols = 2;
+            scale = 1.5f;
+            initX = -1.0f;
+            paddingX = 2.5f;
+        }
+        else if (totalItem == 2)
+        {
+            scale = 2.0f;
+            initX = -1.0f;
+            initY = 2.0f;
+            paddingX = 2.5f;
+        }
+        else if (totalItem == 1)
+        {
+            scale = 3.0f;
+            initX = 0f;
+            initY = 2.0f;
+        }
+        // int totalItem = 9;
+        int animalIndex = 0;
+        System.Random myObject = new System.Random();
+        animalIndex = myObject.Next(0, 5);
+        //Debug.Log("Screen ratio is: " + Screen.height / Screen.width);
+        GameObject imageTemplate = transform.GetChild(startButtonIndex - 1).gameObject;
+        GameObject g;
+        imageTemplate.SetActive(true);
+        for (int i = 0; i < numRows; i++)
+        {
+            for (int j = 0; j < numCols; j++)
+            {
+                Debug.Log("Generate number for colum: " + i + " and row: " + j + " for index:" + (i * numCols + j));
+                if (i * numCols + j >= totalItem)
+                {
+                    break;
+                }
+                g = Instantiate(imageTemplate, transform);
+                g.transform.GetComponent<Image>().sprite = SharedData.listAnimalSprite[animalIndex];
+                if (numCols == 2)
+                {
+                    g.transform.position = new Vector3(initX + (float)j * paddingX, initY - (float)i * paddingY);
+                }
+                else
+                {
+                    g.transform.position = new Vector3(initX + (float)j * paddingX, initY - (float)i * paddingY);
+                }
+                g.transform.localScale = new Vector3(scale, scale, 1);
+                listDisplayedAnimalImage.Add(g);
+                Debug.Log("List animal image size:" + listDisplayedAnimalImage.Count);
+            }
+        }
+        imageTemplate.SetActive(false);
+    }
     void ToHome()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
@@ -226,10 +310,26 @@ public class HocSo_DoVui4 : MonoBehaviour
             {
                 Destroy(go);
             }
-            for(int i = 0; i < listNumberButton.Count; i++)
+            int totalButton = listNumberButton.Count;   
+            for(int i = 0; i < totalButton; i++)
             {
                 Debug.Log("Remove button number " + i);
                 listNumberButton.RemoveAt(0);
+            }
+        }
+        
+        if(listDisplayedAnimalImage != null)
+        {
+            int totalAnimal = listDisplayedAnimalImage.Count;
+            Debug.Log("Remove image in list image with total : " + listDisplayedAnimalImage.Count);
+            foreach(GameObject go in listDisplayedAnimalImage)
+            {
+                Destroy(go);
+            }
+            for(int j = 0; j < totalAnimal;j++)
+            {
+                Debug.Log("Remove image number " + j);
+                listDisplayedAnimalImage.RemoveAt(0);
             }
         }
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);

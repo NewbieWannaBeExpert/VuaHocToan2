@@ -18,26 +18,35 @@ public class HomeSceneScript : MonoBehaviour
         audioSource = btnToHocSo.AddComponent<AudioSource>();
         btnToHocSo.GetComponent<Button>().onClick.AddListener(delegate ()
         {
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));
             ToHocSo();
         });
         GameObject btnLamToan = transform.GetChild(2).gameObject;
         btnLamToan.GetComponent<Button>().onClick.AddListener(delegate ()
         {
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
             ToLamToan();
         });
+        GameObject btnSticker = transform.GetChild(3).gameObject;
+        btnSticker.GetComponent<Button>().onClick.AddListener(delegate ()
+        {
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(3).gameObject));
+            ToSticker();
+        });
     }
-
+    void ToSticker()
+    {
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/StickerDetail"));
+    }
     void ToHocSo()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        //SceneManager.LoadScene("Scenes/HocSoHomeScene");
-        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HocSoHomeScene"));
     }
     void ToLamToan()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/LamToanHomeScene"));
        // SceneManager.LoadScene("Scenes/LamToanHomeScene");
     }

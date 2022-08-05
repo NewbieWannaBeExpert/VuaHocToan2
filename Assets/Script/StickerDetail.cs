@@ -53,7 +53,6 @@ public class StickerDetail : MonoBehaviour
                 g.transform.GetChild(0).GetComponent<Image>().sprite =  SharedData.listNumberBg[0];
                 g.transform.position = new Vector3(-1.2f + j * 2.4f, 2.0f - i * paddingY);               
                 g.GetComponent<Button>().AddEventListener(i * numCols + j, ItemClicked);
-               
             }
         }
         buttonTemplate.SetActive(false);

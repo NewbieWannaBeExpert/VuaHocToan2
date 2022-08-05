@@ -12,6 +12,8 @@ public class SharedData : MonoBehaviour
     public static Sprite[] listNumberDoVui3;
     public static Sprite[] listNumberBg;
     public static Sprite[] listNumberBgDoVui3;
+    public static Sprite[] listNumberBgLamToan;
+
     public static AudioClip[] wrongAlertClipList;
     public static AudioClip[] rightAlertClipList;
     public static Sprite[] listAnimalSprite;
@@ -31,7 +33,7 @@ public class SharedData : MonoBehaviour
             listAnimalSprite = Resources.LoadAll("Animals", typeof(Sprite)).Cast<Sprite>().ToArray();
             listNumberBgDoVui3 = Resources.LoadAll("DoVui3_HocSo/BtnBg", typeof(Sprite)).Cast<Sprite>().ToArray();
             listNumberDoVui3 = Resources.LoadAll("DoVui3_HocSo/Numbers", typeof(Sprite)).Cast<Sprite>().ToArray();
-
+            listNumberBgLamToan = Resources.LoadAll("LamToan/BtnBg", typeof(Sprite)).Cast<Sprite>().ToArray();
         }
     }
     public static void alertSoundCorrect(bool isCorrect, AudioSource audioSource)

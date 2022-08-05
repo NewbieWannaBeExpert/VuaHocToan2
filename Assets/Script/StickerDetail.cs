@@ -34,14 +34,15 @@ public class StickerDetail : MonoBehaviour
             Debug.Log("Screen to long");
         }
         Debug.Log("Screen width is: " + Screen.width + " Height is: " + Screen.height);
-        GameObject btnToHome = transform.GetChild(1).gameObject;
+        GameObject btnToHome = transform.GetChild(2).gameObject;
         audioSource = btnToHome.AddComponent<AudioSource>();
         btnToHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
             ToHome();
         });
 
-        GameObject buttonTemplate = transform.GetChild(2).gameObject;
+        GameObject buttonTemplate = transform.GetChild(3).gameObject;
         buttonTemplate.SetActive(true);
         GameObject g;
         for (int i = 0; i < numRows; i++)
@@ -64,7 +65,7 @@ public class StickerDetail : MonoBehaviour
     {
         Debug.Log("Item " + itemIndex + " clicked");
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2 + itemIndex).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4 + itemIndex).gameObject));
         //StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/DetailScene"));
         //SceneManager.LoadScene("Scenes/DetailScene");
         clickedItem = itemIndex;
@@ -73,7 +74,6 @@ public class StickerDetail : MonoBehaviour
     void ToHome()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
     }
 }

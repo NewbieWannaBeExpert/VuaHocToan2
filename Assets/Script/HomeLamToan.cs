@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class HomeLamToan : MonoBehaviour
 {
     public static AudioSource audioSource;
+    public static int CongTruNum = 3;
     void Start()
     {
 
@@ -27,8 +28,18 @@ public class HomeLamToan : MonoBehaviour
         GameObject btnToCongTru = transform.GetChild(3).gameObject;
         btnToCongTru.GetComponent<Button>().onClick.AddListener(delegate ()
         {
+            CongTruNum = 2;
             StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(3).gameObject));
             ToCongTru();
+            
+        });
+        GameObject btnToCongTru2 = transform.GetChild(4).gameObject;
+        btnToCongTru2.GetComponent<Button>().onClick.AddListener(delegate ()
+        {
+            CongTruNum = 3;
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4).gameObject));
+            ToCongTru();
+            
         });
     }
 

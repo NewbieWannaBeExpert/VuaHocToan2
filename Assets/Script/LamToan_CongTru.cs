@@ -104,7 +104,7 @@ public class LamToan_CongTru : MonoBehaviour
     }
     void LoadNumberList()
     {
-        int totalItem = 3;
+        int totalItem = HomeLamToan.CongTruNum;
         float initX = 0f;
         float initY = 1.5f;
         float paddingY = 2.3f;
@@ -126,8 +126,14 @@ public class LamToan_CongTru : MonoBehaviour
         {
             num3 = myObject.Next(0, 9);
         }
-       
-        correctIndex = myObject.Next(0, 3);
+        if(HomeLamToan.CongTruNum == 3)
+        {
+            correctIndex = myObject.Next(0, 3);
+        } else
+        {
+            correctIndex = myObject.Next(0, 2);
+        }
+        
         string equotion = "";
         int correctValue = 0;
         if(correctIndex == 0)

@@ -297,6 +297,7 @@ public class HocSo_DoVui4 : MonoBehaviour
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HocSoHomeScene"));
     }
+    
     void ReplaySound()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);

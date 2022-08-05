@@ -12,27 +12,44 @@ public class HomeSoScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       // buttonClickSound = Resources.Load("Sound/aButtonClicked111.mp3") as AudioClip;
         GameObject btnToHocSo = transform.GetChild(2).gameObject;
         btnToHocSo.GetComponent<Button>().onClick.AddListener(delegate ()
         {
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
             ToHocSo();
         });
 
         GameObject btnToHome = transform.GetChild(1).gameObject;
         audioSource = btnToHome.AddComponent<AudioSource>();
-        //audioSource.PlayOneShot(buttonClickSound, 100f);
         btnToHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));
             ToHome();
         });
-        GameObject btnToDoVui = transform.GetChild(3).gameObject;
-        btnToDoVui.GetComponent<Button>().onClick.AddListener(delegate ()
+        GameObject btnToDoVui1 = transform.GetChild(3).gameObject;
+        btnToDoVui1.GetComponent<Button>().onClick.AddListener(delegate ()
         {
-            ToDoVui();
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(3).gameObject));
+            ToDoVui(1);
         });
-
-
+        GameObject btnToDoVui2 = transform.GetChild(4).gameObject;
+        btnToDoVui2.GetComponent<Button>().onClick.AddListener(delegate ()
+        {
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4).gameObject));
+            ToDoVui(2);
+        });
+        GameObject btnToDoVui3 = transform.GetChild(5).gameObject;
+        btnToDoVui3.GetComponent<Button>().onClick.AddListener(delegate ()
+        {
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(5).gameObject));
+            ToDoVui(3);
+        });
+        GameObject btnToDoVui4 = transform.GetChild(6).gameObject;
+        btnToDoVui4.GetComponent<Button>().onClick.AddListener(delegate ()
+        {
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(6).gameObject));
+            ToDoVui(4);
+        });
     }
     public static IEnumerator MyCoroutine(GameObject forGameObject)
     {
@@ -54,20 +71,16 @@ public class HomeSoScript : MonoBehaviour
     void ToHocSo()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/ListScene"));
     }
-    void ToDoVui()
+    void ToDoVui(int dovuiIndex)
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(3).gameObject));
- //       StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/DoVuiSo1"));
-        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/DoVuiSo4"));
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/DoVuiSo" +dovuiIndex));
     }
     void ToHome()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene")); 
     }
 }

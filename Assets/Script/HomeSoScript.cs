@@ -42,14 +42,14 @@ public class HomeSoScript : MonoBehaviour
         btnToDoVui3.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(5).gameObject));
-            ToDoVui(3);
+            ToDoVui(4);
         });
-        GameObject btnToDoVui4 = transform.GetChild(6).gameObject;
+       /* GameObject btnToDoVui4 = transform.GetChild(6).gameObject;
         btnToDoVui4.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(6).gameObject));
             ToDoVui(4);
-        });
+        });*/
     }
     public static IEnumerator MyCoroutine(GameObject forGameObject)
     {

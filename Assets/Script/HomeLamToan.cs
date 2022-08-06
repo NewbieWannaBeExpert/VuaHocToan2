@@ -41,6 +41,15 @@ public class HomeLamToan : MonoBehaviour
             ToCongTru();
             
         });
+        GameObject btnToDoVui = transform.GetChild(5).gameObject;
+        btnToDoVui.GetComponent<Button>().onClick.AddListener(delegate ()
+        {
+            
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(5).gameObject));
+            ToDoVui();
+
+        });
+
     }
 
     void ToSoSanh()
@@ -58,4 +67,10 @@ public class HomeLamToan : MonoBehaviour
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/LamToan_CongTru"));
     }
+    void ToDoVui()
+    {
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/DoVuiSo3"));
+    }
+
 }

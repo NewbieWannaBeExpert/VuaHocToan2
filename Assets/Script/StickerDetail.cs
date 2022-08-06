@@ -66,11 +66,19 @@ public class StickerDetail : MonoBehaviour
         Debug.Log("Item " + itemIndex + " clicked");
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4 + itemIndex).gameObject));
-        //StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/DetailScene"));
-        //SceneManager.LoadScene("Scenes/DetailScene");
         clickedItem = itemIndex;
+        StartCoroutine(FadeAnimation(transform.GetChild(4 + itemIndex).gameObject));
     }
-   
+    IEnumerator FadeAnimation(GameObject g)
+    {
+        yield return new WaitForSeconds(0.6f);
+        FadeItem(g);    
+    }
+    void FadeItem(GameObject g)
+    {
+        g.SetActive(false);
+    }
+
     void ToHome()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);

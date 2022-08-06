@@ -21,7 +21,7 @@ public class LamToan_CongTru : MonoBehaviour
     public List<GameObject> listNumberButton;
     private int correctIndex = 0;
     private int correctNumberIndexReal = 0;
-    private int startButtonIndex = 2;
+    private int startButtonIndex = 3;
     void Start()
     {
         listNumberButton = new List<GameObject>();
@@ -44,6 +44,7 @@ public class LamToan_CongTru : MonoBehaviour
             StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(startButtonIndex + 2).gameObject));
             ReplaySound();
         });
+        
         LoadNumberList();
 
     }
@@ -55,15 +56,24 @@ public class LamToan_CongTru : MonoBehaviour
     void BtnNumberClicked(int itemIndex)
     {
         Debug.Log("You click on index:" + itemIndex);
+        System.Random r = new System.Random();
         GameObject currentClickedNumber = transform.GetChild(4 + itemIndex + startButtonIndex).gameObject;
         if (itemIndex == correctIndex)
         {
             // Debug.Log("CORRECT!");
+            int randCorrect = r.Next(5, 8);
+            Debug.Log("Correct rand index:" + randCorrect);
+            GameObject imgBoyGirl = transform.GetChild(startButtonIndex - 1).gameObject;
+            imgBoyGirl.GetComponent<Image>().sprite = SharedData.listBoyAnimated[randCorrect];
             currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBgLamToan[1];          
             SharedData.alertSoundCorrect(true, audioSource);
             StartCoroutine(ReplayAfterDelay(2.5f));
         } else
         {
+            int randIncorrect = r.Next(1, 5);
+            Debug.Log("Incorrect boy index:" + randIncorrect);
+            GameObject imgBoyGirl = transform.GetChild(startButtonIndex - 1).gameObject;
+            imgBoyGirl.GetComponent<Image>().sprite = SharedData.listBoyAnimated[randIncorrect];
             //Debug.Log("IN_CORRECT");
             SharedData.alertSoundCorrect(false, audioSource);
             currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBgLamToan[2];
@@ -104,6 +114,15 @@ public class LamToan_CongTru : MonoBehaviour
     }
     void LoadNumberList()
     {
+        GameObject imgBoyGirl = transform.GetChild(startButtonIndex - 1).gameObject;
+        if (HomeLamToan.CongTruNum == 2)
+        {
+            imgBoyGirl.GetComponent<Image>().sprite = SharedData.listBoyAnimated[0];
+        } else
+        {
+            imgBoyGirl.SetActive(false);
+        }
+            
         int totalItem = HomeLamToan.CongTruNum;
         float initX = 0f;
         float initY = 1.5f;

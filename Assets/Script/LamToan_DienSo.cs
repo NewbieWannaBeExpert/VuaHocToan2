@@ -14,7 +14,7 @@ using UnityEngine.UI;
         });
     }
 }*/
-public class HocSo_DoVui3 : MonoBehaviour
+public class LamToan_DienSo : MonoBehaviour
 {
     public AudioSource audioSource;
     public static Sprite[] listAnimalSprite;
@@ -58,6 +58,8 @@ public class HocSo_DoVui3 : MonoBehaviour
     void BtnNumberClicked(int itemIndex)
     {
         Debug.Log("You click on index:" + itemIndex);
+        System.Random rand = new System.Random();
+        
         GameObject currentClickedNumber = transform.GetChild(4 + itemIndex + startButtonIndex).gameObject;
         if (itemIndex == correctIndex)
         {

@@ -9,7 +9,11 @@ public class SharedData : MonoBehaviour
     public static AudioClip[] buttonClickSound;
     public static AudioClip[] numberSound;
     public static AudioClip[] victorySound;
+    public static AudioClip[] rightBuzzSoundList;
+    public static AudioClip[] wrongBuzzSoundList;
     public static Sprite[] listNumberDoVui;
+    public static Sprite[] listBoyAnimated;
+    public static Sprite[] listGirlAnimated;
     public static Sprite[] listNumberDoVui3;
     public static Sprite[] listNumberBg;
     public static Sprite[] listNumberBgDoVui3;
@@ -27,6 +31,8 @@ public class SharedData : MonoBehaviour
             buttonClickSound = Resources.LoadAll("Sound/ButtonClicked", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             numberSound = Resources.LoadAll("Sound/Number2", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             victorySound = Resources.LoadAll("Sound/AlertVictory", typeof(AudioClip)).Cast<AudioClip>().ToArray();
+            rightBuzzSoundList = Resources.LoadAll("Sound/RightBuzz", typeof(AudioClip)).Cast<AudioClip>().ToArray();
+            wrongBuzzSoundList = Resources.LoadAll("Sound/WrongBuzz", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             listNumberDoVui = Resources.LoadAll("Numbers2", typeof(Sprite)).Cast<Sprite>().ToArray();
             listNumberBg = Resources.LoadAll("Numbers2/NumberBg", typeof(Sprite)).Cast<Sprite>().ToArray();
             wrongAlertClipList = Resources.LoadAll("Sound/AlertRightWrong/Wrong", typeof(AudioClip)).Cast<AudioClip>().ToArray();
@@ -34,22 +40,28 @@ public class SharedData : MonoBehaviour
             listAnimalSprite = Resources.LoadAll("Animals", typeof(Sprite)).Cast<Sprite>().ToArray();
             listNumberBgDoVui3 = Resources.LoadAll("DoVui3_HocSo/BtnBg", typeof(Sprite)).Cast<Sprite>().ToArray();
             listNumberDoVui3 = Resources.LoadAll("DoVui3_HocSo/Numbers", typeof(Sprite)).Cast<Sprite>().ToArray();
-            listNumberBgLamToan = Resources.LoadAll("LamToan/BtnBg", typeof(Sprite)).Cast<Sprite>().ToArray();
+            listNumberBgLamToan = Resources.LoadAll("LamToan/BtnBg", typeof(Sprite)).Cast<Sprite>().ToArray();        
+            listBoyAnimated = Resources.LoadAll("BoyGirls/Boy", typeof(Sprite)).Cast<Sprite>().ToArray();
         }
     }
     public static void alertSoundCorrect(bool isCorrect, AudioSource audioSource)
     {
         int randAlertIndex;
         System.Random rand = new System.Random();
+        int randBuzzSound = rand.Next(0, 3);
         if (isCorrect)
         {
-            randAlertIndex = rand.Next(0, SharedData.rightAlertClipList.Length);
-            audioSource.PlayOneShot(SharedData.rightAlertClipList[randAlertIndex]);
+            randAlertIndex = rand.Next(0, rightAlertClipList.Length);
+            audioSource.PlayOneShot(rightAlertClipList[randAlertIndex]);
+            audioSource.PlayOneShot(rightBuzzSoundList[randBuzzSound], 1f);
+
         }
         else
         {
-            randAlertIndex = rand.Next(0, SharedData.wrongAlertClipList.Length);
-            audioSource.PlayOneShot(SharedData.wrongAlertClipList[randAlertIndex]);
+            randAlertIndex = rand.Next(0, wrongAlertClipList.Length);
+            audioSource.PlayOneShot(wrongAlertClipList[randAlertIndex]);
+            audioSource.PlayOneShot(wrongBuzzSoundList[randBuzzSound], 1f);
+
         }
     }
     public static IEnumerator ToSceneAfterSomeTime(float time, string sceneName)

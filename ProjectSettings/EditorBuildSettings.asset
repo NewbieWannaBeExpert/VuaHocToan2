@@ -41,4 +41,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/StickerDetail.unity
     guid: 14864e06fc06aaa4ba7372195aa8ff06
+  - enabled: 1
+    path: Assets/Scenes/StickerList.unity
+    guid: c33495ecf0380524c996fcfa5b422a58
   m_configObjects: {}

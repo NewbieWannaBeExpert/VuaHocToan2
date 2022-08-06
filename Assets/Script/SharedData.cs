@@ -8,6 +8,7 @@ public class SharedData : MonoBehaviour
 {
     public static AudioClip[] buttonClickSound;
     public static AudioClip[] numberSound;
+    public static AudioClip[] victorySound;
     public static Sprite[] listNumberDoVui;
     public static Sprite[] listNumberDoVui3;
     public static Sprite[] listNumberBg;
@@ -23,9 +24,9 @@ public class SharedData : MonoBehaviour
         if (buttonClickSound != null) { }
         else
         {
-       //     audioSource = forGameObject.AddComponent<AudioSource>();
             buttonClickSound = Resources.LoadAll("Sound/ButtonClicked", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             numberSound = Resources.LoadAll("Sound/Number2", typeof(AudioClip)).Cast<AudioClip>().ToArray();
+            victorySound = Resources.LoadAll("Sound/AlertVictory", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             listNumberDoVui = Resources.LoadAll("Numbers2", typeof(Sprite)).Cast<Sprite>().ToArray();
             listNumberBg = Resources.LoadAll("Numbers2/NumberBg", typeof(Sprite)).Cast<Sprite>().ToArray();
             wrongAlertClipList = Resources.LoadAll("Sound/AlertRightWrong/Wrong", typeof(AudioClip)).Cast<AudioClip>().ToArray();

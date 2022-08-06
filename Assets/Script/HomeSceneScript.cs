@@ -37,7 +37,7 @@ public class HomeSceneScript : MonoBehaviour
     void ToSticker()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/StickerDetail"));
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/StickerList"));
     }
     void ToHocSo()
     {

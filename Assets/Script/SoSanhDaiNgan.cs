@@ -117,17 +117,13 @@ public class SoSanhDaiNgan : MonoBehaviour
     }
     public void showCorrect(bool isCorrect)
     {
-        int randAlertIndex = 0;
-        System.Random rand = new System.Random();
         if (isCorrect)
         {
-            randAlertIndex = rand.Next(0, SharedData.rightAlertClipList.Length);
-            audioSource.PlayOneShot(SharedData.rightAlertClipList[randAlertIndex]);
+            SharedData.alertSoundCorrect(true, audioSource);
             StartCoroutine(ReloadGame());
         } else
         {
-            randAlertIndex = rand.Next(0, SharedData.wrongAlertClipList.Length);
-            audioSource.PlayOneShot(SharedData.wrongAlertClipList[randAlertIndex]); 
+            SharedData.alertSoundCorrect(false, audioSource);
         }
     }
     public void Update()

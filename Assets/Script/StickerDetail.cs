@@ -69,7 +69,12 @@ public class StickerDetail : MonoBehaviour
         totalClicked++;
         Debug.Log("Item " + itemIndex + " clicked");
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4 + itemIndex).gameObject));
+        GameObject clickedButton = transform.GetChild(4 + itemIndex).gameObject;
+        LeanTween.cancel(clickedButton);
+        clickedButton.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        // 2
+        LeanTween.scale(clickedButton.gameObject, new Vector3(1.0f, 1.0f), 1.0f).setEase(LeanTweenType.punch);
+        //StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4 + itemIndex).gameObject));
         StartCoroutine(FadeAnimation(transform.GetChild(4 + itemIndex).gameObject));
         if(totalClicked == totalItem)
         {

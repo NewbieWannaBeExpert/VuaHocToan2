@@ -54,7 +54,6 @@ public class SharedData : MonoBehaviour
             randAlertIndex = rand.Next(0, rightAlertClipList.Length);
             audioSource.PlayOneShot(rightAlertClipList[randAlertIndex]);
             audioSource.PlayOneShot(rightBuzzSoundList[randBuzzSound], 1f);
-
         }
         else
         {

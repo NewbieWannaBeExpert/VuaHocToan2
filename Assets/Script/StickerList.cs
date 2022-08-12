@@ -23,7 +23,7 @@ public class StickerList : MonoBehaviour
     public static Sprite[] sprites;
     private void InitSprites()
     {
-        listStickerImage = Resources.LoadAll("Stickers/Sticker1", typeof(Sprite)).Cast<Sprite>().ToArray();
+        listStickerImage = Resources.LoadAll("Stickers/Dino/IconList", typeof(Sprite)).Cast<Sprite>().ToArray();
     }
     void Start()
     {
@@ -32,6 +32,7 @@ public class StickerList : MonoBehaviour
         int numCols = 3;
         int totalItem = 5;
         float paddingY = 2.5f;
+        float paddingX = -2.3f;
         //Debug.Log("Screen ratio is: " + Screen.height / Screen.width);
         if(Screen.height > 1.5f * Screen.width)
         {
@@ -59,10 +60,10 @@ public class StickerList : MonoBehaviour
                 {
                     break;
                 }
-                Debug.Log("Generate for button number i =" + i + ", and j =" + j + ", index:" + (counter));
+                //Debug.Log("Generate for button number i =" + i + ", and j =" + j + ", index:" + (counter));
                 g = Instantiate(buttonTemplate, transform);
                 g.transform.GetChild(0).GetComponent<Image>().sprite =  listStickerImage[counter];
-                g.transform.position = new Vector3(-1.2f + j * 2.4f, 2.0f - i * paddingY);               
+                g.transform.position = new Vector3(paddingX + j * 2.4f, 2.0f - i * paddingY);               
                 g.GetComponent<Button>().AddEventListener(counter, ItemClicked);
                 counter++;
             }

@@ -11,7 +11,7 @@ public class HomeSceneScript : MonoBehaviour
     //public static AudioClip[] buttonClickSound;
     void Start()
     {
-        SharedData.initSound();
+        SharedData.initAllResources();
         GameObject btnToHocSo = transform.GetChild(1).gameObject;
        // GameObject gToHocSo = Instantiate(btnToHocSo, transform);
         //Debug.Log("button click sound:" + buttonClickSound.GetInstanceID());

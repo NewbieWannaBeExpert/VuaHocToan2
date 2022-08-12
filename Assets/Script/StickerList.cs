@@ -11,13 +11,39 @@ public class StickerList : MonoBehaviour
 {
     public static AudioSource audioSource;
     public static int clickedItem = -1;
-
+    private int maxOpenSticker = 0;
     public static Sprite[] listStickerImage;
+    private string openStickerDinoRefName = "OpenStickerDino";
+
     [Serializable] 
     public struct NumberImage
     {
         public Sprite NormalImage;
         public Sprite ClickedImage;
+    }
+    public int GetMaxOpenSticker()
+    {
+        if(PlayerPrefs.HasKey(openStickerDinoRefName))
+        {
+            maxOpenSticker = PlayerPrefs.GetInt(openStickerDinoRefName);
+            Debug.Log("Max open sticker for dino list is:" + maxOpenSticker);
+            return maxOpenSticker;
+        } else
+        {
+            PlayerPrefs.SetInt(openStickerDinoRefName, 0);
+            maxOpenSticker = 0;
+            return maxOpenSticker;
+        }
+    }
+    public void SetMaxOpenSticker(int value)
+    {
+        if (PlayerPrefs.HasKey(openStickerDinoRefName))
+        {
+            PlayerPrefs.SetInt(openStickerDinoRefName, value);
+        } else
+        {
+            PlayerPrefs.SetInt(openStickerDinoRefName, 0);
+        }
     }
     //This is the list of image imported from Sprites folder of the Resources folder
     public static Sprite[] sprites;
@@ -27,6 +53,8 @@ public class StickerList : MonoBehaviour
     }
     void Start()
     {
+        int totalStar = SharedData.GetNumberOfStar();
+        Debug.Log("Number of star: " + totalStar);
         InitSprites();
         int numRows = 3;
         int numCols = 3;

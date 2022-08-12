@@ -22,9 +22,29 @@ public class SharedData : MonoBehaviour
     public static AudioClip[] wrongAlertClipList;
     public static AudioClip[] rightAlertClipList;
     public static Sprite[] listAnimalSprite;
-    //public static AudioSource audioSource;
-    public static void initSound()
+    public static int InitGivenStar = 300;// for openning 6 images.
+    public static string PrefNumOfStar = "VuaHocToan_PrefNumOfStar";
+    public static void SetNumberOfStar(int numOfStar)
     {
+        PlayerPrefs.SetInt(PrefNumOfStar, numOfStar);
+    }
+    public static int GetNumberOfStar()
+    {
+        if(PlayerPrefs.HasKey(PrefNumOfStar))
+        {
+            return PlayerPrefs.GetInt(PrefNumOfStar);
+        } else
+        {
+            PlayerPrefs.SetInt(PrefNumOfStar, InitGivenStar);
+            return InitGivenStar;
+        }
+    }
+    //public static AudioSource audioSource;
+    public static void initAllResources()
+    {
+        if (PlayerPrefs.HasKey(PrefNumOfStar))
+        { } else { SetNumberOfStar(InitGivenStar); }
+            
         if (buttonClickSound != null) { }
         else
         {

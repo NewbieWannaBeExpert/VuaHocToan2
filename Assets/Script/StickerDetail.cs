@@ -112,6 +112,11 @@ public class StickerDetail : MonoBehaviour
         {
             audioSource.PlayOneShot(SharedData.victorySound[0], 1f);
         }
+        int totalStar = SharedData.GetNumberOfStar();
+        Debug.Log("Total number of star:" + totalStar);
+        SharedData.SetNumberOfStar(totalStar - 5);
+        totalStar = SharedData.GetNumberOfStar();
+        Debug.Log("Total number of star:" + totalStar);
     }
     IEnumerator FadeAnimation(GameObject g)
     {

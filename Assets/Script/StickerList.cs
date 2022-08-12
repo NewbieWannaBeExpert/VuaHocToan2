@@ -38,6 +38,7 @@ public class StickerList : MonoBehaviour
         {
             numCols = 2;
             numRows = 3;
+            paddingX = -1.0f;
             Debug.Log("Screen to long, numCols = 2, numRows = 3");
         }
         Debug.Log("Screen width is: " + Screen.width + " Height is: " + Screen.height);

@@ -13,7 +13,7 @@ public class StickerDetail : MonoBehaviour
     private int totalClicked = 0;
     private int totalItem = 6;
     public static Sprite[] listStickerDetail;
-    private static Vector2 aspectRatio;
+   // private static Vector2 aspectRatio;
     [Serializable] 
     public struct NumberImage
     {
@@ -25,6 +25,14 @@ public class StickerDetail : MonoBehaviour
     void InitSprites()
     {
         listStickerDetail = Resources.LoadAll("Stickers/Dino/Detail", typeof(Sprite)).Cast<Sprite>().ToArray();
+    }
+    void ResizeImage(GameObject g)
+    {
+        float screenRatio = (float)Screen.width / (float)Screen.height;
+        RectTransform transformRect = g.GetComponent<Image>().GetComponent<RectTransform>();
+        float targetRatio = transformRect.rect.width/transformRect.rect.height;
+        Debug.Log("Screen width is: " + Screen.width + " screen height is:" + Screen.height);
+        Debug.Log("Image with is:" + transformRect.rect.width + ", and height is:" + transformRect.rect.height);
     }
     void Start()
     {
@@ -44,6 +52,8 @@ public class StickerDetail : MonoBehaviour
         GameObject imgToDiscover = transform.GetChild(1).gameObject;
         imgToDiscover.GetComponent<Image>().sprite = listStickerDetail[StickerList.clickedItem];
         //ResizeBgImage(imgToDiscover);
+       // ResizeImage(imgToDiscover);
+        //imgToDiscover.transform.localScale = new Vector3(2, 2, 1);
         GameObject btnToHome = transform.GetChild(2).gameObject;
         audioSource = btnToHome.AddComponent<AudioSource>();
         btnToHome.GetComponent<Button>().onClick.AddListener(delegate ()
@@ -81,11 +91,11 @@ public class StickerDetail : MonoBehaviour
             worldScreenWidth / sr.sprite.bounds.size.x,
             worldScreenHeight / sr.sprite.bounds.size.y, 1);
     }*/
-    public static Vector2 getTransVel(Vector2 Velocity)
+   /* public static Vector2 getTransVel(Vector2 Velocity)
     {
-        aspectRatio = AspectRatio.GetAspectRatio(Screen.width, Screen.height);
+        aspectRatio = UnityEditor.AspectRatio.GetAspectRatio(Screen.width, Screen.height);
         return new Vector2(Velocity.x * (aspectRatio.x / 16f), Velocity.y * (aspectRatio.y / 9f));
-    }
+    }*/
     void ItemClicked(int itemIndex)
     {
         totalClicked++;

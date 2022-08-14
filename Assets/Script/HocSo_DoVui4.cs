@@ -20,12 +20,16 @@ public class HocSo_DoVui4 : MonoBehaviour
     public static Sprite[] listAnimalSprite;
     public List<GameObject> listNumberButton;
     public List<GameObject> listDisplayedAnimalImage;
+    public AudioClip[] listAlertFindHowManySound;
     private int correctIndex = 0;
     private int correctNumberIndexReal = 0;
     private int startButtonIndex = 3;
    // int correctValue = 0;
     void Start()
     {
+        listAlertFindHowManySound = new AudioClip[2];
+        listAlertFindHowManySound[0] = Resources.Load<AudioClip>("Sound/Alerts/alertHowManyAnimals");
+        listAlertFindHowManySound[1] = Resources.Load<AudioClip>("Sound/Alerts/alertHowManyAnimals3");
         listNumberButton = new List<GameObject>();
         listDisplayedAnimalImage = new List<GameObject>();
         GameObject btnHome = transform.GetChild(startButtonIndex).gameObject;
@@ -51,12 +55,14 @@ public class HocSo_DoVui4 : MonoBehaviour
             ReplaySound();
         });
         LoadNumberList();
+        SoundForAlertFind();
 
     }
     IEnumerator ReplayAfterDelay(float seconds)
     {
         yield return new WaitForSeconds(seconds);
         Replay(0.5f);
+        
     }
     void BtnNumberClicked(int itemIndex)
     {
@@ -104,10 +110,15 @@ public class HocSo_DoVui4 : MonoBehaviour
         }
         return result;
     }
-    public void SoundForCorrectNumber(int numberIndex)
+    public void SoundForAlertFind()
     {
-        audioSource.PlayOneShot(SharedData.numberSound[numberIndex]);
+        System.Random rand = new System.Random();
+        int randIndex = rand.Next(0, 2);
+        Debug.Log("Rand index for finding is: " + randIndex);
+        audioSource.PlayOneShot(listAlertFindHowManySound[randIndex], 1.0f);
+        //audioSource.PlayOneShot(SharedData.numberSound[numberIndex]);
     }
+   
     void LoadNumberList()
     {
         int totalItem = 4;
@@ -146,25 +157,25 @@ public class HocSo_DoVui4 : MonoBehaviour
         
         if(correctIndex == 0)
         {
-            SoundForCorrectNumber(num1);
+            //SoundForCorrectNumber(num1);
             correctNumberIndexReal = num1;
            
         } else if(correctIndex == 1)
         {
-            SoundForCorrectNumber(num2);
+            //SoundForCorrectNumber(num2);
             correctNumberIndexReal = num2;
            
         }
         else if(correctIndex == 2)
         {
             correctNumberIndexReal = num3;
-            SoundForCorrectNumber(num3);
+            //SoundForCorrectNumber(num3);
         
         }
         else if (correctIndex == 3)
         {
             correctNumberIndexReal = num4;
-            SoundForCorrectNumber(num4);
+            //SoundForCorrectNumber(num4);
            
         }
         LoadListAnimal(correctNumberIndexReal);
@@ -309,7 +320,7 @@ public class HocSo_DoVui4 : MonoBehaviour
     void ReplaySound()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        SoundForCorrectNumber(correctNumberIndexReal);
+        SoundForAlertFind();
     }
     void Replay(float afterSecond)
     {
@@ -343,6 +354,7 @@ public class HocSo_DoVui4 : MonoBehaviour
         }
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(ReloadNumber(afterSecond));
+        SoundForAlertFind();
     }
     IEnumerator ReloadNumber(float waitSeconds)
     {

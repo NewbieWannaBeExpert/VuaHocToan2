@@ -8,6 +8,7 @@ public class SharedData : MonoBehaviour
 {
     public static AudioClip[] buttonClickSound;
     public static AudioClip[] numberSound;
+    public static AudioClip[] numberOnlySound;
     public static AudioClip[] victorySound;
     public static AudioClip[] rightBuzzSoundList;
     public static AudioClip[] wrongBuzzSoundList;
@@ -50,6 +51,7 @@ public class SharedData : MonoBehaviour
         {
             buttonClickSound = Resources.LoadAll("Sound/ButtonClicked", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             numberSound = Resources.LoadAll("Sound/Number2", typeof(AudioClip)).Cast<AudioClip>().ToArray();
+            numberOnlySound = Resources.LoadAll("Sound/NumberOnly", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             victorySound = Resources.LoadAll("Sound/AlertVictory", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             rightBuzzSoundList = Resources.LoadAll("Sound/RightBuzz", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             wrongBuzzSoundList = Resources.LoadAll("Sound/WrongBuzz", typeof(AudioClip)).Cast<AudioClip>().ToArray();

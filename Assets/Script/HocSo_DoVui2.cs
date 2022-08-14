@@ -10,8 +10,8 @@ public class HocSo_DoVui2 : MonoBehaviour
     public AudioSource audioSource;
     public static Sprite[] listAnimalSprite;
     public List<GameObject> listNumberButton;
-    public AudioClip[] alertFindBigList;
-    public AudioClip[] alertFindSmallList;
+    public AudioClip[] alertFindMoreList;
+    public AudioClip[] alertFindLessList;
     public static Sprite[] listBtnBg;
     private int correctIndex = 0;
     private int correctNumberIndexReal = 0;
@@ -19,8 +19,16 @@ public class HocSo_DoVui2 : MonoBehaviour
     private int isFindBig = 0;
     void LoadSoundClip()
     {
-        alertFindBigList = Resources.LoadAll("Sound/FindBigSmall/Big", typeof(AudioClip)).Cast<AudioClip>().ToArray();
-        alertFindSmallList = Resources.LoadAll("Sound/FindBigSmall/Small", typeof(AudioClip)).Cast<AudioClip>().ToArray();
+        alertFindLessList = new AudioClip[2];
+        alertFindMoreList = new AudioClip[2];
+        AudioClip findLessAlert1 = Resources.Load<AudioClip>("Sound/Alerts/alertLessAnimal");
+        AudioClip findLessAlert2 = Resources.Load<AudioClip>("Sound/Alerts/alertLessAnimal2");
+        alertFindLessList[0] = findLessAlert1;
+        alertFindLessList[1] = findLessAlert2;
+        AudioClip findMoreAlert1 = Resources.Load<AudioClip>("Sound/Alerts/alertMoreAnimal");
+        AudioClip findMoreAlert2 = Resources.Load<AudioClip>("Sound/Alerts/alertMoreAnimal2");
+        alertFindMoreList[0] = findMoreAlert1;
+        alertFindMoreList[1] = findMoreAlert2;
     }
     void SetupGraphics()
     {
@@ -82,20 +90,40 @@ public class HocSo_DoVui2 : MonoBehaviour
     {
         audioSource.PlayOneShot(SharedData.numberSound[numberIndex]);
     }
-   
+    void AlertFindSound(int isFindBig)
+    {
+        System.Random randBigShuffleSeed = new System.Random();
+        int randIndex = randBigShuffleSeed.Next(0, 2);
+        //        Debug.Log("Rand big shuffle is:" + isFindBig + " and compare type is:" + compareType);
+        if (isFindBig == 1)
+        {
+            if (randIndex == 0)
+            {
+                audioSource.PlayOneShot(alertFindMoreList[1], 1.0f);
+            }
+            else
+            {
+                audioSource.PlayOneShot(alertFindMoreList[0], 1.0f);
+            }
+
+        }
+        else
+        {
+            if (randIndex == 0)
+            {
+                audioSource.PlayOneShot(alertFindLessList[1], 1.0f);
+            }
+            else
+            {
+                audioSource.PlayOneShot(alertFindLessList[0], 1.0f);
+            }
+        }
+    }
     void LoadAnimalBoardList()
     {
         System.Random randBigShuffleSeed = new System.Random();
         isFindBig = randBigShuffleSeed.Next(0, 2);
-//        Debug.Log("Rand big shuffle is:" + isFindBig + " and compare type is:" + compareType);
-        if (isFindBig == 1)
-        {
-            audioSource.PlayOneShot(alertFindBigList[0]);
-        }
-        else
-        {
-            audioSource.PlayOneShot(alertFindSmallList[0]);
-        }
+        AlertFindSound(isFindBig);
         int totalItem = 2;
         int numRows = 2;
         int numCols = 1;
@@ -248,14 +276,15 @@ public class HocSo_DoVui2 : MonoBehaviour
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4).gameObject));
         //SoundForCorrectNumber(correctNumberIndexReal);
-        if (isFindBig == 1)
+        AlertFindSound(isFindBig);
+       /* if (isFindBig == 1)
         {
-            audioSource.PlayOneShot(alertFindBigList[0]);
+            audioSource.PlayOneShot(alertFindMoreList[0]);
         }
         else
         {
-            audioSource.PlayOneShot(alertFindSmallList[0]);
-        }
+            audioSource.PlayOneShot(alertFindLessList[0]);
+        }*/
     }
     void Replay(float afterSecond)
     {

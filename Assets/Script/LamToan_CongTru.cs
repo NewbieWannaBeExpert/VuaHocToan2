@@ -20,10 +20,12 @@ public class LamToan_CongTru : MonoBehaviour
     public static Sprite[] listAnimalSprite;
     public List<GameObject> listNumberButton;
     private int correctIndex = 0;
+    private AudioClip alertSoundFindResult;
     private int correctNumberIndexReal = 0;
     private int startButtonIndex = 3;
     void Start()
     {
+        alertSoundFindResult = Resources.Load<AudioClip>("Sound/Alerts/findWithResult");
         listNumberButton = new List<GameObject>();
         GameObject btnHome = transform.GetChild(startButtonIndex).gameObject;
         audioSource = btnHome.AddComponent<AudioSource>();
@@ -110,7 +112,13 @@ public class LamToan_CongTru : MonoBehaviour
     }
     public void SoundForCorrectNumber(int numberIndex)
     {
-        audioSource.PlayOneShot(SharedData.numberSound[numberIndex]);
+        audioSource.PlayOneShot(alertSoundFindResult, 1.0f) ;
+        StartCoroutine(SoundForCorrectNumberAfterDelay(numberIndex, 2.5f));
+    }
+    IEnumerator SoundForCorrectNumberAfterDelay(int numberIndex,float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        audioSource.PlayOneShot(SharedData.numberOnlySound[numberIndex]);
     }
     void LoadNumberList()
     {

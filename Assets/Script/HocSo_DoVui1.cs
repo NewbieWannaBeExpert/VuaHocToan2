@@ -18,14 +18,21 @@ public class HocSo_DoVui1 : MonoBehaviour
 {
     public AudioSource audioSource;
     public static Sprite[] listAnimalSprite;
+    public static AudioClip alertFindSound;
     public List<GameObject> listNumberButton;
     private int correctIndex = 0;
     private int correctNumberIndexReal = 0;
+    void initAll()
+    {
+        alertFindSound = Resources.Load<AudioClip>("Sound/Alerts/alertFind");
+    }
     void Start()
     {
+        initAll();
         listNumberButton = new List<GameObject>();
         GameObject btnHome = transform.GetChild(1).gameObject;
         audioSource = btnHome.AddComponent<AudioSource>();
+        audioSource.PlayOneShot(alertFindSound,1.0f);
         btnHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             ToHome();
@@ -70,6 +77,11 @@ public class HocSo_DoVui1 : MonoBehaviour
     }
     public void SoundForCorrectNumber(int numberIndex)
     {
+        StartCoroutine(PlayNumberSound(numberIndex, 1.73f));
+    }
+    IEnumerator PlayNumberSound(int numberIndex, float afterDelay)
+    {
+        yield return new WaitForSeconds(afterDelay);
         audioSource.PlayOneShot(SharedData.numberSound[numberIndex]);
     }
     void LoadNumberList()
@@ -117,7 +129,7 @@ public class HocSo_DoVui1 : MonoBehaviour
             correctNumberIndexReal = num3;
             SoundForCorrectNumber(num3);
         }
-        Debug.Log("Correct index is: " + correctIndex);
+       // Debug.Log("Correct index is: " + correctIndex);
         GameObject btnNumberPattern = transform.GetChild(4).gameObject;
         btnNumberPattern.SetActive(true);
         GameObject btnNumberClone;
@@ -126,7 +138,7 @@ public class HocSo_DoVui1 : MonoBehaviour
         {
             for (int j = 0; j < numCols; j++)
             {
-                Debug.Log("Generate number for colum: " + i + " and row: " + j + " for index:" + (i * numCols + j));
+               // Debug.Log("Generate number for colum: " + i + " and row: " + j + " for index:" + (i * numCols + j));
                 if (i * numCols + j >= totalItem)
                 {
                     break;
@@ -191,6 +203,7 @@ public class HocSo_DoVui1 : MonoBehaviour
             listNumberButton.RemoveAt(0);
             listNumberButton.RemoveAt(0);
         }
+        audioSource.PlayOneShot(alertFindSound, 1.0f);
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(ReloadNumber(afterSecond));
         

@@ -58,7 +58,7 @@ public class StickerList : MonoBehaviour
         InitSprites();
         int numRows = 3;
         int numCols = 3;
-        int totalItem = 5;
+        int totalItem = 8;
         float paddingY = 2.5f;
         float paddingX = -2.3f;
         //Debug.Log("Screen ratio is: " + Screen.height / Screen.width);

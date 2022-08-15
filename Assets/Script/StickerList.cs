@@ -11,9 +11,9 @@ public class StickerList : MonoBehaviour
 {
     public static AudioSource audioSource;
     public static int clickedItem = -1;
-    private int maxOpenSticker = 0;
+    public static int maxOpenSticker = 0;
     public static Sprite[] listStickerImage;
-    private string openStickerDinoRefName = "OpenStickerDino";
+    public static string openStickerDinoRefName = "OpenStickerDino";
 
     [Serializable] 
     public struct NumberImage
@@ -21,7 +21,13 @@ public class StickerList : MonoBehaviour
         public Sprite NormalImage;
         public Sprite ClickedImage;
     }
-    public int GetMaxOpenSticker()
+    /*
+    public static void SetMaxOpenSticker(int m)
+    {
+        maxOpenSticker = m;
+        PlayerPrefs.SetInt(openStickerDinoRefName, m);
+    }*/
+    public static int GetMaxOpenSticker()
     {
         if(PlayerPrefs.HasKey(openStickerDinoRefName))
         {
@@ -35,15 +41,17 @@ public class StickerList : MonoBehaviour
             return maxOpenSticker;
         }
     }
-    public void SetMaxOpenSticker(int value)
+    public static void SetMaxOpenSticker(int value)
     {
-        if (PlayerPrefs.HasKey(openStickerDinoRefName))
+        PlayerPrefs.SetInt(openStickerDinoRefName, value);
+        maxOpenSticker =value;
+       /* if (PlayerPrefs.HasKey(openStickerDinoRefName))
         {
             PlayerPrefs.SetInt(openStickerDinoRefName, value);
         } else
         {
             PlayerPrefs.SetInt(openStickerDinoRefName, 0);
-        }
+        }*/
     }
     //This is the list of image imported from Sprites folder of the Resources folder
     public static Sprite[] sprites;
@@ -69,7 +77,9 @@ public class StickerList : MonoBehaviour
             paddingX = -1.0f;
             Debug.Log("Screen to long, numCols = 2, numRows = 3");
         }
-        Debug.Log("Screen width is: " + Screen.width + " Height is: " + Screen.height);
+        maxOpenSticker = GetMaxOpenSticker();
+        Debug.Log("Max open sticker is:" + maxOpenSticker);
+        // Debug.Log("Screen width is: " + Screen.width + " Height is: " + Screen.height);
         GameObject btnToHome = transform.GetChild(2).gameObject;
         audioSource = btnToHome.AddComponent<AudioSource>();
         btnToHome.GetComponent<Button>().onClick.AddListener(delegate ()
@@ -89,9 +99,13 @@ public class StickerList : MonoBehaviour
                 {
                     break;
                 }
-                //Debug.Log("Generate for button number i =" + i + ", and j =" + j + ", index:" + (counter));
                 g = Instantiate(buttonTemplate, transform);
-                g.transform.GetChild(0).GetComponent<Image>().sprite =  listStickerImage[counter];
+                if(counter < maxOpenSticker)
+                {
+                    GameObject coverImage = g.transform.GetChild(2).gameObject;
+                    coverImage.SetActive(false);
+                }
+                g.transform.GetChild(1).GetComponent<Image>().sprite =  listStickerImage[counter];
                 g.transform.position = new Vector3(paddingX + j * 2.4f, 2.0f - i * paddingY);               
                 g.GetComponent<Button>().AddEventListener(counter, ItemClicked);
                 counter++;

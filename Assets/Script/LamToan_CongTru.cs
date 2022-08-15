@@ -119,6 +119,7 @@ public class LamToan_CongTru : MonoBehaviour
     {
         yield return new WaitForSeconds(delayTime);
         audioSource.PlayOneShot(SharedData.numberOnlySound[numberIndex]);
+        //audioSource.PlayOneShot(SharedData.numberSound[numberIndex]);
     }
     void LoadNumberList()
     {

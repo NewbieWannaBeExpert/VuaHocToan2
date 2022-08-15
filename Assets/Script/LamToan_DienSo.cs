@@ -19,11 +19,13 @@ public class LamToan_DienSo : MonoBehaviour
     public AudioSource audioSource;
     public static Sprite[] listAnimalSprite;
     public List<GameObject> listNumberButton;
+    private AudioClip soundAlertFind;
     private int correctIndex = 0;
     private int correctNumberIndexReal = 0;
     private int startButtonIndex = 3;
     void Start()
     {
+        soundAlertFind = Resources.Load<AudioClip>("Sound/Alerts/findResult");
         listNumberButton = new List<GameObject>();
         GameObject btnHome = transform.GetChild(startButtonIndex).gameObject;
         audioSource = btnHome.AddComponent<AudioSource>();
@@ -48,7 +50,7 @@ public class LamToan_DienSo : MonoBehaviour
             ReplaySound();
         });
         LoadNumberList();
-
+        SoundForAlertFind();
     }
     IEnumerator ReplayAfterDelay(float seconds)
     {
@@ -103,9 +105,10 @@ public class LamToan_DienSo : MonoBehaviour
         }
         return result;
     }
-    public void SoundForCorrectNumber(int numberIndex)
+    public void SoundForAlertFind()
     {
-        audioSource.PlayOneShot(SharedData.numberSound[numberIndex]);
+        audioSource.PlayOneShot(soundAlertFind,1.0f);
+        //audioSource.PlayOneShot(SharedData.numberSound[numberIndex]);
     }
     void LoadNumberList()
     {
@@ -145,25 +148,25 @@ public class LamToan_DienSo : MonoBehaviour
         int correctValue = 0;
         if(correctIndex == 0)
         {
-            SoundForCorrectNumber(num1);
+            //SoundForCorrectNumber(num1);
             correctNumberIndexReal = num1;
             correctValue = num1;
         } else if(correctIndex == 1)
         {
-            SoundForCorrectNumber(num2);
+            //SoundForCorrectNumber(num2);
             correctNumberIndexReal = num2;
             correctValue = num2;
         }
         else if(correctIndex == 2)
         {
             correctNumberIndexReal = num3;
-            SoundForCorrectNumber(num3);
+            //SoundForCorrectNumber(num3);
             correctValue = num3;
         }
         else if (correctIndex == 3)
         {
             correctNumberIndexReal = num4;
-            SoundForCorrectNumber(num4);
+            //SoundForCorrectNumber(num4);
             correctValue = num4;
         }
         equotion = GenerateMathEquotion(correctValue);
@@ -213,12 +216,12 @@ public class LamToan_DienSo : MonoBehaviour
     void ToHome()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HocSoHomeScene"));
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/LamToanHomeScene"));
     }
     void ReplaySound()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        SoundForCorrectNumber(correctNumberIndexReal);
+        SoundForAlertFind();
     }
     void Replay(float afterSecond)
     {

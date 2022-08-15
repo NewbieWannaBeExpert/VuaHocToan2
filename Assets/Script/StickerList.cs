@@ -59,8 +59,15 @@ public class StickerList : MonoBehaviour
     {
         listStickerImage = Resources.LoadAll("Stickers/Dino/IconList", typeof(Sprite)).Cast<Sprite>().ToArray();
     }
+    void UpdateNumberOfStar()
+    {
+        GameObject g = transform.GetChild(4).gameObject;
+        g.transform.GetChild(1).GetComponent<Text>().text =  SharedData.GetNumberOfStar().ToString();
+    }
     void Start()
     {
+        SharedData.SetNumberOfStar(20);
+        UpdateNumberOfStar();
         int totalStar = SharedData.GetNumberOfStar();
         Debug.Log("Number of star: " + totalStar);
         InitSprites();
@@ -74,7 +81,7 @@ public class StickerList : MonoBehaviour
         {
             numCols = 2;
             numRows = 3;
-            paddingX = -1.0f;
+            paddingX = -1.2f;
             Debug.Log("Screen to long, numCols = 2, numRows = 3");
         }
         maxOpenSticker = GetMaxOpenSticker();
@@ -119,7 +126,7 @@ public class StickerList : MonoBehaviour
     {
         Debug.Log("Item " + itemIndex + " clicked");
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4 + itemIndex).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(5 + itemIndex).gameObject));
         clickedItem = itemIndex;
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/StickerDetail"));
 

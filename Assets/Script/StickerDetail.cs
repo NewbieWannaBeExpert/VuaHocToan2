@@ -37,6 +37,9 @@ public class StickerDetail : MonoBehaviour
     void Start()
     {
         InitSprites();
+        int totalStar = SharedData.GetNumberOfStar();
+        Debug.Log("Total number of star:" + totalStar);
+        UpdateNumberOfStar();
         GameObject imgToDiscover = transform.GetChild(1).gameObject;
         imgToDiscover.GetComponent<Image>().sprite = listStickerDetail[StickerList.clickedItem];
         GameObject btnToHome = transform.GetChild(2).gameObject;
@@ -48,7 +51,7 @@ public class StickerDetail : MonoBehaviour
         });
         int maxOpenIndex = StickerList.GetMaxOpenSticker();
         Debug.Log("Max open sticker is: " + maxOpenIndex + " and clickedItem is: " + StickerList.clickedItem);
-        if(maxOpenIndex < StickerList.clickedItem)
+        if(maxOpenIndex <= StickerList.clickedItem)
         {
             ShowCoverBlocks();
         } else
@@ -58,16 +61,23 @@ public class StickerDetail : MonoBehaviour
         }
         
     }
+    void UpdateNumberOfStar()
+    {
+        GameObject g = transform.GetChild(4).gameObject;
+        g.transform.GetChild(1).GetComponent<Text>().text = SharedData.GetNumberOfStar().ToString();
+    }
     void ShowCoverBlocks()
     {
         int numRows = 3;
         int numCols = 2;
         float paddingY = 2.5f;
+        float paddingX = -1.2f;
         //Debug.Log("Screen ratio is: " + Screen.height / Screen.width);
         if (Screen.height > 1.5f * Screen.width)
         {
             numCols = 2;
             numRows = 3;
+            paddingX = -1.2f;
         }
         GameObject buttonTemplate = transform.GetChild(3).gameObject;
         buttonTemplate.SetActive(true);
@@ -80,7 +90,7 @@ public class StickerDetail : MonoBehaviour
                 g = Instantiate(buttonTemplate, transform);
                 // Sprite oneSprite = sprites[i * numCols + j];
                 g.transform.GetChild(0).GetComponent<Image>().sprite = SharedData.listNumberBg[0];
-                g.transform.position = new Vector3(-1.2f + j * 2.4f, 2.0f - i * paddingY);
+                g.transform.position = new Vector3(paddingX + j * 2.4f, 2.0f - i * paddingY);
                 g.GetComponent<Button>().AddEventListener(i * numCols + j, ItemClicked);
             }
         }
@@ -88,16 +98,24 @@ public class StickerDetail : MonoBehaviour
     }
     void ItemClicked(int itemIndex)
     {
+        int totalStar = SharedData.GetNumberOfStar();
+        Debug.Log("Total number of star:" + totalStar);
+        UpdateNumberOfStar();
+        if (totalStar <= 0)
+        {
+            Debug.Log("Out of star, reload again");
+            return;
+        }
         totalClicked++;
         //Debug.Log("Item " + itemIndex + " clicked");
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        GameObject clickedButton = transform.GetChild(4 + itemIndex).gameObject;
+        GameObject clickedButton = transform.GetChild(5 + itemIndex).gameObject;
         LeanTween.cancel(clickedButton);
         clickedButton.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         // 2
         LeanTween.scale(clickedButton.gameObject, new Vector3(1.0f, 1.0f), 1.0f).setEase(LeanTweenType.punch);
         //StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4 + itemIndex).gameObject));
-        StartCoroutine(FadeAnimation(transform.GetChild(4 + itemIndex).gameObject));
+        StartCoroutine(FadeAnimation(transform.GetChild(5 + itemIndex).gameObject));
         if(totalClicked == totalItem)
         {
             audioSource.PlayOneShot(SharedData.victorySound[0], 1f);
@@ -110,11 +128,12 @@ public class StickerDetail : MonoBehaviour
             }
 
         }
-        int totalStar = SharedData.GetNumberOfStar();
-        Debug.Log("Total number of star:" + totalStar);
+        
+       
         SharedData.SetNumberOfStar(totalStar - 5);
         totalStar = SharedData.GetNumberOfStar();
         Debug.Log("Total number of star:" + totalStar);
+        UpdateNumberOfStar();
     }
     IEnumerator FadeAnimation(GameObject g)
     {

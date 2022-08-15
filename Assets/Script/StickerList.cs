@@ -66,7 +66,7 @@ public class StickerList : MonoBehaviour
     }
     void Start()
     {
-        SharedData.SetNumberOfStar(20);
+        SharedData.SetNumberOfStar(10);
         UpdateNumberOfStar();
         int totalStar = SharedData.GetNumberOfStar();
         Debug.Log("Number of star: " + totalStar);

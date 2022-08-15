@@ -104,7 +104,15 @@ public class StickerDetail : MonoBehaviour
         if (totalStar <= 0)
         {
             Debug.Log("Out of star, reload again");
+            //StartCoroutine(FadeAnimation(transform.GetChild(5 + itemIndex).gameObject));
+            audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+            GameObject clickedButton2 = transform.GetChild(5 + itemIndex).gameObject;
+            LeanTween.cancel(clickedButton2);
+            clickedButton2.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            // 2
+            LeanTween.scale(clickedButton2.gameObject, new Vector3(1.2f, 1.2f), 1.0f).setEase(LeanTweenType.punch);
             return;
+
         }
         totalClicked++;
         //Debug.Log("Item " + itemIndex + " clicked");

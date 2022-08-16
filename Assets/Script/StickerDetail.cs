@@ -13,6 +13,7 @@ public class StickerDetail : MonoBehaviour
     private int totalClicked = 0;
     private int totalItem = 6;
     public static Sprite[] listStickerDetail;
+    public bool isAlertOutOfMoneyShown = false;
    // private static Vector2 aspectRatio;
     [Serializable] 
     public struct NumberImage
@@ -59,12 +60,21 @@ public class StickerDetail : MonoBehaviour
             GameObject buttonTemplate = transform.GetChild(3).gameObject;
             buttonTemplate.SetActive(false);
         }
+        GameObject alertBoard = transform.GetChild(5).gameObject;
+        alertBoard.SetActive(false);
         
     }
     void UpdateNumberOfStar()
     {
         GameObject g = transform.GetChild(4).gameObject;
-        g.transform.GetChild(1).GetComponent<Text>().text = SharedData.GetNumberOfStar().ToString();
+        GameObject txtObj = g.transform.GetChild(1).GetComponent<Text>().gameObject;
+        txtObj.GetComponent<Text>().text = SharedData.GetNumberOfStar().ToString();
+        //g.transform.GetChild(1).GetComponent<Text>().text = SharedData.GetNumberOfStar().ToString();
+        LeanTween.cancel(txtObj.gameObject);
+        txtObj.transform.rotation = Quaternion.Euler(0.0f,0.0f,0.0f);
+        txtObj.transform.localScale = Vector3.one;
+        LeanTween.rotateZ(txtObj.gameObject, 15.0f, 0.5f).setEasePunch();
+        LeanTween.scaleX(txtObj.gameObject, 1.5f, 0.5f).setEasePunch();
     }
     void ShowCoverBlocks()
     {
@@ -98,8 +108,17 @@ public class StickerDetail : MonoBehaviour
         }
         buttonTemplate.SetActive(false);
     }
+    public void CloseAlertMoney(GameObject g)
+    {
+        Destroy(g);
+        isAlertOutOfMoneyShown = false;
+    }
     void ItemClicked(int itemIndex)
     {
+        if(isAlertOutOfMoneyShown)
+        {
+            return;
+        }
         int totalStar = SharedData.GetNumberOfStar();
         Debug.Log("Total number of star:" + totalStar);
         UpdateNumberOfStar();
@@ -108,24 +127,44 @@ public class StickerDetail : MonoBehaviour
             Debug.Log("Out of star, reload again");
             //StartCoroutine(FadeAnimation(transform.GetChild(5 + itemIndex).gameObject));
             audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-            GameObject clickedButton2 = transform.GetChild(5 + itemIndex).gameObject;
+            GameObject clickedButton2 = transform.GetChild(6 + itemIndex).gameObject;
             LeanTween.cancel(clickedButton2);
             clickedButton2.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             // 2
             LeanTween.scale(clickedButton2.gameObject, new Vector3(1.2f, 1.2f), 1.0f).setEase(LeanTweenType.punch);
+
+            GameObject alertBoardFrame = transform.GetChild(5).gameObject;
+            alertBoardFrame.SetActive(true);
+            GameObject alertBoard = Instantiate(alertBoardFrame, transform);
+            alertBoard.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            alertBoardFrame.SetActive(false);
+            GameObject btnClose = alertBoard.transform.GetChild(3).gameObject;
+            btnClose.GetComponent<Button>().onClick.AddListener(delegate ()
+            {
+                StartCoroutine(SharedData.ZoomInAndOutButton(btnClose));
+                CloseAlertMoney(alertBoard);
+            });
+
+            GameObject btnToTest = alertBoard.transform.GetChild(2).gameObject;
+            btnToTest.GetComponent<Button>().onClick.AddListener(delegate ()
+            {
+                StartCoroutine(SharedData.ZoomInAndOutButton(btnClose));
+                ToTestScene();
+            });
+            isAlertOutOfMoneyShown = true;
             return;
 
         }
         totalClicked++;
         //Debug.Log("Item " + itemIndex + " clicked");
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        GameObject clickedButton = transform.GetChild(5 + itemIndex).gameObject;
+        GameObject clickedButton = transform.GetChild(6 + itemIndex).gameObject;
         LeanTween.cancel(clickedButton);
         clickedButton.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         // 2
         LeanTween.scale(clickedButton.gameObject, new Vector3(1.0f, 1.0f), 1.0f).setEase(LeanTweenType.punch);
         //StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4 + itemIndex).gameObject));
-        StartCoroutine(FadeAnimation(transform.GetChild(5 + itemIndex).gameObject));
+        StartCoroutine(FadeAnimation(transform.GetChild(6 + itemIndex).gameObject));
         //Animate the star
         //First get the destination of the stop
         GameObject coinStatus = transform.GetChild(4).gameObject;
@@ -171,7 +210,11 @@ public class StickerDetail : MonoBehaviour
     {
         g.SetActive(false);
     }
-
+    void ToTestScene()
+    {
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestDienSo"));
+    }
     void ToHome()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);

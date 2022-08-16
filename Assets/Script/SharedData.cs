@@ -24,6 +24,7 @@ public class SharedData : MonoBehaviour
     public static AudioClip[] rightAlertClipList;
     public static Sprite[] listAnimalSprite;
     public static int InitGivenStar = 300;// for openning 6 images.
+    public static int currentStickerDetailIndex = 0;
     public static string PrefNumOfStar = "VuaHocToan_PrefNumOfStar";
     public static void SetNumberOfStar(int numOfStar)
     {

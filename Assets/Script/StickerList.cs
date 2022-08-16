@@ -66,7 +66,7 @@ public class StickerList : MonoBehaviour
     }
     void Start()
     {
-        SharedData.SetNumberOfStar(10);
+        SharedData.SetNumberOfStar(30);
         UpdateNumberOfStar();
         int totalStar = SharedData.GetNumberOfStar();
         Debug.Log("Number of star: " + totalStar);
@@ -102,15 +102,23 @@ public class StickerList : MonoBehaviour
         for (int i = 0; i < numRows; i++)
         {
             for (int j = 0; j < numCols; j++) {
-                if(counter >= totalItem)
+                if (counter >= totalItem)
                 {
                     break;
                 }
                 g = Instantiate(buttonTemplate, transform);
-                if(counter < maxOpenSticker)
+                if (counter < maxOpenSticker)
                 {
                     GameObject coverImage = g.transform.GetChild(2).gameObject;
                     coverImage.SetActive(false);
+                } else if (counter == maxOpenSticker)
+                {
+
+                } else if(counter > maxOpenSticker)
+                {
+                    GameObject coverImage = g.transform.GetChild(2).gameObject;
+                    Sprite sprite = Resources.Load<Sprite>("Btns/mini");
+                    coverImage.GetComponent<Image>().sprite = sprite;
                 }
                 g.transform.GetChild(1).GetComponent<Image>().sprite =  listStickerImage[counter];
                 g.transform.position = new Vector3(paddingX + j * 2.4f, 2.0f - i * paddingY);               
@@ -125,6 +133,12 @@ public class StickerList : MonoBehaviour
     void ItemClicked(int itemIndex)
     {
         Debug.Log("Item " + itemIndex + " clicked");
+        if(itemIndex > maxOpenSticker)
+        {
+            audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(5 + itemIndex).gameObject));
+            return;
+        }
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(5 + itemIndex).gameObject));
         clickedItem = itemIndex;

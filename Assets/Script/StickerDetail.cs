@@ -90,6 +90,8 @@ public class StickerDetail : MonoBehaviour
                 g = Instantiate(buttonTemplate, transform);
                 // Sprite oneSprite = sprites[i * numCols + j];
                 g.transform.GetChild(0).GetComponent<Image>().sprite = SharedData.listNumberBg[0];
+               // GameObject moneyImage = g.transform.GetChild(1).gameObject;
+               // moneyImage.SetActive(false);
                 g.transform.position = new Vector3(paddingX + j * 2.4f, 2.0f - i * paddingY);
                 g.GetComponent<Button>().AddEventListener(i * numCols + j, ItemClicked);
             }
@@ -124,6 +126,18 @@ public class StickerDetail : MonoBehaviour
         LeanTween.scale(clickedButton.gameObject, new Vector3(1.0f, 1.0f), 1.0f).setEase(LeanTweenType.punch);
         //StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4 + itemIndex).gameObject));
         StartCoroutine(FadeAnimation(transform.GetChild(5 + itemIndex).gameObject));
+        //Animate the star
+        //First get the destination of the stop
+        GameObject coinStatus = transform.GetChild(4).gameObject;
+        GameObject moneyImage = clickedButton.transform.GetChild(1).gameObject;
+        GameObject moneyDuplicated = Instantiate(moneyImage,transform);
+        moneyDuplicated.transform.position = moneyImage.transform.position; 
+        LeanTween.cancel(moneyDuplicated);
+        moneyDuplicated.transform.localScale = new Vector3(0.7f, 0.7f, 1.0f);   
+        LeanTween.scale(moneyDuplicated,new Vector3(1.0f,1.0f,1.0f),1.0f).setEase (LeanTweenType.easeOutQuint);
+        LeanTween.move(moneyDuplicated, coinStatus.transform.position, 0.5f).setEaseInBack();
+        StartCoroutine(DestroyGameObjectAfterDelay(moneyDuplicated, 0.7f));
+        Destroy(moneyImage);
         if(totalClicked == totalItem)
         {
             audioSource.PlayOneShot(SharedData.victorySound[0], 1f);
@@ -142,6 +156,11 @@ public class StickerDetail : MonoBehaviour
         totalStar = SharedData.GetNumberOfStar();
         Debug.Log("Total number of star:" + totalStar);
         UpdateNumberOfStar();
+    }
+    IEnumerator DestroyGameObjectAfterDelay(GameObject g, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        Destroy(g);
     }
     IEnumerator FadeAnimation(GameObject g)
     {

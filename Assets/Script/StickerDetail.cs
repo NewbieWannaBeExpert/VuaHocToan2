@@ -47,7 +47,7 @@ public class StickerDetail : MonoBehaviour
         audioSource = btnToHome.AddComponent<AudioSource>();
         btnToHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
-            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
+            StartCoroutine(SharedData.ZoomInAndOutButton(btnToHome));
             ToHome();
         });
         int maxOpenIndex = StickerList.GetMaxOpenSticker();
@@ -78,6 +78,13 @@ public class StickerDetail : MonoBehaviour
     }
     void ShowCoverBlocks()
     {
+        string openBoxListStr = SharedData.GetStickerOpenBoxString();
+        Debug.Log("Open box list string is: " + openBoxListStr);
+        List<string> ListOpenBoxes = new List<string>();
+        if(openBoxListStr != "")
+        {
+            ListOpenBoxes = openBoxListStr.Split("_").ToList();
+        }
         int numRows = 3;
         int numCols = 2;
         float paddingY = 2.5f;
@@ -92,10 +99,15 @@ public class StickerDetail : MonoBehaviour
         GameObject buttonTemplate = transform.GetChild(3).gameObject;
         buttonTemplate.SetActive(true);
         GameObject g;
+        int counter = 0;
         for (int i = 0; i < numRows; i++)
         {
             for (int j = 0; j < numCols; j++)
             {
+                if(ListOpenBoxes.Contains((i * numCols + j).ToString())) {
+                    continue;
+                }
+                
                 // Debug.Log("Generate for button number i =" + i + ", and j =" + j);
                 g = Instantiate(buttonTemplate, transform);
                 // Sprite oneSprite = sprites[i * numCols + j];
@@ -103,16 +115,18 @@ public class StickerDetail : MonoBehaviour
                // GameObject moneyImage = g.transform.GetChild(1).gameObject;
                // moneyImage.SetActive(false);
                 g.transform.position = new Vector3(paddingX + j * 2.4f, 2.0f - i * paddingY);
-                g.GetComponent<Button>().AddEventListener(i * numCols + j, ItemClicked);
+                g.GetComponent<Button>().AddEventListener(counter, ItemClicked);
+                counter++;
             }
         }
         buttonTemplate.SetActive(false);
     }
     public void CloseAlertMoney(GameObject g)
     {
-        Destroy(g);
+        StartCoroutine(SharedData.DestroyGameObjectAfterSomeTime(g, 0.35f));
         isAlertOutOfMoneyShown = false;
     }
+     
     void ItemClicked(int itemIndex)
     {
         if(isAlertOutOfMoneyShown)
@@ -137,7 +151,7 @@ public class StickerDetail : MonoBehaviour
             alertBoardFrame.SetActive(true);
             GameObject alertBoard = Instantiate(alertBoardFrame, transform);
             alertBoard.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-            alertBoardFrame.SetActive(false);
+            
             GameObject btnClose = alertBoard.transform.GetChild(3).gameObject;
             btnClose.GetComponent<Button>().onClick.AddListener(delegate ()
             {
@@ -148,9 +162,10 @@ public class StickerDetail : MonoBehaviour
             GameObject btnToTest = alertBoard.transform.GetChild(2).gameObject;
             btnToTest.GetComponent<Button>().onClick.AddListener(delegate ()
             {
-                StartCoroutine(SharedData.ZoomInAndOutButton(btnClose));
+                StartCoroutine(SharedData.ZoomInAndOutButton(btnToTest));
                 ToTestScene();
             });
+            alertBoardFrame.SetActive(false);
             isAlertOutOfMoneyShown = true;
             return;
 
@@ -177,8 +192,19 @@ public class StickerDetail : MonoBehaviour
         LeanTween.move(moneyDuplicated, coinStatus.transform.position, 0.5f).setEaseInBack();
         StartCoroutine(DestroyGameObjectAfterDelay(moneyDuplicated, 0.7f));
         Destroy(moneyImage);
+        string openBoxListStr = SharedData.GetStickerOpenBoxString();
+        if(openBoxListStr == "")
+        {
+            openBoxListStr = itemIndex.ToString();
+        }
+         else
+        {
+            openBoxListStr = openBoxListStr + "_" + itemIndex.ToString();
+        }
+        SharedData.SetStickerOpenBoxString(openBoxListStr);
         if(totalClicked == totalItem)
         {
+            SharedData.SetStickerOpenBoxString("");
             audioSource.PlayOneShot(SharedData.victorySound[0], 1f);
             Debug.Log("You open on sticker index:" + StickerList.clickedItem);
             int maxOpenSticker = StickerList.GetMaxOpenSticker();

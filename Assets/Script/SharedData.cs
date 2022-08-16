@@ -26,6 +26,24 @@ public class SharedData : MonoBehaviour
     public static int InitGivenStar = 300;// for openning 6 images.
     public static int currentStickerDetailIndex = 0;
     public static string PrefNumOfStar = "VuaHocToan_PrefNumOfStar";
+    //This is to save the current state of the list box that cover the sticker
+    //This will take value like this: 0_3_4_5 -> Then the box with index 0,3,4,5 will be open
+    //Box with index 1,2 will close.
+    public static string PrefStickerOpenBoxListString = "VuaHocToan_PrefStickerOpenBoxListString";
+    public static void SetStickerOpenBoxString(string value)
+    {
+        PlayerPrefs.SetString(PrefStickerOpenBoxListString, value);
+    }
+    public static string GetStickerOpenBoxString()
+    {
+        if(PlayerPrefs.HasKey(PrefStickerOpenBoxListString))
+        {
+            return PlayerPrefs.GetString(PrefStickerOpenBoxListString);
+        } else
+        {
+            return "";
+        }
+    }
     public static void SetNumberOfStar(int numOfStar)
     {
         PlayerPrefs.SetInt(PrefNumOfStar, numOfStar);
@@ -41,6 +59,12 @@ public class SharedData : MonoBehaviour
             return InitGivenStar;
         }
     }
+    public static IEnumerator DestroyGameObjectAfterSomeTime(GameObject g, float afterDelay)
+    {
+        yield return new WaitForSeconds(afterDelay);
+        Destroy(g);
+    }
+   
     //public static AudioSource audioSource;
     public static void initAllResources()
     {

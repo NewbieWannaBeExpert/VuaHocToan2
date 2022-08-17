@@ -27,8 +27,8 @@ public class SharedData : MonoBehaviour
     public static int currentStickerDetailIndex = 0;
     public static string PrefNumOfStar = "VuaHocToan_PrefNumOfStar";
     //This is to save the current state of the list box that cover the sticker
-    //This will take value like this: 0_3_4_5 -> Then the box with index 0,3,4,5 will be open
-    //Box with index 1,2 will close.
+    //This will take value like this: 0_1_0_0_1_0 -> Then the box with index 1,4 will be open
+    //Box with index 0,2,3,5 will close.
     public static string PrefStickerOpenBoxListString = "VuaHocToan_PrefStickerOpenBoxListString";
     public static string PrefStickerCurrentPage = "VuaHocToan_PrefStickerCurrentPage";
     
@@ -57,8 +57,14 @@ public class SharedData : MonoBehaviour
             return PlayerPrefs.GetString(PrefStickerOpenBoxListString);
         } else
         {
-            return "";
+            PlayerPrefs.SetString(PrefStickerOpenBoxListString, "0_0_0_0_0_0");
+            //Default all the sticker is not open
+            return "0_0_0_0_0_0";
         }
+    }
+    public static void ResetStickerOpenBoxString()
+    {
+        SetStickerOpenBoxString("0_0_0_0_0_0");
     }
     public static void SetNumberOfStar(int numOfStar)
     {

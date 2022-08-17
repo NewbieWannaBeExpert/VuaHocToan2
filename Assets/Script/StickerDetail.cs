@@ -78,6 +78,7 @@ public class StickerDetail : MonoBehaviour
     }
     void ShowCoverBlocks()
     {
+       // SharedData.ResetStickerOpenBoxString();
         string openBoxListStr = SharedData.GetStickerOpenBoxString();
         Debug.Log("Open box list string is: " + openBoxListStr);
         List<string> ListOpenBoxes = new List<string>();
@@ -104,7 +105,7 @@ public class StickerDetail : MonoBehaviour
         {
             for (int j = 0; j < numCols; j++)
             {
-                if(ListOpenBoxes.Contains((i * numCols + j).ToString())) {
+                if(ListOpenBoxes[i * numCols + j] == "1") {
                     continue;
                 }
                 
@@ -126,7 +127,45 @@ public class StickerDetail : MonoBehaviour
         StartCoroutine(SharedData.DestroyGameObjectAfterSomeTime(g, 0.35f));
         isAlertOutOfMoneyShown = false;
     }
-     
+    public bool CheckOpenAllCoverBoxes()
+    {
+        string openString = SharedData.GetStickerOpenBoxString();
+        Debug.Log("Open string is: " + openString);
+        List<string> openList = new List<string>();
+        openList = openString.Split("_").ToList();
+        foreach(string open in openList)
+        {
+            Debug.Log("Open string in for is: " + open);
+            if (open == "0")
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    public void UpdateOpenString(int openIndex)
+    {
+        string openString = SharedData.GetStickerOpenBoxString();
+        List<string> openList = new List<string>();
+       // List<string> returnList = new List<string>();
+        openList = openString.Split("_").ToList();
+        openList[openIndex] = "1";
+        string retStr = "";
+        int counter = 0;
+        foreach(string str in openList)
+        {
+            if(counter == 0 )
+            {
+                retStr = str;   
+            }else
+            {
+                retStr = retStr + "_" + str;
+            }
+            counter ++;
+        }
+        Debug.Log("After open, retStr is: " + retStr);
+        SharedData.SetStickerOpenBoxString(retStr);
+    }
     void ItemClicked(int itemIndex)
     {
         if(isAlertOutOfMoneyShown)
@@ -170,7 +209,8 @@ public class StickerDetail : MonoBehaviour
             return;
 
         }
-        totalClicked++;
+        //totalClicked++;
+        UpdateOpenString(itemIndex);
         //Debug.Log("Item " + itemIndex + " clicked");
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         GameObject clickedButton = transform.GetChild(6 + itemIndex).gameObject;
@@ -192,7 +232,7 @@ public class StickerDetail : MonoBehaviour
         LeanTween.move(moneyDuplicated, coinStatus.transform.position, 0.5f).setEaseInBack();
         StartCoroutine(DestroyGameObjectAfterDelay(moneyDuplicated, 0.7f));
         Destroy(moneyImage);
-        string openBoxListStr = SharedData.GetStickerOpenBoxString();
+        /*string openBoxListStr = SharedData.GetStickerOpenBoxString();
         if(openBoxListStr == "")
         {
             openBoxListStr = itemIndex.ToString();
@@ -201,10 +241,10 @@ public class StickerDetail : MonoBehaviour
         {
             openBoxListStr = openBoxListStr + "_" + itemIndex.ToString();
         }
-        SharedData.SetStickerOpenBoxString(openBoxListStr);
-        if(totalClicked == totalItem)
+        SharedData.SetStickerOpenBoxString(openBoxListStr);*/
+        if(CheckOpenAllCoverBoxes())
         {
-            SharedData.SetStickerOpenBoxString("");
+            SharedData.ResetStickerOpenBoxString();
             audioSource.PlayOneShot(SharedData.victorySound[0], 1f);
             Debug.Log("You open on sticker index:" + StickerList.clickedItem);
             int maxOpenSticker = StickerList.GetMaxOpenSticker();

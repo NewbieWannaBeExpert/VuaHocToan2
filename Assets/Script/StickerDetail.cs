@@ -127,6 +127,7 @@ public class StickerDetail : MonoBehaviour
     }
     public void CloseAlertMoney(GameObject g)
     {
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.DestroyGameObjectAfterSomeTime(g, 0.35f));
         isAlertOutOfMoneyShown = false;
     }
@@ -282,7 +283,16 @@ public class StickerDetail : MonoBehaviour
     void ToTestScene()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestDienSo"));
+        System.Random g = new System.Random();
+        int randNum = g.Next(0, 2) ;
+        if(randNum == 0)
+        {
+            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestDienSo"));
+        }
+        else
+        {
+            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestDoVui1"));
+        }
     }
     void ToHome()
     {

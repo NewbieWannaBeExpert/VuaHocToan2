@@ -19,6 +19,9 @@ public class SharedData : MonoBehaviour
     public static Sprite[] listNumberBg;
     public static Sprite[] listNumberBgDoVui3;
     public static Sprite[] listNumberBgLamToan;
+    public static bool isGameOn = true;
+    public static int currentTestSentence = 1;
+    public static int totalTestSentence = 2;
 
     public static AudioClip[] wrongAlertClipList;
     public static AudioClip[] rightAlertClipList;
@@ -31,7 +34,11 @@ public class SharedData : MonoBehaviour
     //Box with index 0,2,3,5 will close.
     public static string PrefStickerOpenBoxListString = "VuaHocToan_StickerOpenBoxString";
     public static string PrefStickerCurrentPage = "VuaHocToan_PrefStickerCurrentPage";
-    
+    public static IEnumerator DestroyGameObjectAfterDelay(GameObject g, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        Destroy(g);
+    }
     public static void SetCurrentStickerPage(int page)
     {
         PlayerPrefs.SetInt(PrefStickerCurrentPage, page);

@@ -30,6 +30,22 @@ public class SharedData : MonoBehaviour
     //This will take value like this: 0_3_4_5 -> Then the box with index 0,3,4,5 will be open
     //Box with index 1,2 will close.
     public static string PrefStickerOpenBoxListString = "VuaHocToan_PrefStickerOpenBoxListString";
+    public static string PrefStickerCurrentPage = "VuaHocToan_PrefStickerCurrentPage";
+    
+    public static void SetCurrentStickerPage(int page)
+    {
+        PlayerPrefs.SetInt(PrefStickerCurrentPage, page);
+    }
+    public static int GetCurrentStickerPage()
+    {
+        if (PlayerPrefs.HasKey(PrefStickerCurrentPage))
+        {
+            return PlayerPrefs.GetInt(PrefStickerCurrentPage);
+        } else
+        {
+            return 0;
+        }
+    }
     public static void SetStickerOpenBoxString(string value)
     {
         PlayerPrefs.SetString(PrefStickerOpenBoxListString, value);

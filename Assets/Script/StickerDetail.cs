@@ -209,9 +209,9 @@ public class StickerDetail : MonoBehaviour
             Debug.Log("You open on sticker index:" + StickerList.clickedItem);
             int maxOpenSticker = StickerList.GetMaxOpenSticker();
             Debug.Log("Max sticker index is: " + maxOpenSticker);
-            if(maxOpenSticker < StickerList.clickedItem)
+            if(maxOpenSticker <= StickerList.clickedItem)
             {
-                StickerList.SetMaxOpenSticker(StickerList.clickedItem);
+                StickerList.SetMaxOpenSticker(StickerList.clickedItem + 1);
             }
 
         }

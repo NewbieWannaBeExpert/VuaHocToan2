@@ -24,7 +24,8 @@ public class TestDienSo : MonoBehaviour
     private int correctNumberIndexReal = 0;
     private int startButtonIndex = 3;
     private bool isGameOn = true;
-    private int currentSentence = 0;
+    private int currentSentence = 1;
+    private int totalSentence = 2;
     void Start()
     {
         UpdateNumberOfStar();
@@ -39,6 +40,12 @@ public class TestDienSo : MonoBehaviour
             ToHome();
         });
         LoadNumberList();
+        UpdateNumberOfSentence();
+    }
+   void UpdateNumberOfSentence()
+    {
+        GameObject txtSen = transform.GetChild(6).transform.GetChild(1).gameObject;
+        txtSen.gameObject.GetComponent<Text>().text = currentSentence.ToString() + "/" + totalSentence.ToString();
     }
     IEnumerator ReplayAfterDelay(float seconds)
     {
@@ -70,6 +77,7 @@ public class TestDienSo : MonoBehaviour
             int totalStar = SharedData.GetNumberOfStar();
             SharedData.SetNumberOfStar(totalStar + 5);
             UpdateNumberOfStar();
+            currentSentence++; 
         } else
         {
             int totalStar = SharedData.GetNumberOfStar();
@@ -272,7 +280,12 @@ public class TestDienSo : MonoBehaviour
     }
     IEnumerator ReloadNumber(float waitSeconds)
     {
+        if(currentSentence > totalSentence)
+        {
+            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.25f, "Scenes/StickerDetail"));
+        }
         yield return new WaitForSeconds(waitSeconds);
         LoadNumberList();
+        UpdateNumberOfSentence();
     }
 }

@@ -37,7 +37,6 @@ public class StickerList : MonoBehaviour
         if(PlayerPrefs.HasKey(openStickerDinoRefName))
         {
             maxOpenSticker = PlayerPrefs.GetInt(openStickerDinoRefName);
-            Debug.Log("Max open sticker for dino list is:" + maxOpenSticker);
             return maxOpenSticker;
         } else
         {
@@ -66,8 +65,9 @@ public class StickerList : MonoBehaviour
     {
         ListShownSticker = new List<GameObject>();
         ListNextBackBtn = new List<GameObject>();
-        SharedData.SetNumberOfStar(30);
+        //SharedData.SetNumberOfStar(50);
         //SharedData.SetStickerOpenBoxString("");
+      //  SetMaxOpenSticker(0);
         UpdateNumberOfStar();
         int totalStar = SharedData.GetNumberOfStar();
         Debug.Log("Number of star: " + totalStar);

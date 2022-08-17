@@ -67,7 +67,7 @@ public class StickerList : MonoBehaviour
         ListShownSticker = new List<GameObject>();
         ListNextBackBtn = new List<GameObject>();
         SharedData.SetNumberOfStar(30);
-        SharedData.SetStickerOpenBoxString("");
+        //SharedData.SetStickerOpenBoxString("");
         UpdateNumberOfStar();
         int totalStar = SharedData.GetNumberOfStar();
         Debug.Log("Number of star: " + totalStar);

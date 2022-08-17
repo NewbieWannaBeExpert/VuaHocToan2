@@ -29,7 +29,7 @@ public class SharedData : MonoBehaviour
     //This is to save the current state of the list box that cover the sticker
     //This will take value like this: 0_1_0_0_1_0 -> Then the box with index 1,4 will be open
     //Box with index 0,2,3,5 will close.
-    public static string PrefStickerOpenBoxListString = "VuaHocToan_PrefStickerOpenBoxListString";
+    public static string PrefStickerOpenBoxListString = "VuaHocToan_StickerOpenBoxString";
     public static string PrefStickerCurrentPage = "VuaHocToan_PrefStickerCurrentPage";
     
     public static void SetCurrentStickerPage(int page)
@@ -54,9 +54,13 @@ public class SharedData : MonoBehaviour
     {
         if(PlayerPrefs.HasKey(PrefStickerOpenBoxListString))
         {
-            return PlayerPrefs.GetString(PrefStickerOpenBoxListString);
+            Debug.Log("Has key of Open boxes");
+            string ret = PlayerPrefs.GetString(PrefStickerOpenBoxListString);
+            Debug.Log("Open box string is: " + ret);
+            return ret;
         } else
         {
+            Debug.Log("No key of Open Boxes");
             PlayerPrefs.SetString(PrefStickerOpenBoxListString, "0_0_0_0_0_0");
             //Default all the sticker is not open
             return "0_0_0_0_0_0";

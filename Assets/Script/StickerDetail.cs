@@ -14,6 +14,7 @@ public class StickerDetail : MonoBehaviour
     private int totalItem = 6;
     public static Sprite[] listStickerDetail;
     public bool isAlertOutOfMoneyShown = false;
+    public List<int> realIndexList;
    // private static Vector2 aspectRatio;
     [Serializable] 
     public struct NumberImage
@@ -38,6 +39,7 @@ public class StickerDetail : MonoBehaviour
     void Start()
     {
         InitSprites();
+        realIndexList = new List<int>();
         int totalStar = SharedData.GetNumberOfStar();
         Debug.Log("Total number of star:" + totalStar);
         UpdateNumberOfStar();
@@ -78,7 +80,7 @@ public class StickerDetail : MonoBehaviour
     }
     void ShowCoverBlocks()
     {
-       // SharedData.ResetStickerOpenBoxString();
+        //SharedData.ResetStickerOpenBoxString();
         string openBoxListStr = SharedData.GetStickerOpenBoxString();
         Debug.Log("Open box list string is: " + openBoxListStr);
         List<string> ListOpenBoxes = new List<string>();
@@ -108,7 +110,8 @@ public class StickerDetail : MonoBehaviour
                 if(ListOpenBoxes[i * numCols + j] == "1") {
                     continue;
                 }
-                
+                realIndexList.Add(i * numCols + j);
+                Debug.Log("Assign realIndexList index " + counter + " with value:" + (i * numCols + j));
                 // Debug.Log("Generate for button number i =" + i + ", and j =" + j);
                 g = Instantiate(buttonTemplate, transform);
                 // Sprite oneSprite = sprites[i * numCols + j];
@@ -135,7 +138,7 @@ public class StickerDetail : MonoBehaviour
         openList = openString.Split("_").ToList();
         foreach(string open in openList)
         {
-            Debug.Log("Open string in for is: " + open);
+         //   Debug.Log("Open string in for is: " + open);
             if (open == "0")
             {
                 return false;
@@ -210,7 +213,7 @@ public class StickerDetail : MonoBehaviour
 
         }
         //totalClicked++;
-        UpdateOpenString(itemIndex);
+        UpdateOpenString(realIndexList[itemIndex]);
         //Debug.Log("Item " + itemIndex + " clicked");
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         GameObject clickedButton = transform.GetChild(6 + itemIndex).gameObject;

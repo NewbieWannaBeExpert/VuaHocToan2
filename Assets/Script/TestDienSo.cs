@@ -24,6 +24,7 @@ public class TestDienSo : MonoBehaviour
     private int correctNumberIndexReal = 0;
     private int startButtonIndex = 3;
     private bool isGameOn = true;
+    private int currentSentence = 0;
     void Start()
     {
         UpdateNumberOfStar();
@@ -58,7 +59,7 @@ public class TestDienSo : MonoBehaviour
         Debug.Log("You click on index:" + itemIndex);
         System.Random rand = new System.Random();
         
-        GameObject currentClickedNumber = transform.GetChild(3 + itemIndex + startButtonIndex).gameObject;
+        GameObject currentClickedNumber = transform.GetChild(4 + itemIndex + startButtonIndex).gameObject;
         if (itemIndex == correctIndex)
         {
             isGameOn = false;
@@ -93,10 +94,11 @@ public class TestDienSo : MonoBehaviour
         LeanTween.scale(moneyDuplicated, new Vector3(1.0f, 1.0f, 1.0f), 1.0f).setEase(LeanTweenType.easeOutQuint);
         LeanTween.move(moneyDuplicated, coinStatus.transform.position, 0.5f).setEaseInBack();
         StartCoroutine(DestroyGameObjectAfterDelay(moneyDuplicated, 0.7f));
-        Destroy(moneyImage);
+        //Destroy(moneyImage);
+        moneyImage.SetActive(false);
         //Do some other stuffs
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(3 + itemIndex + startButtonIndex).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4 + itemIndex + startButtonIndex).gameObject));
     }
     void UpdateNumberOfStar()
     {

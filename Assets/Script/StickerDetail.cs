@@ -284,14 +284,17 @@ public class StickerDetail : MonoBehaviour
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         System.Random g = new System.Random();
-        int randNum = g.Next(0, 2) ;
+        int randNum = g.Next(0, 2) + 5 ;
         if(randNum == 0)
         {
             StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestDienSo"));
         }
-        else
+        else if(randNum == 1)
         {
             StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestDoVui1"));
+        } else
+        {
+            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestDoVui2"));
         }
     }
     void ToHome()

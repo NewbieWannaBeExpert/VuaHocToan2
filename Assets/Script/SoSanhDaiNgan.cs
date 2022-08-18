@@ -14,6 +14,10 @@ public class SoSanhDaiNgan : MonoBehaviour
     public static GameObject imageSmall;
     public AudioClip[] alertFindBigList;
     public AudioClip[] alertFindSmallList;
+    public AudioClip[] alertFindLongList;
+    public AudioClip[] alertFindShortList;
+    public AudioClip[] alertFindTallList;
+    public AudioClip[] alertFindNotTallList;
     public static int userChoice = -1;//-1 no anser, 0 wrong, 1 correct
     public static Sprite[] listBigSprite;
     public static Sprite[] listSmallSprite;
@@ -40,6 +44,10 @@ public class SoSanhDaiNgan : MonoBehaviour
     {
         alertFindBigList = Resources.LoadAll("Sound/FindBigSmall/Big",typeof(AudioClip)).Cast<AudioClip>().ToArray();
         alertFindSmallList = Resources.LoadAll("Sound/FindBigSmall/Small", typeof(AudioClip)).Cast<AudioClip>().ToArray();
+        alertFindLongList = Resources.LoadAll("Sound/AlertFindLongShort/Long", typeof(AudioClip)).Cast<AudioClip>().ToArray();
+        alertFindShortList = Resources.LoadAll("Sound/AlertFindLongShort/Short", typeof(AudioClip)).Cast<AudioClip>().ToArray();
+        alertFindTallList = Resources.LoadAll("Sound/AlertFindTall/Tall", typeof(AudioClip)).Cast<AudioClip>().ToArray();
+        alertFindNotTallList = Resources.LoadAll("Sound/AlertFindLongShort/Short", typeof(AudioClip)).Cast<AudioClip>().ToArray();
     }
     void Start()
     {
@@ -73,27 +81,45 @@ public class SoSanhDaiNgan : MonoBehaviour
         System.Random randBigShuffleSeed = new System.Random();
         isFindBig = randBigShuffleSeed.Next(0, 2);
         Debug.Log("Rand big shuffle is:" + isFindBig + " and compare type is:" + compareType);
-        if(isFindBig == 1)
-        {
-            audioSource.PlayOneShot(alertFindBigList[0]);
-        } else
-        {
-            audioSource.PlayOneShot(alertFindSmallList[0]);
-        }
+       
         GameObject bigImage = transform.GetChild(3).gameObject;
         GameObject smallImage = transform.GetChild(4).gameObject;
         imageBig = bigImage;
         imageSmall = smallImage;
-        if(compareType ==  0 || 1==1) //big-small
+        if(compareType ==  0) //big-small
         {
+            if (isFindBig == 1)
+            {
+                audioSource.PlayOneShot(alertFindBigList[0]);
+            }
+            else
+            {
+                audioSource.PlayOneShot(alertFindSmallList[0]);
+            }
             bigImage.transform.GetComponent<Image>().sprite = listBigSprite[randomIndex];
             smallImage.transform.GetComponent<Image>().sprite = listSmallSprite[randomIndex];
         } else if(compareType == 1)
         {
+            if (isFindBig == 1)
+            {
+                audioSource.PlayOneShot(alertFindLongList[0]);
+            }
+            else
+            {
+                audioSource.PlayOneShot(alertFindShortList[0]);
+            }
             bigImage.transform.GetComponent<Image>().sprite = listLongSprite[randomIndex];
             smallImage.transform.GetComponent<Image>().sprite = listShortSprite[randomIndex];
         } else
         {
+            if (isFindBig == 1)
+            {
+                audioSource.PlayOneShot(alertFindTallList[0]);
+            }
+            else
+            {
+                audioSource.PlayOneShot(alertFindNotTallList[0]);
+            }
             bigImage.transform.GetComponent<Image>().sprite = listTallSprite[randomIndex];
             smallImage.transform.GetComponent<Image>().sprite = listNotTallSprite[randomIndex];
         }

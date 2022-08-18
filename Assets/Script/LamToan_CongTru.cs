@@ -70,7 +70,9 @@ public class LamToan_CongTru : MonoBehaviour
             currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBgLamToan[1];          
             SharedData.alertSoundCorrect(true, audioSource);
             StartCoroutine(ReplayAfterDelay(2.5f));
-        } else
+            ShakeBoyGirl(imgBoyGirl);
+        }
+        else
         {
             int randIncorrect = r.Next(1, 5);
             Debug.Log("Incorrect boy index:" + randIncorrect);
@@ -79,10 +81,18 @@ public class LamToan_CongTru : MonoBehaviour
             //Debug.Log("IN_CORRECT");
             SharedData.alertSoundCorrect(false, audioSource);
             currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBgLamToan[2];
+            ShakeBoyGirl(imgBoyGirl);
         }
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4 + itemIndex + startButtonIndex).gameObject));
     }
+    void ShakeBoyGirl(GameObject g)
+    {
+        LeanTween.cancel(g);
+        g.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        LeanTween.scale(g.gameObject, new Vector3(1.5f, 1.5f), 1.0f).setEase(LeanTweenType.punch);
+    }
+
     public string GenerateMathEquotion(int forResult)
     {
         string result = "";

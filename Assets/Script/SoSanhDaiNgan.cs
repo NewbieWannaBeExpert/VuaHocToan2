@@ -143,7 +143,7 @@ public class SoSanhDaiNgan : MonoBehaviour
     void ToHome()
     {
        Debug.Log("You click on home button");
-       SceneManager.LoadScene("Scenes/HomeScene");
+       SceneManager.LoadScene("Scenes/LamToanHomeScene");
     }
     public void showCorrect(bool isCorrect)
     {

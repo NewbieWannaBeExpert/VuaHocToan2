@@ -78,10 +78,15 @@ public class TestDoVui2 : MonoBehaviour
     }
     void BtnNumberClicked(int itemIndex)
     {
+        if (SharedData.isGameOn == false)
+        {
+            return;
+        }
         Debug.Log("You click on index:" + itemIndex);
         GameObject currentClickedNumber = transform.GetChild(7 + itemIndex).gameObject;
         if (itemIndex == correctIndex)
         {
+            SharedData.isGameOn = false;
             // Debug.Log("CORRECT!");
             currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = listBtnBg[1];
             currentClickedNumber.transform.GetChild(3).GetComponent<Image>().sprite = listBtnBg[1];
@@ -91,6 +96,7 @@ public class TestDoVui2 : MonoBehaviour
             SharedData.SetNumberOfStar(totalStar + 5);
             UpdateNumberOfStar();
             SharedData.currentTestSentence++;
+            ShowFlyingStar(currentClickedNumber,true);
         } else
         {
             //Debug.Log("IN_CORRECT");
@@ -102,23 +108,37 @@ public class TestDoVui2 : MonoBehaviour
             }
             SharedData.alertSoundCorrect(false, audioSource);
             currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = listBtnBg[2];
+            ShowFlyingStar(currentClickedNumber, false);
         }
-        ShowFlyingStar(currentClickedNumber);
+
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.ZoomInAndOutButton(currentClickedNumber));
     }
-    void ShowFlyingStar(GameObject g)
+    void ShowFlyingStar(GameObject g, bool isCorrect)
     {
         //Show Flying star
         GameObject coinStatus = transform.GetChild(5).gameObject;
         GameObject moneyImage = g.transform.GetChild(4).gameObject;
+        if (isCorrect == false) {
+            System.Random r = new System.Random();
+            int randIndex = r.Next(0, 2);
+            Sprite[] sadSpriteList = Resources.LoadAll<Sprite>("Others/SadIcon").ToArray();
+            moneyImage.GetComponent<Image>().sprite = sadSpriteList[randIndex];
+        }
         moneyImage.SetActive(true);
         GameObject moneyDuplicated = Instantiate(moneyImage, transform);
         moneyDuplicated.transform.position = moneyImage.transform.position;
         LeanTween.cancel(moneyDuplicated);
         moneyDuplicated.transform.localScale = new Vector3(0.7f, 0.7f, 1.0f);
         LeanTween.scale(moneyDuplicated, new Vector3(1.0f, 1.0f, 1.0f), 1.0f).setEase(LeanTweenType.easeOutQuint);
-        LeanTween.move(moneyDuplicated, coinStatus.transform.position, 0.5f).setEaseInBack();
+        if (isCorrect == false)
+        {
+            LeanTween.move(moneyDuplicated, new Vector3(0f, -5.0f, 1.0f), 0.5f).setEaseInBack();
+        }
+        else
+        {
+            LeanTween.move(moneyDuplicated, coinStatus.transform.position, 0.5f).setEaseInBack();
+        }
         StartCoroutine(SharedData.DestroyGameObjectAfterDelay(moneyDuplicated, 0.7f));
         //Destroy(moneyImage);
         moneyImage.SetActive(false);
@@ -305,9 +325,10 @@ public class TestDoVui2 : MonoBehaviour
     
     void ToHome()
     {
+        SharedData.currentTestSentence = 1;
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
-        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HocSoHomeScene"));
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/StickerDetail"));
     }
     void ReplaySound()
     {
@@ -331,9 +352,16 @@ public class TestDoVui2 : MonoBehaviour
             listNumberButton.RemoveAt(0);
             listNumberButton.RemoveAt(0);
         }
+        
+        SharedData.isGameOn = true;
+        if (SharedData.currentTestSentence > SharedData.totalTestSentence)
+        {
+            SharedData.currentTestSentence = 1;
+            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.25f, "Scenes/StickerDetail"));
+        }
+        UpdateNumberOfSentence();
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(ReloadNumber(afterSecond));
-        
     }
     IEnumerator ReloadNumber(float waitSeconds)
     {

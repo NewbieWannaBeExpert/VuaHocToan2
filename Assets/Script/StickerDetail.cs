@@ -284,7 +284,7 @@ public class StickerDetail : MonoBehaviour
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         System.Random g = new System.Random();
-        int randNum = g.Next(0, 2) + 5 ;
+        int randNum = g.Next(0, 3) ;
         if(randNum == 0)
         {
             StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestDienSo"));

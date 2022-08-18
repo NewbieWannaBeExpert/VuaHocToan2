@@ -244,6 +244,7 @@ public class TestDoVui1 : MonoBehaviour
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         if (SharedData.currentTestSentence > SharedData.totalTestSentence)
         {
+            SharedData.currentTestSentence = 1;
             StartCoroutine(SharedData.ToSceneAfterSomeTime(0.25f, "Scenes/StickerDetail"));
         }
         StartCoroutine(ReloadNumber(afterSecond));

@@ -41,6 +41,7 @@ public class TestDienSo : MonoBehaviour
         });
         LoadNumberList();
         UpdateNumberOfSentence();
+        SoundForAlertFind();
     }
    void UpdateNumberOfSentence()
     {

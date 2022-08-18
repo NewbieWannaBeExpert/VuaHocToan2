@@ -46,11 +46,15 @@ public class SoSanhDaiNgan : MonoBehaviour
         GameObject btnHome = transform.GetChild(1).gameObject;
         btnHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
+            audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+            StartCoroutine(SharedData.ZoomInAndOutButton(btnHome));
             ToHome();
         });
         GameObject btnReplay = transform.GetChild(5).gameObject;
         btnReplay.GetComponent<Button>().onClick.AddListener(delegate ()
         {
+            audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+            StartCoroutine(SharedData.ZoomInAndOutButton(btnReplay));
             LoadRandImage();
         });
         audioSource = btnHome.AddComponent<AudioSource>();  
@@ -80,7 +84,7 @@ public class SoSanhDaiNgan : MonoBehaviour
         GameObject smallImage = transform.GetChild(4).gameObject;
         imageBig = bigImage;
         imageSmall = smallImage;
-        if(compareType == 0) //big-small
+        if(compareType ==  0 || 1==1) //big-small
         {
             bigImage.transform.GetComponent<Image>().sprite = listBigSprite[randomIndex];
             smallImage.transform.GetComponent<Image>().sprite = listSmallSprite[randomIndex];
@@ -112,7 +116,7 @@ public class SoSanhDaiNgan : MonoBehaviour
     
     void ToHome()
     {
-        Debug.Log("You click on home button");
+       Debug.Log("You click on home button");
        SceneManager.LoadScene("Scenes/HomeScene");
     }
     public void showCorrect(bool isCorrect)

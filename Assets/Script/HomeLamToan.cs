@@ -15,21 +15,21 @@ public class HomeLamToan : MonoBehaviour
         audioSource = btnSoSanh.AddComponent<AudioSource>();
         btnSoSanh.GetComponent<Button>().onClick.AddListener(delegate ()
         {
-            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
+            StartCoroutine(SharedData.ZoomInAndOutButton(btnSoSanh));
             ToSoSanh();
         });
 
         GameObject btnToHome = transform.GetChild(1).gameObject;
         btnToHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
-            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));
+            StartCoroutine(SharedData.ZoomInAndOutButton(btnToHome));
             ToHome();
         });
         GameObject btnToCongTru = transform.GetChild(3).gameObject;
         btnToCongTru.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             CongTruNum = 2;
-            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(3).gameObject));
+            StartCoroutine(SharedData.ZoomInAndOutButton(btnToCongTru));
             ToCongTru();
             
         });
@@ -37,7 +37,7 @@ public class HomeLamToan : MonoBehaviour
         btnToCongTru2.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             CongTruNum = 3;
-            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4).gameObject));
+            StartCoroutine(SharedData.ZoomInAndOutButton(btnToCongTru2));
             ToCongTru();
             
         });
@@ -45,7 +45,7 @@ public class HomeLamToan : MonoBehaviour
         btnToDoVui.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             
-            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(5).gameObject));
+            StartCoroutine(SharedData.ZoomInAndOutButton(btnToDoVui));
             ToDoVui();
 
         });

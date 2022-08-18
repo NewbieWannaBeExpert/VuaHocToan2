@@ -58,13 +58,8 @@ public class TestDoVui1 : MonoBehaviour
         {
             ToHome();
         });
-        GameObject btnReplay = transform.GetChild(2).gameObject;
-        btnReplay.GetComponent<Button>().onClick.AddListener(delegate ()
-        {
-            Replay(0.5f);
-            StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
-        });
-        GameObject btnSound = transform.GetChild(3).gameObject;
+       
+        GameObject btnSound = transform.GetChild(2).gameObject;
         btnSound.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             ReplaySound();
@@ -225,7 +220,7 @@ public class TestDoVui1 : MonoBehaviour
     void ReplaySound()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(3).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
         SoundForCorrectNumber(correctNumberIndexReal);
     }
     void Replay(float afterSecond)

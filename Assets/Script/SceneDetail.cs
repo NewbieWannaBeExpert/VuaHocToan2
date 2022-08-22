@@ -11,6 +11,7 @@ public class SceneDetail : MonoBehaviour
     public AudioSource audioSource;
     public static Sprite[] listAnimalSprite;
     int startButtonIndex = 3;
+    public bool isReplay = false;
     private List<GameObject> listDisplayedAnimalSprites = new List<GameObject>();
     void Start()
     {
@@ -31,6 +32,7 @@ public class SceneDetail : MonoBehaviour
         });
         GameObject btnReplay = transform.GetChild(startButtonIndex-2).gameObject;
         btnReplay.GetComponent<Button>().onClick.AddListener(delegate () {
+            isReplay = true;
             StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(startButtonIndex-2).gameObject));
             ReloadAnimalList();
         });
@@ -41,12 +43,20 @@ public class SceneDetail : MonoBehaviour
             GameObject listImageBg = transform.GetChild(startButtonIndex + 1).gameObject;
             listImageBg.transform.localScale = new Vector3(1.35f, 1.0f, 1.0f);
         }
-       
+        InvokeRepeating("ReloadAnimalList", 5f, 5f);
         LoadListAnimal();
+        isReplay = true;
     }
     void LoadListAnimal()
     {
-        audioSource.PlayOneShot(SharedData.numberSound[ListNumber.clickedItem], 1f);
+        if(isReplay)
+        {
+            audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        }
+        else
+        {
+            audioSource.PlayOneShot(SharedData.numberSound[ListNumber.clickedItem], 1f);
+        }
         if (ListNumber.clickedItem == 0)
         {
             transform.GetChild(startButtonIndex - 1).gameObject.SetActive(false);
@@ -101,9 +111,9 @@ public class SceneDetail : MonoBehaviour
         }
        // int totalItem = 9;
         int animalIndex = 0;
+        int totalAnimal = listAnimalSprite.Count();
         System.Random myObject = new System.Random();
-        animalIndex = myObject.Next(0, 5);
-        //Debug.Log("Screen ratio is: " + Screen.height / Screen.width);
+        animalIndex = myObject.Next(0, totalAnimal-1);
         GameObject imageTemplate = transform.GetChild(startButtonIndex + 2).gameObject;
         imageTemplate.SetActive(true);
         GameObject g;

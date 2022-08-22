@@ -15,6 +15,7 @@ public class StickerList : MonoBehaviour
     public static Sprite[] listStickerImage;
     public static string openStickerDinoRefName = "OpenStickerDino";
     private int currentPage = 0;
+    private int maxPage = 0;
     private int totalItemPerPage = 12;
     private int totalItem = 20;
     private List<GameObject> ListShownSticker;
@@ -131,7 +132,7 @@ public class StickerList : MonoBehaviour
     void ShowNext()
     {
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        int maxPage = totalItem / totalItemPerPage;
+        
         Debug.Log("Begin Show next called, maxPage:" + maxPage + " currentPage:" + currentPage);
         if (currentPage >= maxPage)
         {
@@ -171,6 +172,8 @@ public class StickerList : MonoBehaviour
             Debug.Log("Screen to long, numCols = 2, numRows = 3");
         }
         totalItemPerPage = numCols * numRows;
+        maxPage = totalItem / totalItemPerPage;
+        UpdatePageStatus();
         GameObject buttonTemplate = transform.GetChild(3).gameObject;
         buttonTemplate.SetActive(true);
         buttonTemplate.transform.position = new Vector3(0.5f * currentPage, 1.0f, 1.0f);
@@ -211,12 +214,16 @@ public class StickerList : MonoBehaviour
         //ShowBtnNextBack();
     }
 
-    //This function is of no use
+    void UpdatePageStatus()
+    {
+        GameObject g = transform.GetChild(7).GetChild(1).gameObject;
+        g.GetComponent<Text>().text = (currentPage + 1) + "/" + (maxPage+1);
+    }
     
     void ItemClicked(int itemIndex)
     {
         Debug.Log("Item " + itemIndex + " clicked");
-        GameObject g = transform.GetChild(9 + itemIndex).gameObject;
+        GameObject g = transform.GetChild(10 + itemIndex).gameObject;
         if(itemIndex + currentPage * totalItemPerPage > maxOpenSticker)
         {
             audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);

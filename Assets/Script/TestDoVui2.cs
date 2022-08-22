@@ -140,7 +140,6 @@ public class TestDoVui2 : MonoBehaviour
             LeanTween.move(moneyDuplicated, coinStatus.transform.position, 0.5f).setEaseInBack();
         }
         StartCoroutine(SharedData.DestroyGameObjectAfterDelay(moneyDuplicated, 0.7f));
-        //Destroy(moneyImage);
         moneyImage.SetActive(false);
     }
     public void SoundForCorrectNumber(int numberIndex)
@@ -151,7 +150,6 @@ public class TestDoVui2 : MonoBehaviour
     {
         System.Random randBigShuffleSeed = new System.Random();
         int randIndex = randBigShuffleSeed.Next(0, 2);
-        //        Debug.Log("Rand big shuffle is:" + isFindBig + " and compare type is:" + compareType);
         if (isFindBig == 1)
         {
             if (randIndex == 0)
@@ -162,7 +160,6 @@ public class TestDoVui2 : MonoBehaviour
             {
                 audioSource.PlayOneShot(alertFindMoreList[0], 1.0f);
             }
-
         }
         else
         {
@@ -314,7 +311,6 @@ public class TestDoVui2 : MonoBehaviour
                 }
             }
             spritePatter.SetActive(false);
-            //Destroy(spritePatter);
             listNumberButton.Add(btnNumberClone);
             btnNumberClone.transform.position = new Vector3(initX , initY  - counter * paddingY);
             btnNumberClone.transform.GetChild(2).GetComponent<Image>().transform.localScale = new Vector3(scaleWidth, scaleHeigth, 1);

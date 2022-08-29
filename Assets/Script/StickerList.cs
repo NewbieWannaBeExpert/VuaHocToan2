@@ -17,7 +17,7 @@ public class StickerList : MonoBehaviour
     private int currentPage = 0;
     private int maxPage = 0;
     private int totalItemPerPage = 12;
-    private int totalItem = 20;
+    private int totalItem = 50;
     private List<GameObject> ListShownSticker;
     private List<GameObject> ListNextBackBtn;
 
@@ -66,9 +66,9 @@ public class StickerList : MonoBehaviour
     {
         ListShownSticker = new List<GameObject>();
         ListNextBackBtn = new List<GameObject>();
-        //SharedData.SetNumberOfStar(50);
+        //SharedData.SetNumberOfStar(30);
         //SharedData.SetStickerOpenBoxString("");
-      //  SetMaxOpenSticker(0);
+        //SetMaxOpenSticker(0);
         UpdateNumberOfStar();
         int totalStar = SharedData.GetNumberOfStar();
         Debug.Log("Number of star: " + totalStar);

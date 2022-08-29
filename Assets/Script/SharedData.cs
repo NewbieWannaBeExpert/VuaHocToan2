@@ -12,6 +12,7 @@ public class SharedData : MonoBehaviour
     public static AudioClip[] victorySound;
     public static AudioClip[] rightBuzzSoundList;
     public static AudioClip[] wrongBuzzSoundList;
+    public static Sprite[] listEmotionSprite;
     public static Sprite[] listNumberDoVui;
     public static Sprite[] listBoyAnimated;
     public static Sprite[] listGirlAnimated;
@@ -21,7 +22,11 @@ public class SharedData : MonoBehaviour
     public static Sprite[] listNumberBgLamToan;
     public static bool isGameOn = true;
     public static int currentTestSentence = 1;
-    public static int totalTestSentence = 2;
+    public static int totalTestSentence = 6;
+    public static int starPlus = 10;
+    public static int starMinus = 3;
+    public static int starMinusPerOpen = 5;
+    public static bool isFindingStarMode = false;
 
     public static AudioClip[] wrongAlertClipList;
     public static AudioClip[] rightAlertClipList;
@@ -107,6 +112,7 @@ public class SharedData : MonoBehaviour
         if (buttonClickSound != null) { }
         else
         {
+            listEmotionSprite = Resources.LoadAll("Emotions", typeof(Sprite)).Cast<Sprite>().ToArray();
             buttonClickSound = Resources.LoadAll("Sound/ButtonClicked", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             numberSound = Resources.LoadAll("Sound/Number2", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             numberOnlySound = Resources.LoadAll("Sound/NumberOnly", typeof(AudioClip)).Cast<AudioClip>().ToArray();

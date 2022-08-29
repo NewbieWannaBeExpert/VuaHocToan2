@@ -24,8 +24,8 @@ public class TestDienSo : MonoBehaviour
     private int correctNumberIndexReal = 0;
     private int startButtonIndex = 3;
     private bool isGameOn = true;
-    private int currentSentence = 1;
-    private int totalSentence = 2;
+   // private int currentSentence = 1;
+   // private int totalSentence = 2;
     void Start()
     {
         UpdateNumberOfStar();
@@ -46,7 +46,7 @@ public class TestDienSo : MonoBehaviour
    void UpdateNumberOfSentence()
     {
         GameObject txtSen = transform.GetChild(6).transform.GetChild(1).gameObject;
-        txtSen.gameObject.GetComponent<Text>().text = currentSentence.ToString() + "/" + totalSentence.ToString();
+        txtSen.gameObject.GetComponent<Text>().text = SharedData.currentTestSentence.ToString() + "/" + SharedData.totalTestSentence.ToString();
     }
     IEnumerator ReplayAfterDelay(float seconds)
     {
@@ -76,15 +76,23 @@ public class TestDienSo : MonoBehaviour
             SharedData.alertSoundCorrect(true, audioSource);
             StartCoroutine(ReplayAfterDelay(2.5f));
             int totalStar = SharedData.GetNumberOfStar();
-            SharedData.SetNumberOfStar(totalStar + 5);
+            SharedData.SetNumberOfStar(totalStar + SharedData.starPlus);
             UpdateNumberOfStar();
-            currentSentence++; 
+            SharedData.currentTestSentence++;
         } else
         {
             int totalStar = SharedData.GetNumberOfStar();
             if(totalStar > 0)
             {
-                SharedData.SetNumberOfStar(totalStar - 5);
+                if (totalStar - SharedData.starMinus > 0)
+                {
+                    SharedData.SetNumberOfStar(totalStar - SharedData.starMinus);
+                }
+                else
+                {
+                    SharedData.SetNumberOfStar(0);
+                }
+
                 UpdateNumberOfStar();
             }
             //Debug.Log("IN_CORRECT");
@@ -253,7 +261,13 @@ public class TestDienSo : MonoBehaviour
     
     void ToHome()
     {
+        SharedData.currentTestSentence = 1;
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        if(SharedData.isFindingStarMode)
+        {
+            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
+            return;
+        }
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/StickerDetail"));
     }
     void ReplaySound()
@@ -272,7 +286,6 @@ public class TestDienSo : MonoBehaviour
             }
             for(int i = 0; i < listNumberButton.Count; i++)
             {
-                Debug.Log("Remove button number " + i);
                 listNumberButton.RemoveAt(0);
             }
         }
@@ -281,9 +294,16 @@ public class TestDienSo : MonoBehaviour
     }
     IEnumerator ReloadNumber(float waitSeconds)
     {
-        if(currentSentence > totalSentence)
+        if (SharedData.currentTestSentence > SharedData.totalTestSentence)
         {
-            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.25f, "Scenes/StickerDetail"));
+            SharedData.currentTestSentence = 1;
+            if (SharedData.isFindingStarMode)
+            {
+                StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
+            } else
+            {
+                StartCoroutine(SharedData.ToSceneAfterSomeTime(0.25f, "Scenes/StickerDetail"));
+            }
         }
         yield return new WaitForSeconds(waitSeconds);
         LoadNumberList();

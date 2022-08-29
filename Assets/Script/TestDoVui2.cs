@@ -93,7 +93,7 @@ public class TestDoVui2 : MonoBehaviour
             SharedData.alertSoundCorrect(true, audioSource);
             StartCoroutine(ReplayAfterDelay(2.5f));
             int totalStar = SharedData.GetNumberOfStar();
-            SharedData.SetNumberOfStar(totalStar + 5);
+            SharedData.SetNumberOfStar(totalStar + SharedData.starPlus);
             UpdateNumberOfStar();
             SharedData.currentTestSentence++;
             ShowFlyingStar(currentClickedNumber,true);
@@ -103,7 +103,15 @@ public class TestDoVui2 : MonoBehaviour
             int totalStar = SharedData.GetNumberOfStar();
             if (totalStar > 0)
             {
-                SharedData.SetNumberOfStar(totalStar - 5);
+                if (totalStar - SharedData.starMinus > 0)
+                {
+                    SharedData.SetNumberOfStar(totalStar - SharedData.starMinus);
+                }
+                else
+                {
+                    SharedData.SetNumberOfStar(0);
+                }
+
                 UpdateNumberOfStar();
             }
             SharedData.alertSoundCorrect(false, audioSource);
@@ -119,18 +127,19 @@ public class TestDoVui2 : MonoBehaviour
         //Show Flying star
         GameObject coinStatus = transform.GetChild(5).gameObject;
         GameObject moneyImage = g.transform.GetChild(4).gameObject;
+        int totalEmotion = SharedData.listEmotionSprite.Length - 1;
         if (isCorrect == false) {
             System.Random r = new System.Random();
-            int randIndex = r.Next(0, 2);
-            Sprite[] sadSpriteList = Resources.LoadAll<Sprite>("Others/SadIcon").ToArray();
-            moneyImage.GetComponent<Image>().sprite = sadSpriteList[randIndex];
+            int randIndex = r.Next(0, totalEmotion);
+            //Sprite[] sadSpriteList = Resources.LoadAll<Sprite>("Others/SadIcon").ToArray();
+            moneyImage.GetComponent<Image>().sprite = SharedData.listEmotionSprite[randIndex];//sadSpriteList[randIndex];
         }
         moneyImage.SetActive(true);
         GameObject moneyDuplicated = Instantiate(moneyImage, transform);
         moneyDuplicated.transform.position = moneyImage.transform.position;
         LeanTween.cancel(moneyDuplicated);
         moneyDuplicated.transform.localScale = new Vector3(0.7f, 0.7f, 1.0f);
-        LeanTween.scale(moneyDuplicated, new Vector3(1.0f, 1.0f, 1.0f), 1.0f).setEase(LeanTweenType.easeOutQuint);
+        LeanTween.scale(moneyDuplicated, new Vector3(2.0f, 2.0f, 2.0f), 0.3f).setEase(LeanTweenType.easeOutQuint);
         if (isCorrect == false)
         {
             LeanTween.move(moneyDuplicated, new Vector3(0f, -5.0f, 1.0f), 0.5f).setEaseInBack();
@@ -324,6 +333,11 @@ public class TestDoVui2 : MonoBehaviour
         SharedData.currentTestSentence = 1;
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(2).gameObject));
+        if (SharedData.isFindingStarMode)
+        {
+            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
+            return;
+        }
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/StickerDetail"));
     }
     void ReplaySound()
@@ -353,7 +367,14 @@ public class TestDoVui2 : MonoBehaviour
         if (SharedData.currentTestSentence > SharedData.totalTestSentence)
         {
             SharedData.currentTestSentence = 1;
-            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.25f, "Scenes/StickerDetail"));
+            if (SharedData.isFindingStarMode)
+            {
+                StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
+            }
+            else
+            {
+                StartCoroutine(SharedData.ToSceneAfterSomeTime(0.25f, "Scenes/StickerDetail"));
+            }
         }
         UpdateNumberOfSentence();
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);

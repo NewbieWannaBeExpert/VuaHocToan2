@@ -78,16 +78,14 @@ public class TestDoVui1 : MonoBehaviour
         {
             return;
         }
-        Debug.Log("You click on index:" + itemIndex);
         GameObject currentClickedNumber = transform.GetChild(6 + itemIndex).gameObject;
         if (itemIndex == correctIndex)
         {
             SharedData.isGameOn = false;
-            // Debug.Log("CORRECT!");
             currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBg[1];          
             SharedData.alertSoundCorrect(true, audioSource);
             int totalStar = SharedData.GetNumberOfStar();
-            SharedData.SetNumberOfStar(totalStar + 5);
+            SharedData.SetNumberOfStar(totalStar + SharedData.starPlus);
             UpdateNumberOfStar();
             SharedData.currentTestSentence++;
             StartCoroutine(ReplayAfterDelay(2.5f));
@@ -96,7 +94,14 @@ public class TestDoVui1 : MonoBehaviour
             int totalStar = SharedData.GetNumberOfStar();
             if (totalStar > 0)
             {
-                SharedData.SetNumberOfStar(totalStar - 5);
+                if(totalStar - SharedData.starMinus >0)
+                {
+                    SharedData.SetNumberOfStar(totalStar - SharedData.starMinus);
+                } else
+                {
+                    SharedData.SetNumberOfStar(0);
+                }
+                
                 UpdateNumberOfStar();
             }
             //Debug.Log("IN_CORRECT");
@@ -215,6 +220,11 @@ public class TestDoVui1 : MonoBehaviour
         SharedData.currentTestSentence = 1;
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));
+        if (SharedData.isFindingStarMode)
+        {
+            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
+            return;
+        }
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.25f, "Scenes/StickerDetail"));
     }
     void ReplaySound()
@@ -245,7 +255,14 @@ public class TestDoVui1 : MonoBehaviour
         if (SharedData.currentTestSentence > SharedData.totalTestSentence)
         {
             SharedData.currentTestSentence = 1;
-            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.25f, "Scenes/StickerDetail"));
+            if (SharedData.isFindingStarMode)
+            {
+                StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
+            }
+            else
+            {
+                StartCoroutine(SharedData.ToSceneAfterSomeTime(0.25f, "Scenes/StickerDetail"));
+            }
         }
         StartCoroutine(ReloadNumber(afterSecond));
         

@@ -179,10 +179,8 @@ public class StickerDetail : MonoBehaviour
         int totalStar = SharedData.GetNumberOfStar();
         Debug.Log("Total number of star:" + totalStar);
         UpdateNumberOfStar();
-        if (totalStar <= 0)
+        if (totalStar < SharedData.starMinusPerOpen)
         {
-            Debug.Log("Out of star, reload again");
-            //StartCoroutine(FadeAnimation(transform.GetChild(5 + itemIndex).gameObject));
             audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
             GameObject clickedButton2 = transform.GetChild(6 + itemIndex).gameObject;
             LeanTween.cancel(clickedButton2);
@@ -236,34 +234,18 @@ public class StickerDetail : MonoBehaviour
         LeanTween.move(moneyDuplicated, coinStatus.transform.position, 0.5f).setEaseInBack();
         StartCoroutine(DestroyGameObjectAfterDelay(moneyDuplicated, 0.7f));
         Destroy(moneyImage);
-        /*string openBoxListStr = SharedData.GetStickerOpenBoxString();
-        if(openBoxListStr == "")
-        {
-            openBoxListStr = itemIndex.ToString();
-        }
-         else
-        {
-            openBoxListStr = openBoxListStr + "_" + itemIndex.ToString();
-        }
-        SharedData.SetStickerOpenBoxString(openBoxListStr);*/
         if(CheckOpenAllCoverBoxes())
         {
             SharedData.ResetStickerOpenBoxString();
             audioSource.PlayOneShot(SharedData.victorySound[0], 1f);
-            Debug.Log("You open on sticker index:" + StickerList.clickedItem);
             int maxOpenSticker = StickerList.GetMaxOpenSticker();
-            Debug.Log("Max sticker index is: " + maxOpenSticker);
             if(maxOpenSticker <= StickerList.clickedItem)
             {
                 StickerList.SetMaxOpenSticker(StickerList.clickedItem + 1);
             }
-
         }
-        
-       
-        SharedData.SetNumberOfStar(totalStar - 5);
+        SharedData.SetNumberOfStar(totalStar - SharedData.starMinusPerOpen);
         totalStar = SharedData.GetNumberOfStar();
-        Debug.Log("Total number of star:" + totalStar);
         UpdateNumberOfStar();
     }
     IEnumerator DestroyGameObjectAfterDelay(GameObject g, float delayTime)
@@ -282,9 +264,10 @@ public class StickerDetail : MonoBehaviour
     }
     void ToTestScene()
     {
+        SharedData.isFindingStarMode = false;
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         System.Random g = new System.Random();
-        int randNum = g.Next(0, 3) + 2 ;
+        int randNum = g.Next(0, 3) ;
         if(randNum == 0)
         {
             StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestDienSo"));

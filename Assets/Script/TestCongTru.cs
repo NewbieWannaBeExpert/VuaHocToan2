@@ -14,8 +14,25 @@ public class TestCongTru : MonoBehaviour
     private AudioClip alertSoundFindResult;
     private int correctNumberIndexReal = 0;
     private int startButtonIndex = 3;
+    private int totalItem = 2;
+    void UpdateNumberOfSentence()
+    {
+        GameObject txtSen = transform.GetChild(7).transform.GetChild(1).gameObject;
+        txtSen.gameObject.GetComponent<Text>().text = SharedData.currentTestSentence.ToString() + "/" + SharedData.totalTestSentence.ToString();
+    }
     void Start()
     {
+        System.Random random = new System.Random();
+        int randNumOfElement = random.Next(0, 2);
+        if (randNumOfElement == 0)
+        {
+            totalItem = 2;
+        } else
+        {
+            totalItem = 3;
+        }
+        UpdateNumberOfStar();
+        UpdateNumberOfSentence();
         alertSoundFindResult = Resources.Load<AudioClip>("Sound/Alerts/findWithResult");
         listNumberButton = new List<GameObject>();
         GameObject btnHome = transform.GetChild(startButtonIndex).gameObject;
@@ -38,10 +55,15 @@ public class TestCongTru : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         Replay(0.5f);
     }
+    void UpdateNumberOfStar()
+    {
+        GameObject g = transform.GetChild(6).gameObject;
+        g.transform.GetChild(1).GetComponent<Text>().text = SharedData.GetNumberOfStar().ToString();
+    }
     void BtnNumberClicked(int itemIndex)
     {
         System.Random r = new System.Random();
-        GameObject currentClickedNumber = transform.GetChild(4 + itemIndex + startButtonIndex).gameObject;
+        GameObject currentClickedNumber = transform.GetChild(5 + itemIndex + startButtonIndex).gameObject;
         if (itemIndex == correctIndex)
         {
             int randCorrect = r.Next(5, 8);
@@ -51,19 +73,73 @@ public class TestCongTru : MonoBehaviour
             SharedData.alertSoundCorrect(true, audioSource);
             StartCoroutine(ReplayAfterDelay(2.5f));
             ShakeBoyGirl(imgBoyGirl);
+
+            int totalStar = SharedData.GetNumberOfStar();
+            SharedData.SetNumberOfStar(totalStar + SharedData.starPlus);
+            UpdateNumberOfStar();
+            SharedData.currentTestSentence++;
+            ShowFlyingStar(currentClickedNumber, true);
+
         }
         else
         {
+            ShowFlyingStar(currentClickedNumber, false);
+
+            int totalStar = SharedData.GetNumberOfStar();
+            if (totalStar > 0)
+            {
+                if (totalStar - SharedData.starMinus > 0)
+                {
+                    SharedData.SetNumberOfStar(totalStar - SharedData.starMinus);
+                }
+                else
+                {
+                    SharedData.SetNumberOfStar(0);
+                }
+
+                UpdateNumberOfStar();
+            }
             int randIncorrect = r.Next(1, 5);
             GameObject imgBoyGirl = transform.GetChild(startButtonIndex - 1).gameObject;
             imgBoyGirl.GetComponent<Image>().sprite = SharedData.listBoyAnimated[randIncorrect];
-            //Debug.Log("IN_CORRECT");
             SharedData.alertSoundCorrect(false, audioSource);
             currentClickedNumber.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBgLamToan[2];
             ShakeBoyGirl(imgBoyGirl);
         }
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
-        StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(4 + itemIndex + startButtonIndex).gameObject));
+        StartCoroutine(SharedData.ZoomInAndOutButton(currentClickedNumber));
+    }
+    void ShowFlyingStar(GameObject g,bool isCorrect)
+    {
+        //Show Flying star
+        GameObject coinStatus = transform.GetChild(6).gameObject;
+        GameObject moneyImage = g.transform.GetChild(4).gameObject;
+        moneyImage.SetActive(true);
+        int totalEmotion = SharedData.listEmotionSprite.Length - 1;
+        if (isCorrect == false)
+        {
+            System.Random r = new System.Random();
+            int randIndex = r.Next(0, totalEmotion);
+            moneyImage.GetComponent<Image>().sprite = SharedData.listEmotionSprite[randIndex];//sadSpriteList[randIndex];
+        }
+        GameObject moneyDuplicated = Instantiate(moneyImage, transform);
+        moneyDuplicated.transform.position = moneyImage.transform.position;
+        LeanTween.cancel(moneyDuplicated);
+        moneyDuplicated.transform.localScale = new Vector3(0.7f, 0.7f, 1.0f);
+        LeanTween.scale(moneyDuplicated, new Vector3(2.0f, 2.0f, 1.0f), 1.0f).setEase(LeanTweenType.easeOutQuint);
+        //LeanTween.move(moneyDuplicated, coinStatus.transform.position, 0.5f).setEaseInBack();
+        if (isCorrect == false)
+        {
+            LeanTween.move(moneyDuplicated, new Vector3(0f, -5.0f, 1.0f), 0.9f).setEaseInBack();
+        }
+        else
+        {
+            LeanTween.move(moneyDuplicated, coinStatus.transform.position, 0.5f).setEaseInBack();
+        }
+        Destroy(moneyDuplicated, 0.9f);
+        //StartCoroutine(SharedData.DestroyGameObjectAfterDelay(moneyDuplicated, 0.7f));
+        //Destroy(moneyImage);
+        moneyImage.SetActive(false);
     }
     void ShakeBoyGirl(GameObject g)
     {
@@ -112,8 +188,8 @@ public class TestCongTru : MonoBehaviour
     }
     void LoadNumberList()
     {
-        GameObject imgBoyGirl = transform.GetChild(startButtonIndex - 1).gameObject;
-        if (HomeLamToan.CongTruNum == 2)
+        GameObject imgBoyGirl = transform.GetChild(2).gameObject;
+        if (totalItem == 2)
         {
             imgBoyGirl.GetComponent<Image>().sprite = SharedData.listBoyAnimated[0];
         } else
@@ -121,7 +197,7 @@ public class TestCongTru : MonoBehaviour
             imgBoyGirl.SetActive(false);
         }
             
-        int totalItem = HomeLamToan.CongTruNum;
+        
         float initX = 0f;
         float initY = 1.5f;
         float paddingY = 2.3f;
@@ -143,7 +219,7 @@ public class TestCongTru : MonoBehaviour
         {
             num3 = myObject.Next(0, 9);
         }
-        if(HomeLamToan.CongTruNum == 3)
+        if(totalItem == 3)
         {
             correctIndex = myObject.Next(0, 3);
         } else
@@ -170,7 +246,7 @@ public class TestCongTru : MonoBehaviour
             SoundForCorrectNumber(num3);
             correctValue = num3;
         }
-        GameObject btnNumberPattern = transform.GetChild(startButtonIndex + 3).gameObject;
+        GameObject btnNumberPattern = transform.GetChild(5).gameObject;
         btnNumberPattern.SetActive(true);
         GameObject btnNumberClone;
       
@@ -180,6 +256,8 @@ public class TestCongTru : MonoBehaviour
             btnNumberClone.transform.GetChild(2).GetComponent<Image>().sprite = SharedData.listNumberBgLamToan[0];//bg normal
             btnNumberClone.transform.GetChild(0).GetComponent<Image>().sprite = SharedData.listNumberBgLamToan[1];//bg right
             btnNumberClone.transform.GetChild(1).GetComponent<Image>().sprite = SharedData.listNumberBgLamToan[2];//bg wrong
+            GameObject starObj = btnNumberClone.transform.GetChild(4).gameObject;
+            starObj.SetActive(false);
             if (i == 0)
             {
                 equotion = GenerateMathEquotion(num1);
@@ -230,7 +308,7 @@ public class TestCongTru : MonoBehaviour
                 listNumberButton.RemoveAt(0);
             }
         }
-
+        UpdateNumberOfSentence();
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         StartCoroutine(ReloadNumber(afterSecond));
     }

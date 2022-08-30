@@ -6,14 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/HomeScene.unity
+    guid: 1f5bf40ad2faee344b906199810c9a7a
+  - enabled: 1
     path: Assets/Scenes/ListScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Scenes/DetailScene.unity
     guid: f97af2a4c1179964a8df3115d0818f3c
-  - enabled: 1
-    path: Assets/Scenes/HomeScene.unity
-    guid: 1f5bf40ad2faee344b906199810c9a7a
   - enabled: 1
     path: Assets/Scenes/HocSoHomeScene.unity
     guid: 8f2d23fad0184bd438e3f5bda606113c
@@ -53,4 +53,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DoVuiSo2.unity
     guid: 55874d3927831064786aa2c4960bcf04
+  - enabled: 1
+    path: Assets/Scenes/TestCongTru.unity
+    guid: 747f99c200870384c897766f1438080a
   m_configObjects: {}

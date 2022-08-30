@@ -34,7 +34,7 @@ public class HomeSceneScript : MonoBehaviour
             ToSticker();
         });
         GameObject btnKiemSao = transform.GetChild(4).gameObject;
-        btnKiemSao.SetActive(false);
+        //btnKiemSao.SetActive(false);
         btnKiemSao.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             StartCoroutine(SharedData.ZoomInAndOutButton(btnKiemSao));
@@ -46,7 +46,7 @@ public class HomeSceneScript : MonoBehaviour
         SharedData.isFindingStarMode = true;
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         System.Random g = new System.Random();
-        int randNum = g.Next(0, 3);
+        int randNum = g.Next(0, 4);
         if (randNum == 0)
         {
             StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestDienSo"));
@@ -55,9 +55,12 @@ public class HomeSceneScript : MonoBehaviour
         {
             StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestDoVui1"));
         }
-        else
+        else if(randNum == 2) 
         {
             StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestDoVui2"));
+        } else
+        {
+            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestCongTru"));
         }
     }
     void ToSticker()

@@ -215,7 +215,6 @@ public class TestDienSo : MonoBehaviour
         }
         equotion = GenerateMathEquotion(correctValue);
         transform.GetChild(startButtonIndex-1).GetComponent<Text>().text = equotion;
-        Debug.Log("Correct index is: " + correctIndex);
         GameObject btnNumberPattern = transform.GetChild(startButtonIndex + 1).gameObject;
         btnNumberPattern.SetActive(true);
         GameObject btnNumberClone;

@@ -16,6 +16,10 @@ public class HomeSceneScript : MonoBehaviour
        // GameObject gToHocSo = Instantiate(btnToHocSo, transform);
         //Debug.Log("button click sound:" + buttonClickSound.GetInstanceID());
         audioSource = btnToHocSo.AddComponent<AudioSource>();
+        audioSource.clip = SharedData.bgSoundList[1];
+        audioSource.loop = true;
+        audioSource.volume = 0.2f;
+        audioSource.Play();
         btnToHocSo.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             StartCoroutine(SharedData.ZoomInAndOutButton(btnToHocSo));
@@ -43,6 +47,10 @@ public class HomeSceneScript : MonoBehaviour
     }
     void ToKiemSao()
     {
+        audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
+        StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/KiemSaoHome"));
+
+        /*
         SharedData.isFindingStarMode = true;
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         System.Random g = new System.Random();
@@ -61,7 +69,7 @@ public class HomeSceneScript : MonoBehaviour
         } else
         {
             StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/TestCongTru"));
-        }
+        }*/
     }
     void ToSticker()
     {

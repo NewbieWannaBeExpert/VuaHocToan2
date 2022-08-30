@@ -285,7 +285,7 @@ public class TestCongTru : MonoBehaviour
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         if (SharedData.isFindingStarMode)
         {
-            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
+            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/KiemSaoHome"));
             return;
         }
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/StickerDetail"));
@@ -319,7 +319,7 @@ public class TestCongTru : MonoBehaviour
             SharedData.currentTestSentence = 1;
             if (SharedData.isFindingStarMode)
             {
-                StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
+                StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/KiemSaoHome"));
             }
             else
             {

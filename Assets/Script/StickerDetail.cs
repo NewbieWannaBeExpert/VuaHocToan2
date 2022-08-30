@@ -41,12 +41,12 @@ public class StickerDetail : MonoBehaviour
         InitSprites();
         realIndexList = new List<int>();
         int totalStar = SharedData.GetNumberOfStar();
-        Debug.Log("Total number of star:" + totalStar);
         UpdateNumberOfStar();
         GameObject imgToDiscover = transform.GetChild(1).gameObject;
         imgToDiscover.GetComponent<Image>().sprite = listStickerDetail[StickerList.clickedItem];
         GameObject btnToHome = transform.GetChild(2).gameObject;
         audioSource = btnToHome.AddComponent<AudioSource>();
+        SharedData.PlayBgSoundRandom(audioSource);
         btnToHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             StartCoroutine(SharedData.ZoomInAndOutButton(btnToHome));

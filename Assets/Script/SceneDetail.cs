@@ -17,14 +17,12 @@ public class SceneDetail : MonoBehaviour
     {
         listDisplayedAnimalSprites = new List<GameObject> ();
         SetupSprites();
-        Debug.Log("You click on item index: " + ListNumber.clickedItem);
         GameObject buttonTemplate = transform.GetChild(startButtonIndex+1).gameObject;
         //GameObject g;
-        //g = Instantiate(buttonTemplate, transform);
         audioSource = buttonTemplate.AddComponent<AudioSource>();
+        SharedData.PlayBgSoundRandom(audioSource);
         buttonTemplate.transform.GetChild(0).GetComponent<Image>().sprite = ListNumber.sprites[ListNumber.clickedItem];
         GameObject btnHome = transform.GetChild(startButtonIndex).gameObject;
-       // GameObject gHome = Instantiate(homeTemplate,transform);
         btnHome.GetComponent<Button>().onClick.AddListener(delegate()
         {
             StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(startButtonIndex).gameObject));

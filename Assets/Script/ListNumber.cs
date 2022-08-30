@@ -34,17 +34,15 @@ public class ListNumber : MonoBehaviour
         int numRows = 4;
         int numCols = 3;
         int totalItem = 10;
-        //Debug.Log("Screen ratio is: " + Screen.height / Screen.width);
         if(Screen.height > 1.5f * Screen.width)
         {
             numCols = 2;
             numRows = 5;
-            Debug.Log("Screen to long");
         }
-        Debug.Log("Screen width is: " + Screen.width + " Height is: " + Screen.height);
         SetupSprites();
         GameObject btnToHome = transform.GetChild(1).gameObject;
         audioSource = btnToHome.AddComponent<AudioSource>();
+        SharedData.PlayBgSoundRandom(audioSource);
         btnToHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             ToHome();

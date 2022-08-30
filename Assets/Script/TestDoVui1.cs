@@ -222,7 +222,7 @@ public class TestDoVui1 : MonoBehaviour
         StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));
         if (SharedData.isFindingStarMode)
         {
-            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
+            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/KiemSaoHome"));
             return;
         }
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.25f, "Scenes/StickerDetail"));
@@ -257,7 +257,7 @@ public class TestDoVui1 : MonoBehaviour
             SharedData.currentTestSentence = 1;
             if (SharedData.isFindingStarMode)
             {
-                StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
+                StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/KiemSaoHome"));
             }
             else
             {

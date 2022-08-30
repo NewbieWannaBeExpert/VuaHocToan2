@@ -13,6 +13,7 @@ public class HomeLamToan : MonoBehaviour
 
         GameObject btnSoSanh = transform.GetChild(2).gameObject;
         audioSource = btnSoSanh.AddComponent<AudioSource>();
+        SharedData.PlayBgSoundRandom(audioSource);
         btnSoSanh.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             StartCoroutine(SharedData.ZoomInAndOutButton(btnSoSanh));

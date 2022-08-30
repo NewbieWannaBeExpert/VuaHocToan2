@@ -12,6 +12,7 @@ public class SharedData : MonoBehaviour
     public static AudioClip[] victorySound;
     public static AudioClip[] rightBuzzSoundList;
     public static AudioClip[] wrongBuzzSoundList;
+    public static AudioClip[] bgSoundList;
     public static Sprite[] listEmotionSprite;
     public static Sprite[] listNumberDoVui;
     public static Sprite[] listBoyAnimated;
@@ -112,6 +113,7 @@ public class SharedData : MonoBehaviour
         if (buttonClickSound != null) { }
         else
         {
+            bgSoundList = Resources.LoadAll("Sounds/bgSound", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             listEmotionSprite = Resources.LoadAll("Emotions", typeof(Sprite)).Cast<Sprite>().ToArray();
             buttonClickSound = Resources.LoadAll("Sound/ButtonClicked", typeof(AudioClip)).Cast<AudioClip>().ToArray();
             numberSound = Resources.LoadAll("Sound/Number2", typeof(AudioClip)).Cast<AudioClip>().ToArray();
@@ -129,6 +131,16 @@ public class SharedData : MonoBehaviour
             listNumberBgLamToan = Resources.LoadAll("LamToan/BtnBg", typeof(Sprite)).Cast<Sprite>().ToArray();        
             listBoyAnimated = Resources.LoadAll("BoyGirls/Boy", typeof(Sprite)).Cast<Sprite>().ToArray();
         }
+    }
+    public static void PlayBgSoundRandom(AudioSource audioSource)
+    {
+        System.Random random = new System.Random();
+        int totalBgSound = bgSoundList.Count() - 1;
+        int randSoundIndex = random.Next(0, totalBgSound);
+        audioSource.clip = bgSoundList[randSoundIndex]; 
+        audioSource.loop = true;
+        audioSource.volume = 0.1f;
+        audioSource.Play();
     }
     public static void alertSoundCorrect(bool isCorrect, AudioSource audioSource)
     {

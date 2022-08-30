@@ -66,19 +66,13 @@ public class StickerList : MonoBehaviour
     {
         ListShownSticker = new List<GameObject>();
         ListNextBackBtn = new List<GameObject>();
-        //SharedData.SetNumberOfStar(30);
-        //SharedData.SetStickerOpenBoxString("");
-        //SetMaxOpenSticker(0);
         UpdateNumberOfStar();
         int totalStar = SharedData.GetNumberOfStar();
-        Debug.Log("Number of star: " + totalStar);
         InitSprites();
-       
         maxOpenSticker = GetMaxOpenSticker();
-        Debug.Log("Max open sticker is:" + maxOpenSticker);
-        // Debug.Log("Screen width is: " + Screen.width + " Height is: " + Screen.height);
         GameObject btnToHome = transform.GetChild(2).gameObject;
         audioSource = btnToHome.AddComponent<AudioSource>();
+        SharedData.PlayBgSoundRandom(audioSource);
         btnToHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             StartCoroutine(SharedData.ZoomInAndOutButton(btnToHome));

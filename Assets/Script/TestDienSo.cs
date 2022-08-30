@@ -264,7 +264,7 @@ public class TestDienSo : MonoBehaviour
         audioSource.PlayOneShot(SharedData.buttonClickSound[1], 1f);
         if(SharedData.isFindingStarMode)
         {
-            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
+            StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/KiemSaoHome"));
             return;
         }
         StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/StickerDetail"));
@@ -298,7 +298,7 @@ public class TestDienSo : MonoBehaviour
             SharedData.currentTestSentence = 1;
             if (SharedData.isFindingStarMode)
             {
-                StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/HomeScene"));
+                StartCoroutine(SharedData.ToSceneAfterSomeTime(0.75f, "Scenes/KiemSaoHome"));
             } else
             {
                 StartCoroutine(SharedData.ToSceneAfterSomeTime(0.25f, "Scenes/StickerDetail"));

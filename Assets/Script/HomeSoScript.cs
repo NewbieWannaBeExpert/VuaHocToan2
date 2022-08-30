@@ -21,6 +21,7 @@ public class HomeSoScript : MonoBehaviour
 
         GameObject btnToHome = transform.GetChild(1).gameObject;
         audioSource = btnToHome.AddComponent<AudioSource>();
+        SharedData.PlayBgSoundRandom(audioSource);
         btnToHome.GetComponent<Button>().onClick.AddListener(delegate ()
         {
             StartCoroutine(SharedData.ZoomInAndOutButton(transform.GetChild(1).gameObject));

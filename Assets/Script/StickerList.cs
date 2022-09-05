@@ -140,13 +140,13 @@ public class StickerList : MonoBehaviour
     }
     void ShowItemForPage(int page)
     {
-        int counterSticker = 0;
+        //int counterSticker = 0;
         int totalItemInListSticker = ListShownSticker.Count;
         foreach (GameObject stickerGameObject in ListShownSticker)
         {
-            Debug.Log("Destroy item number: " + counterSticker);
+            //Debug.Log("Destroy item number: " + counterSticker);
             Destroy(stickerGameObject);
-            counterSticker++;
+           // counterSticker++;
         }
         for (int i = 0; i < totalItemInListSticker; i++) { 
             ListShownSticker.RemoveAt(0);
